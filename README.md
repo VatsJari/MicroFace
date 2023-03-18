@@ -6,3 +6,4 @@ The spatiotemporal distribution of cell counts revealed an increase in the densi
 In conclusion, our classification of microglial morphological phenotypes using the automated tool can serve as a time-saving and objective method for the characterization of microglial changes in the TBI rat model, and might also represent a useful tool for human brain samples. Moreover, the tool is not limited to microglia and can be applied to a variety of cell types. 
 
 
+![image](https://user-images.githubusercontent.com/85255019/226131956-84d1a69f-b6c7-4e44-b58d-b28e923d4456.png)
