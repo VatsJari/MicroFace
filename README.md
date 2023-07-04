@@ -96,15 +96,18 @@ devtools::install_github("cardiomoon/webr")
 # Load all the required packages
 lapply(packages$my_packages, require, character.only = TRUE)
 
-```
-1. Creates a list called packages to store package information.
-2. Defines the required packages in the my_packages vector.
-3. Checks for any packages that are not currently installed using the installed.packages() function and stores them in not_installed.
-4. Installs the missing packages using install.packages() if there are any.
-5. Installs the required Bioconductor packages using BiocManager::install().
-6. Installs packages from GitHub repositories using devtools::install_github() and remotes::install_github().
-7. Loads all the required packages using lapply() and require().
+``````
+
+1. Creates a list called `packages` to store package information.
+2. Defines the required packages in the `my_packages` vector.
+3. Checks for any packages that are not currently installed using the `installed.packages()` function and stores them in `not_installed`.
+4. Installs the missing packages using `install.packages()` if there are any.
+5. Installs the required Bioconductor packages using `BiocManager::install()`.
+6. Installs packages from GitHub repositories using `devtools::install_github()` and `remotes::install_github()`.
+7. Loads all the required packages using `lapply()` and `require()`.
+
 By running this code, it ensures that all the necessary packages are installed and loads them into the R environment, allowing subsequent code to make use of their functions.
+
 
 
 ***
@@ -212,20 +215,24 @@ write_xlsx(import$df_all,"File_Location_to_df_all.xlsx")
 
 ```
 
-1. Creates a list called import to store various data objects.
+
+This code snippet performs the following actions:
+
+1. Creates a list called `import` to store various data objects.
 2. Specifies the folder paths for the text files containing the data.
 3. Retrieves a list of all the text file names in the specified folder paths.
-4. Merges all the text files into two dataframes (df_soma and df_cell) and adds a FileName column indicating the file name.
-5. Extracts the condition information from the FileName column and creates a Condition column in the dataframes.
-6. Deletes the FileName column from the dataframes.
+4. Merges all the text files into two dataframes (`df_soma` and `df_cell`) and adds a `FileName` column indicating the file name.
+5. Extracts the condition information from the `FileName` column and creates a `Condition` column in the dataframes.
+6. Deletes the `FileName` column from the dataframes.
 7. Renames the column names by removing "AreaShape_" and adding "_soma" or "_cell" as a suffix.
-8. Merges the df_soma and df_cell dataframes into one using specified column matches.
+8. Merges the `df_soma` and `df_cell` dataframes into one using specified column matches.
 9. Removes unwanted columns from the merged dataframe.
 10. Reads the injury center coordinates from an Excel file.
-11. Adds the injury X and Y coordinates to the main dataframe (df_all) based on specified column matches.
-12. Adds columns for condition and time point by splitting the Condition_cell column.
+11. Adds the injury X and Y coordinates to the main dataframe (`df_all`) based on specified column matches.
+12. Adds columns for condition and time point by splitting the `Condition_cell` column.
 13. Renames specific columns in the dataframe.
-14. Exports the resulting dataframe (df_all) as an Excel file.
+14. Exports the resulting dataframe (`df_all`) as an Excel file.
+
 
 (Note: Please ensure that the folder paths and file paths provided in the code are accurate and accessible according to your file locations)
 
@@ -292,21 +299,254 @@ print(count$plot)
 
 ```
 
-1. Creates a new object called count to store the results.
-2. Imports the df_all dataframe from the import object to the count object.
-3. Counts the number of cells by grouping the dataframe based on ImageNumber_cell, Condition_cell, and Bin_Number_New.
-4. Creates separate columns for Time_weeks and Electrode_Thickness.
+1. Creates a new object called `count` to store the results.
+2. Imports the `df_all` dataframe from the `import` object to the `count` object.
+3. Counts the number of cells by grouping the dataframe based on `ImageNumber_cell`, `Condition_cell`, and `Bin_Number_New`.
+4. Creates separate columns for `Time_weeks` and `Electrode_Thickness`.
 5. Renames specific columns in the dataframe.
-6. Calculates the radial_dist and norm_area columns based on the bin number.
-7. Creates the count plot using ggplot.
-8. Adds a boxplot with facets based on Time_weeks.
-9. Sets the title, axis labels, and theme for the plot.
-10. Prints the plot.
+6. Filters out rows where `Bin_Number_New` is equal to 17.
+7. Calculates the `radial_dist` and `norm_area` columns based on the bin number.
+8. Creates the count plot using `ggplot`.
+9. Adds a boxplot with facets based on `Time_weeks`.
+10. Sets the title, axis labels, and theme for the plot.
+11. Prints the plot.
+
+Note: Make sure to provide the required data and color information (`company_colors`) for the plot to work correctly.
 
 **Output:**
 
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/9eb4a29a-9e77-451a-970f-25f8ed7dd06e)
 
 
+***
+
+### 
 
 
+```
+##### CALCULATE THE DISTANCE OF EACH CELL FROM THE MID POINT (IN THIS CASE IT IS 2764, 2196) AND CLASIFY THE CELLS ACCORDING TO THE DISTANCE FROM THE CENTER INTO 20 BINS #####
+
+# Calculate the distance from the midpoint using the Euclidean distance formula
+import$df_all$radial_dist <- sqrt((import$df_all$Center_X_soma - import$df_all$Injury_x)^2 + (import$df_all$Center_Y_soma - import$df_all$Injury_y)^2)
+
+# Assign a bin number to each cell based on the radial distance
+import$df_all$bin_number <- ntile(import$df_all$radial_dist, 25)
+
+# Calculate the range of each bin by multiplying the bin number by 139
+import$df_all$bin_range <- import$df_all$bin_number * 139
+
+# Create a new column to store the updated bin numbers
+import$df_all$Bin_Number_New <- import$df_all$bin_number
+
+# Update the bin numbers for cells beyond the 16th bin
+import$df_all$Bin_Number_New[import$df_all$bin_number > 16] <- 17
+
+# Calculate a new range for the updated bin numbers
+import$df_all$bin_range_new <- import$df_all$Bin_Number_New * 139
+
+
+##### RAMIFICATION INDEX OF THE CELL #####
+
+# Calculate the ramification index (RI) of each cell
+import$df_all$RI <- ((import$df_all$Perimeter_cell / import$df_all$Area_cell) / (2 * sqrt(pi / import$df_all$Area_cell)))
+
+
+##### AREA RATIO OF CELL TO SOMA #####
+
+# Calculate the area ratio of each cell to its soma
+import$df_all$area_ratio <- import$df_all$Area_cell / import$df_all$Area_soma
+
+
+##### LENGTH TO WIDTH RATIO OF CELL & SOMA (ROD-LIKE MORPHOLOGY OF CELL) #####
+
+# Calculate the length to width ratio of the cell
+import$df_all$Length_Width_Ratio_cell <- import$df_all$MaxFeretDiameter_cell / import$df_all$MinFeretDiameter_cell
+
+# Calculate the length to width ratio of the soma
+import$df_all$Length_Width_Ratio_soma <- import$df_all$MaxFeretDiameter_soma / import$df_all$MinFeretDiameter_soma
+
+
+##### ASPECT RATIO OF CELL WHICH IS DEFINED AS MAJOR AXIS LENGTH TO MINOR AXIS LENGTH #####
+
+# Calculate the aspect ratio of the cell
+import$df_all$Aspect_Ratio_cell <- import$df_all$MajorAxisLength_cell / import$df_all$MinorAxisLength_cell
+
+# Calculate the aspect ratio of the soma
+import$df_all$Aspect_Ratio_soma <- import$df_all$MajorAxisLength_soma / import$df_all$MinorAxisLength_soma
+
+
+##### BRANCHING RATIO OF THE SECONDARY (NON-TRUNK) TO PRIMARY (TRUNKS) BRANCHES #####
+
+# Calculate the branching ratio of the secondary to primary branches
+import$df_all$Branch_Ratio <- import$df_all$Non_Trunk_Branch / import$df_all$Trunk_Branch
+
+# Calculate the total number of branches
+import$df_all$Total_Branch <- import$df_all$Non_Trunk_Branch + import$df_all$Trunk_Branch
+
+
+##### CYTOPLASMIC AREA OF MICROGLIA #####
+
+# Calculate the cytoplasmic area of each microglia cell
+import$df_all$Cyto_Area <- import$df_all$Area_cell - import$df_all$Area_soma
+
+
+##### GROUPING THE DATAFRAME INTO FAR & NEAR THE INJURY LOCATION USING BINS < 6 IS NEAR, > 13 IS FAR, AND REST IS MIDDLE #####
+
+# Group the cells into regions based on their bin numbers
+import$df_all$Impact_Region <- case_when(
+  import$df_all$Bin_Number_New <= 5 ~ "Near",
+  import$df_all$Bin_Number_New >= 8 ~ "Far",
+  TRUE ~ "Middle"
+)
+
+
+##### HEALTH SCORE OF CELLS FROM 0-1 #####
+
+# Calculate the health score of each cell based on the total number of branches
+import$df_all$Health_score <- case_when(
+  import$df_all$Total_Branch >= 20 ~ 1,
+  import$df_all$Total_Branch <= 19 ~ (1 - (((20 - import$df_all$Total_Branch) / 2)) / 10)
+)
+
+
+##### COLOUR PALETTE #####
+
+# Define a color palette for visualization
+company_colors <- c("#E50000", "#008A8A", "#AF0076", "#E56800", "#1717A0", "#E5AC00", "#00B700")
+
+
+##### EXCLUSION CRITERIA #####
+
+# Define a function to filter the data based on specific criteria
+filter_data_1 <- function(df) {
+  df_all_filtered_10 <- df[!(df$Bin_Number_New >= 11 & df$RI < 2),]
+  df_all_filtered_20 <- df_all_filtered_10[!(df_all_filtered_10$Bin_Number_New <= 6 & df_all_filtered_10$RI > 5),]
+  df_all_filtered_30 <- df_all_filtered_20[!(df_all_filtered_20$Total_Branch > 90),]
+  df_all_filtered_40 <- df_all_filtered_30[!(df_all_filtered_30$Bin_Number_New >= 11 & df_all_filtered_30$area_ratio < 2 & df_all_filtered_30$Time_weeks > 0 & df_all_filtered_30$Time_weeks < 8),]
+  df_all_filtered_50 <- df_all_filtered_40[!(df_all_filtered_40$Bin_Number_New <= 6 & df_all_filtered_40$Non_Trunk_Branch > 10 & df_all_filtered_40$Time_weeks > 0 & df_all_filtered_40$Time_weeks < 8),]
+  return(df_all_filtered_50)
+}
+
+# Define another function to filter the data based on additional criteria
+filter_data_2 <- function(df) {
+  df_all_filtered_1 <- df_all[!(df_all$Bin_Number_New >= 10 & df_all$Time_weeks >= 2 & df_all$Total_Branch < 20 & df_all$Electrode_Thickness == 50),]
+  df_all_filtered_2 <- df_all_filtered_1[!(df_all_filtered_1$Bin_Number_New <= 8 & df_all_filtered_1$Time_weeks >= 18 & df_all_filtered_1$Total_Branch > 20),]
+  df_all_filtered_3 <- df_all_filtered_2[!(df_all_filtered_2$Bin_Number_New >= 14 & df_all_filtered_2$Total_Branch <= 20),]
+  df_all_filtered_4 <- df_all_filtered_3[!(df_all_filtered_3$Total_Branch > 70),]
+  return(df_all_filtered_4)
+}
+
+
+##### REORDER THE COLUMNS WHICH ARE NOT NECESSARY TO THE FIRST #####
+
+# Reorder the columns in the dataframe, moving unnecessary columns to the end
+import$df_all_reordered <- import$df_all %>% dplyr::select(c(9, 10, 11, 12, 13, 14, 19, 29, 32, 33, 34, 37, 38, 39, 40, 41, 42, 47, 57, 60, 65, 66, 68, 69, 70, 71, 78, 81), everything())
+
+##### SELECT THE COLUMNS THAT REPRESENT THE ACTUAL VALUES OF MICROGLIA MORPHOLOGY #####
+
+# Create a new dataframe containing only the columns representing microglia morphology
+import$df_all_reordered_raw <- import$df_all_reordered[, colnames(import$df_all_reordered)[c(25, 31, 32, 35:81)]]
+
+# Write the reordered dataframe to a CSV file
+write.csv(import$df_all_reordered, "D:/Brain Injury project/4 Datasheet/df_all_reordered.csv", row.names = FALSE)
+
+```
+
+
+
+1. **Calculating the Distance from the Midpoint:**
+   - The code calculates the distance of each cell from the midpoint `(2764, 2196)` using the Euclidean distance formula.
+   - It uses the coordinates `Center_X_soma` and `Center_Y_soma` from the dataframe `import$df_all` to represent the cell's position.
+   - The coordinates `Injury_x` and `Injury_y` represent the midpoint.
+   - The result is stored in the `radial_dist` column of the dataframe.
+
+2. **Assigning Bin Numbers:**
+   - The code assigns a bin number to each cell based on its radial distance.
+   - It uses the `ntile` function to divide the `radial_dist` values into 25 equal-sized bins.
+   - The result is stored in the `bin_number` column.
+
+3. **Calculating Bin Ranges:**
+   - The code calculates the range of each bin by multiplying the bin number by 139.
+   - The result is stored in the `bin_range` column.
+
+4. **Updating Bin Numbers:**
+   - The code creates a new column `Bin_Number_New` to store the updated bin numbers.
+   - It copies the values from the `bin_number` column initially assigned in the previous step.
+
+5. **Adjusting Bin Numbers:**
+   - For rows where the `bin_number` is greater than 16 (i.e., beyond the 16th bin), the code assigns a value of 17 to `Bin_Number_New`.
+   - This step ensures that all cells beyond the 16th bin are grouped together under bin number 17.
+
+6. **Calculating New Bin Ranges:**
+   - The code calculates a new range for `Bin_Number_New` by multiplying it by 139.
+   - The result is stored in the `bin_range_new` column.
+
+7. **Ramification Index (RI) Calculation:**
+   - The code calculates the Ramification Index (RI) of each cell.
+   - RI is calculated as `(Perimeter_cell / Area_cell) / (2 * sqrt(pi / Area_cell))`.
+   - The result is stored in the `RI` column.
+
+8. **Area Ratio Calculation:**
+   - The code calculates the area ratio of each cell to its soma.
+   - It divides the `Area_cell` by the `Area_soma`.
+   - The result is stored in the `area_ratio` column.
+
+9. **Length to Width Ratio Calculation:**
+   - The code calculates the length to width ratio of both the cell and soma.
+   - For cells, it divides the `MaxFeretDiameter_cell` by the `MinFeretDiameter_cell`.
+   - For soma, it divides the `MaxFeretDiameter_soma` by the `MinFeretDiameter_soma`.
+   - The results are stored in the `Length_Width_Ratio_cell` and `Length_Width_Ratio_soma` columns, respectively.
+
+10. **Aspect Ratio Calculation:**
+    - The code calculates the aspect ratio of both the cell and soma.
+    - For cells, it divides the `MajorAxisLength_cell` by the `MinorAxisLength_cell`.
+    - For soma, it divides the `MajorAxisLength_soma` by the `MinorAxisLength_soma`.
+    - The results are stored in the `Aspect_Ratio_cell` and `Aspect_Ratio_soma` columns, respectively.
+
+11. **Branching Ratio Calculation:**
+    - The code calculates the branching ratio of the secondary (non-trunk) branches to the primary (trunk) branches.
+    - It divides
+
+ the `Non_Trunk_Branch` by the `Trunk_Branch`.
+    - The result is stored in the `Branch_Ratio` column.
+
+12. **Total Branch Calculation:**
+    - The code calculates the total number of branches for each cell.
+    - It sums the `Non_Trunk_Branch` and `Trunk_Branch` values.
+    - The result is stored in the `Total_Branch` column.
+
+13. **Cytoplasmic Area Calculation:**
+    - The code calculates the cytoplasmic area of each microglia cell.
+    - It subtracts the `Area_soma` from the `Area_cell`.
+    - The result is stored in the `Cyto_Area` column.
+
+14. **Grouping Cells based on Bin Numbers:**
+    - The code groups the cells into three regions based on the `Bin_Number_New` column.
+    - Cells with bin numbers less than or equal to 5 are classified as "Near".
+    - Cells with bin numbers greater than or equal to 8 are classified as "Far".
+    - The remaining cells fall into the "Middle" category.
+    - The classification is stored in the `Impact_Region` column.
+
+15. **Health Score Calculation:**
+    - The code calculates a health score for each cell based on its total number of branches (`Total_Branch`).
+    - If the total number of branches is greater than or equal to 20, the health score is set to 1.
+    - For cells with a total number of branches less than 20, the health score is calculated as `(1 - ((20 - Total_Branch) / 2)) / 10`.
+    - The result is stored in the `Health_score` column.
+
+16. **Color Palette Definition:**
+    - The code defines a color palette (`company_colors`) with seven color values for visualization purposes.
+
+17. **Filtering Functions:**
+    - The code defines two filtering functions (`filter_data_1` and `filter_data_2`) to exclude specific rows from the dataframe based on certain criteria.
+    - These functions help remove unwanted data from the analysis.
+
+18. **Reordering Columns:**
+    - The code reorders the columns of the `import$df_all` dataframe to prioritize the necessary columns.
+    - It selects the necessary columns and stores the reordered dataframe in `import$df_all_reordered`.
+
+19. **Selecting Actual Morphology Columns:**
+    - The code selects specific columns from `import$df_all_reordered` that provide the actual values of microglia morphology.
+    - It stores the result in `import$df_all_reordered_raw`.
+
+20. **Writing the Data to a CSV File:**
+    - The code writes the reordered dataframe (`df_all_reordered`) to a CSV file named "df_all_reordered.csv" located at "D:/Brain Injury project/4 Datasheet/".
