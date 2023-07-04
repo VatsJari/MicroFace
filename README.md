@@ -301,3 +301,8 @@ print(count$plot)
 8. Adds a boxplot with facets based on Time_weeks.
 9. Sets the title, axis labels, and theme for the plot.
 10. Prints the plot.
+
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ec800c7f-d209-4043-b3ec-7edce89e1537)
+
+
+
