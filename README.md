@@ -35,9 +35,15 @@ In our study, we utilized Fiji software for the preprocessing of images, followi
 ![Untitled (18)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/25a8ebab-e8dc-40ce-80dd-fb363d7b3bb3)
 
 
+***
+
 ## Data Analysis
 
 After preprocessing and segmenting the images, we generated a datasheet that contained information on individual microglia and their corresponding parameters, such as shape and size, using CellProfiler software. This datasheet was then imported into R Studio, where we conducted statistical analysis. 
+
+
+***
+
 
 ###  Require Packages
 
@@ -99,6 +105,10 @@ lapply(packages$my_packages, require, character.only = TRUE)
 6. Installs packages from GitHub repositories using devtools::install_github() and remotes::install_github().
 7. Loads all the required packages using lapply() and require().
 By running this code, it ensures that all the necessary packages are installed and loads them into the R environment, allowing subsequent code to make use of their functions.
+
+
+***
+
 
 ### Import the data sheets into R-studio environment
 
@@ -218,6 +228,9 @@ write_xlsx(import$df_all,"File_Location_to_df_all.xlsx")
 14. Exports the resulting dataframe (df_all) as an Excel file.
 
 (Note: Please ensure that the folder paths and file paths provided in the code are accurate and accessible according to your file locations)
+
+
+***
 
 ### Visualization of microglia cell distribution around the injury location 
 
