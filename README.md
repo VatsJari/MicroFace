@@ -30,6 +30,10 @@ In our study, we utilized Fiji software for the preprocessing of images, followi
 ![Untitled (17)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ff531a23-6052-4ece-b216-12beff3a4824)
 
 ### Illumination Correction 
+### The Skeleton Pipeline
+
+## Data Analysis
+
 
 
 
