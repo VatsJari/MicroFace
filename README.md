@@ -291,16 +291,13 @@ count$plot <- ggplot(count$df_counts, aes(x = Bin_Number_New, y = count$df_count
 print(count$plot)
 ```
 
-Here's an explanation of the code:
-
-Creates a new object called count to store the results.
-Imports the df_all dataframe from the import object to the count object.
-Counts the number of cells by grouping the dataframe based on ImageNumber_cell, Condition_cell, and Bin_Number_New.
-Creates separate columns for Time_weeks and Electrode_Thickness.
-Renames specific columns in the dataframe.
-Filters out rows where Bin_Number_New is equal to 17.
-Calculates the radial_dist and norm_area columns based on the bin number.
-Creates the count plot using ggplot.
-Adds a boxplot with facets based on Time_weeks.
-Sets the title, axis labels, and theme for the plot.
-Prints the plot.
+1. Creates a new object called count to store the results.
+2. Imports the ´df_all dataframe` from the import object to the count object.
+3. Counts the number of cells by grouping the dataframe based on ImageNumber_cell, Condition_cell, and Bin_Number_New.
+4. Creates separate columns for Time_weeks and Electrode_Thickness.
+5. Renames specific columns in the dataframe.
+6. Calculates the radial_dist and norm_area columns based on the bin number.
+7. Creates the count plot using ggplot.
+8. Adds a boxplot with facets based on Time_weeks.
+9. Sets the title, axis labels, and theme for the plot.
+10. Prints the plot.
