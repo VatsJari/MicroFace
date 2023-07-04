@@ -100,9 +100,123 @@ lapply(packages$my_packages, require, character.only = TRUE)
 7. Loads all the required packages using lapply() and require().
 By running this code, it ensures that all the necessary packages are installed and loads them into the R environment, allowing subsequent code to make use of their functions.
 
+### Import the data sheets into R-studio environment
 
+```
+import <- list()
 
+##### COPY THE PATH OF FOLDER THAT CONTAINS ALL THE TEXT FILES #####
 
+# Specify the folder paths for the text files containing the data
+import$folder_path_soma = "File_Location_to_Datasheet_all_soma/"
+import$folder_path_cell = "File_Location_to_Datasheet_all_cell/"
 
+# STORE ALL THE FILE NAMES INTO ON OBJECT = LIST_OF_ALL_FILES_SOMA
+
+# Get a list of all the text file names in the specified folder paths
+import$list_of_files_soma <- list.files(path = import$folder_path_soma , recursive = TRUE,
+                            pattern = "*.txt", full.names = TRUE)
+import$list_of_files_cell <- list.files(path = import$folder_path_cell , recursive = TRUE,
+                                 pattern = "*.txt", full.names = TRUE)  
+
+##### MERGE ALL THE FILES INTO ONE BIG DATAFRAME. ALSO ADDING FILENAME TO A NEW COLUMN #####
+
+# Merge all the text files into a single dataframe, with the 'FileName' column indicating the file name
+import$df_soma <- vroom(import$list_of_files_soma, id = "FileName")
+import$df_cell <- vroom(import$list_of_files_cell, id = "FileName")
+
+##### CREATE A NEW COLUMN WITH NAME = CONDITION AND APPEND THE VALUE IN FORM OF (PROBESIZE_TIMEPOINT) #####
+
+# Extract the condition information from the 'FileName' column and store it in the 'Condition' column
+import$df_soma <- import$df_soma %>%
+  mutate(Condition = str_remove(FileName, pattern = import$folder_path_soma)) %>%
+  mutate(Condition = str_remove(Condition, pattern = ".txt")) %>%
+  mutate(Condition = str_remove(Condition, pattern = "/"))
+
+import$df_cell <- import$df_cell %>%
+  mutate(Condition = str_remove(FileName, pattern = import$folder_path_cell)) %>%
+  mutate(Condition = str_remove(Condition, pattern = ".txt")) %>%
+  mutate(Condition = str_remove(Condition, pattern = "/"))
+
+##### DELETING THE COLUMN FILENAME #####
+
+# Remove the 'FileName' column from the dataframes
+import$df_soma <-subset(import$df_soma, select = -c(FileName))
+import$df_cell <-subset(import$df_cell, select = -c(FileName))
+
+##### RENAMING THE COLUMN NAMES: BY SUBTRACTING "AREASHAPE_" & ADDING "_SOMA" TO THE COLUMN NAMES #####
+
+# Rename the columns of the dataframe by removing "AreaShape_" and adding "_soma" as a suffix
+colnames(import$df_soma) <- gsub("AreaShape_","",colnames(import$df_soma)) %>%
+  paste("soma",sep="_")
+colnames(import$df_cell) <- gsub("AreaShape_","",colnames(import$df_cell)) %>%
+  paste("cell",sep="_")
+
+##### MERGE DATAFRAMES: DF_SOMA & DF_CELL INTO ONE BIG FILE #####
+
+# Merge the 'df_cell' and 'df_soma' dataframes into a single dataframe based on specified column matches
+import$df_all <- merge(import$df_cell, import$df_soma, by.x = c('ImageNumber_cell', 'Parent_Soma_cell', 'Condition_cell'), 
+                by.y = c('ImageNumber_soma', 'Parent_Soma_soma', 'Condition_soma'))
+
+##### REMOVE UNWANTED COLUMNS FROM THE FINAL DATASET #####
+
+# Remove unwanted columns from the 'df_all' dataframe
+import$df_all <- subset(import$df_all, select = -c(Location_Center_X_soma, Location_Center_Z_soma,Location_Center_Y_soma, Location_Center_X_cell,
+                                     Location_Center_Z_cell, Location_Center_Y_cell, Children_Cell_Count_soma))
+
+##### IMPORT THE DATASHEET WHICH CONTAINS INJURY COORDINATES #####
+
+# Read the injury center coordinates from an Excel file
+import$Injury_center <- read_excel("/Volumes/JARI-NES/Brain Injury project/4 Datasheet/Injury center.xls")
+
+##### ADD THE INJURY X & Y COORDINATES TO THE MAIN DATA SHEET (DF_ALL) #####
+
+# Merge the 'df_all' and 'Injury_center' dataframes based on specified column matches
+import$df_all <- merge(import$df_all, import$Injury_center, by.x = c("ImageNumber_cell", "Condition_cell"), by.y = c("Image_Number", "Condition"), all.x=TRUE)
+
+##### ADDING COLUMNS FOR CONDITION AND TIME POINT #####
+
+# Split the 'Condition_cell' column into 'Electrode_Thickness' and 'Time_weeks' columns
+import$colmn <- paste('Electrode_Thickness',1:2)
+
+import$df_all <- tidyr::separate(
+  data = import$df_all,
+  col = Condition_cell,
+  sep = "_",
+  into = import$colmn,
+  remove = FALSE)
+
+names(import$df_all)[names(import$df_all) == 'Electrode_Thickness 2'] <- 'Time_weeks'
+names(import$df_all)[names(import$df_all) == 'Electrode_Thickness 1'] <- 'Electrode_Thickness'
+names(import$df_all)[names(import$df_all) == 'ObjectSkeleton_NumberBranchEnds_MorphologicalSkeleton_soma'] <- 'Branch_Ends'
+names(import$df_all)[names(import$df_all) == 'ObjectSkeleton_NumberNonTrunkBranches_MorphologicalSkeleton_soma'] <- 'Non_Trunk_Branch'
+names(import$df_all)[names(import$df_all) == 'ObjectSkeleton_NumberTrunks_MorphologicalSkeleton_soma'] <- 'Trunk_Branch'
+names(import$df_all)[names(import$df_all) == 'ObjectSkeleton_TotalObjectSkeletonLength_MorphologicalSkeleton_soma'] <- 'Skeleton_Length'
+names(import$df_all)[names(import$df_all) == 'x'] <- 'Injury_x'
+names(import$df_all)[names(import$df_all) == 'y'] <- 'Injury_y'
+
+##### EXPORT THE DATASHEET AS A .XLSX FILE #####
+
+# Export the 'df_all' dataframe as an Excel file
+write_xlsx(import$df_all,"File_Location_to_df_all.xlsx") 
+
+```
+
+1. Creates a list called import to store various data objects.
+2. Specifies the folder paths for the text files containing the data.
+3. Retrieves a list of all the text file names in the specified folder paths.
+4. Merges all the text files into two dataframes (df_soma and df_cell) and adds a FileName column indicating the file name.
+5. Extracts the condition information from the FileName column and creates a Condition column in the dataframes.
+6. Deletes the FileName column from the dataframes.
+7. Renames the column names by removing "AreaShape_" and adding "_soma" or "_cell" as a suffix.
+8. Merges the df_soma and df_cell dataframes into one using specified column matches.
+9. Removes unwanted columns from the merged dataframe.
+10. Reads the injury center coordinates from an Excel file.
+11. Adds the injury X and Y coordinates to the main dataframe (df_all) based on specified column matches.
+12. Adds columns for condition and time point by splitting the Condition_cell column.
+13. Renames specific columns in the dataframe.
+14. Exports the resulting dataframe (df_all) as an Excel file.
+
+(Note: Please ensure that the folder paths and file paths provided in the code are accurate and accessible according to your file locations)
 
 
