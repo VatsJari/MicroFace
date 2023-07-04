@@ -32,7 +32,74 @@ In our study, we utilized Fiji software for the preprocessing of images, followi
 ### Illumination Correction 
 ### The Skeleton Pipeline
 
+![Untitled (18)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/25a8ebab-e8dc-40ce-80dd-fb363d7b3bb3)
+
+
 ## Data Analysis
+
+After preprocessing and segmenting the images, we generated a datasheet that contained information on individual microglia and their corresponding parameters, such as shape and size, using CellProfiler software. This datasheet was then imported into R Studio, where we conducted statistical analysis. 
+
+###  Require Packages
+
+By running this code, it ensures that all the necessary packages are installed and loads them into the R environment, allowing subsequent code to make use of their functions.
+
+```
+##### CHECK FOR THE PACKAGES AND INSTALL IF NOT AVAILABLE #####
+
+# Create a list to store package information
+packages <- list()
+
+# Specify the required packages
+packages$my_packages <- c("readr", "plyr", "readxl", "dplyr", "factoextra", "cluster", "readxl"
+                 , "tidyverse", "corrplot", "dataRetrieval", "dplyr", "tidyr", "ggplot2", "rsq"
+                 , "ggpmisc", "writexl", "Biobase", "cluster", "BiocManager", "ConsensusClusterPlus", "pheatmap", "vroom", "ggforce", "plotrix",
+                 "moments", "Seurat", "patchwork", "clusterSim", "tidymodels", "recipes", "tidytext", "embed", "corrr", "viridis", "randomForest", "BiocParallel", "pheatmap",
+                 "dendextend", "RColorBrewer", "dendsort", "ape", "BBmisc", "ggExtra", "fmsb", "GGally", "gghighlight", "wesanderson","remotes", "ggstream", "devtools", "ggdark",
+                  "streamgraph", "reshape2", "cardiomoon/moonBook","cardiomoon/webr")
+
+# Check for packages that are not installed
+packages$not_installed <- packages$my_packages[!(packages$my_packages %in% installed.packages()[ , "Package"])]
+
+# Install packages if they are not already installed
+if(length(packages$not_installed)) 
+  install.packages(packages$not_installed)
+
+##### BIOCONDUCTOR BASED PACKAGES #####
+
+# Install and load the required Bioconductor packages
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install(version = "3.17")
+
+BiocManager::install("ConsensusClusterPlus")
+BiocManager::install("BiocParallel")
+BiocManager::install("ggbiplot")
+
+##### GITHUB BASED PACKAGES #####
+
+# Install packages from GitHub repositories
+devtools::install_github("nsgrantham/ggdark")
+remotes::install_github("davidsjoberg/ggstream")
+devtools::install_github("hrbrmstr/streamgraph")
+
+devtools::install_github("cardiomoon/moonBook")
+devtools::install_github("cardiomoon/webr")
+
+##### LOAD ALL THE PACKAGES AT ONCE #####
+
+# Load all the required packages
+lapply(packages$my_packages, require, character.only = TRUE)
+
+```
+1. Creates a list called packages to store package information.
+2. Defines the required packages in the my_packages vector.
+3. Checks for any packages that are not currently installed using the installed.packages() function and stores them in not_installed.
+4. Installs the missing packages using install.packages() if there are any.
+5. Installs the required Bioconductor packages using BiocManager::install().
+6. Installs packages from GitHub repositories using devtools::install_github() and remotes::install_github().
+7. Loads all the required packages using lapply() and require().
+By running this code, it ensures that all the necessary packages are installed and loads them into the R environment, allowing subsequent code to make use of their functions.
+
 
 
 
