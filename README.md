@@ -289,6 +289,7 @@ count$plot <- ggplot(count$df_counts, aes(x = Bin_Number_New, y = count$df_count
 
 # Print the plot
 print(count$plot)
+
 ```
 
 1. Creates a new object called count to store the results.
@@ -302,7 +303,10 @@ print(count$plot)
 9. Sets the title, axis labels, and theme for the plot.
 10. Prints the plot.
 
-![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ec800c7f-d209-4043-b3ec-7edce89e1537)
+###**Output:**
+
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/9eb4a29a-9e77-451a-970f-25f8ed7dd06e)
+
 
 
 
