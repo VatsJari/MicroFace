@@ -292,7 +292,7 @@ print(count$plot)
 ```
 
 1. Creates a new object called count to store the results.
-2. Imports the ´df_all dataframe` from the import object to the count object.
+2. Imports the df_all dataframe from the import object to the count object.
 3. Counts the number of cells by grouping the dataframe based on ImageNumber_cell, Condition_cell, and Bin_Number_New.
 4. Creates separate columns for Time_weeks and Electrode_Thickness.
 5. Renames specific columns in the dataframe.
