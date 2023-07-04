@@ -303,7 +303,7 @@ print(count$plot)
 9. Sets the title, axis labels, and theme for the plot.
 10. Prints the plot.
 
-###**Output:**
+**Output:**
 
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/9eb4a29a-9e77-451a-970f-25f8ed7dd06e)
 
