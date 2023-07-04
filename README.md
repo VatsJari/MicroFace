@@ -550,3 +550,10 @@ write.csv(import$df_all_reordered, "D:/Brain Injury project/4 Datasheet/df_all_r
 
 20. **Writing the Data to a CSV File:**
     - The code writes the reordered dataframe (`df_all_reordered`) to a CSV file named "df_all_reordered.csv" located at "D:/Brain Injury project/4 Datasheet/".
+   
+
+
+
+***
+
+### Hierarchical clustering analysis for comparision of cell populations closer
