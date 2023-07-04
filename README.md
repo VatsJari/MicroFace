@@ -1,4 +1,4 @@
-# MicroFace
+![image](https://user-images.githubusercontent.com/85255019/226131956-84d1a69f-b6c7-4e44-b58d-b28e923d4456.png)
 
 ## Abstract
 
@@ -11,7 +11,6 @@ The spatiotemporal distribution analysis revealed an increase in microglia cell 
 In summary, our automated tool for classifying microglial morphological phenotypes provides a time-efficient and objective method for characterizing microglial changes in the TBI rat model and potentially in human brain samples. Furthermore, this tool is not limited to microglia and can be applied to various cell types.
 
 
-![image](https://user-images.githubusercontent.com/85255019/226131956-84d1a69f-b6c7-4e44-b58d-b28e923d4456.png)
 
 
 ## Experimental Design 
