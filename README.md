@@ -219,4 +219,75 @@ write_xlsx(import$df_all,"File_Location_to_df_all.xlsx")
 
 (Note: Please ensure that the folder paths and file paths provided in the code are accurate and accessible according to your file locations)
 
+### Visualization of microglia cell distribution around the injury location 
 
+The code provided generates a count plot to visualize the number of cells in relation to the bin number for all conditions.
+
+```
+# create a new object for this part of the result
+count <- list()
+
+# import the datasheet from import to count object. then perform counting of cells using group_by function
+count$df_counts <- import$df_all %>% 
+  group_by(ImageNumber_cell, Condition_cell, Bin_Number_New) %>% 
+  summarize(num_cells = n())
+
+# create two separate columns for time_weeks and electrode thickness
+count$colmn_count <- paste('Electrode_Thickness',1:2)
+count$df_counts <- tidyr::separate(
+  data = count$df_counts,
+  col = Condition_cell,
+  sep = "_",
+  into = count$colmn_count,
+  remove = FALSE)
+
+names(count$df_counts)[names(count$df_counts) == 'Electrode_Thickness 2'] <- 'Time_weeks'
+names(count$df_counts)[names(count$df_counts) == 'Electrode_Thickness 1'] <- 'Electrode_Thickness'
+
+# Remove rows where Bin_Number_New is 17
+count$df_counts <- filter(count$df_counts, Bin_Number_New != 17)
+
+# Calculate radial distance and normalized area
+count$df_counts$radial_dist <- 139 * count$df_counts$Bin_Number_New
+count$df_counts$norm_area <- (pi * (count$df_counts$radial_dist)^2) - (pi * (count$df_counts$radial_dist-139)^2)
+
+# Create the boxplot
+count$plot <- ggplot(count$df_counts, aes(x = Bin_Number_New, y = count$df_counts$num_cells / 2*sqrt((pi / count$df_counts$norm_area)), group = Bin_Number_New, fill = Time_weeks)) +
+  geom_boxplot() +
+  facet_grid(~Time_weeks) +
+  ggtitle("Number of Cells per Bin") +
+  scale_fill_manual(values=company_colors) +
+  stat_summary(fun.y=median, geom="point", size=2, color="white") +
+  xlab("Bin Number") + ylab("Number of Cells normalized to the area") +
+  theme_bw() +
+  ggtitle("") +
+  labs(fill = "Time (Weeks)") +
+  theme(
+    plot.title = element_text(size=24, hjust = 0.5, face="bold"),
+    axis.title.x = element_text(size=22, face="bold"),
+    axis.title.y = element_text(size=22, face="bold"),
+    axis.text.x = element_text(size = 17, face="bold"),
+    axis.text.y  = element_text(size = 17, face="bold"),
+    legend.text = element_text(size = 16,  face="bold"),
+    legend.title = element_text(size = 18,  face="bold"),
+    legend.key.size = unit(1.5, "lines"),
+    legend.position = "bottom",
+    strip.text = element_text(size = 18, face = "bold"))
+
+# Print the plot
+print(count$plot)
+```
+
+Here's an explanation of the code:
+
+Creates a new object called count to store the results.
+Imports the df_all dataframe from the import object to the count object.
+Counts the number of cells by grouping the dataframe based on ImageNumber_cell, Condition_cell, and Bin_Number_New.
+Creates separate columns for Time_weeks and Electrode_Thickness.
+Renames specific columns in the dataframe.
+Filters out rows where Bin_Number_New is equal to 17.
+Calculates the radial_dist and norm_area columns based on the bin number.
+Creates the count plot using ggplot.
+Adds a boxplot with facets based on Time_weeks.
+Sets the title, axis labels, and theme for the plot.
+Prints the plot.
