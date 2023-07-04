@@ -20,4 +20,16 @@ In this project, a rat model of neuroinflammation was used to develop an automat
 
 ![Copy of Untitled (6)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ec2c58c0-ea53-408d-bb5e-21f7f61fd9cc)
 
+## Imaging Analysis
 
+The acquisition of image data involved several steps, including pre-processing, illumination correction, and automated segmentation. Through these processes, we were able to successfully reconstruct over 400,000 microglia cells from a dataset comprising more than 200 images.
+
+### Image Pre-processing
+
+In our study, we utilized Fiji software for the preprocessing of images, following the workflow depicted in Figure below, The initial step involved adjusting the brightness and contrast of the images using the "AUTO" mode in Fiji. This automated feature calculates the minimum and maximum intensity values in the image and scales the pixel values accordingly, resulting in a balanced distribution of pixel intensities across the image.
+
+Next, we applied the rolling ball method with a radius of 50 pixels to subtract the image background. This technique effectively removes the background, enhancing the clarity of the image for further analysis. By placing a ball of the chosen radius over each pixel and calculating the average intensity within the ball, we obtained a background intensity map, which was subtracted from the original image.
+
+To enhance image contrast, we employed the saturation pixel method, which sets a small percentage (1%) of the brightest and darkest pixels in the image to pure white and black, respectively [97]. This further improved the visibility of image features.
+
+The workflow steps are visually represented in Appendix Figure 1. In rare cases where the background quality was particularly poor, manual pixel subtraction was performed as needed.
