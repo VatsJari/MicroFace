@@ -570,7 +570,55 @@ Note: Make sure to provide the required data and color information (`company_col
 
 ### Hierarchical clustering analysis for comparision of cell populations closer
 
+The code creates an object called H_clust, imports specific columns from the dataframe, filters and modifies the data, scales the columns, performs hierarchical clustering, and plots the resulting dendrogram.
 
-1. First list item
-   - First nested list item
-     - Second nested list item
+```
+#### CREATE A NEW OBJECT CALLED H_clust ####
+
+# Create a new object called H_clust
+H_clust <- list()
+
+### IMPORT THE DATAFRAME TO THE LIST ###
+
+# Import the necessary columns from the reordered dataframe into the H_clust list
+H_clust$df_clust <- import$df_all_reordered[, colnames(import$df_all_reordered)[c(31, 32, 25, 35:82)]]
+
+# Filter the dataframe to include only rows where Bin_Number_New is less than or equal to 16
+H_clust$df_clust <- filter(H_clust$df_clust, Bin_Number_New <= 16)
+
+# Remove the 42nd column from the dataframe
+H_clust$df_clust <- H_clust$df_clust[, -42]
+
+
+#### SCALE THE COLUMNS ####
+
+# Scale the columns in the dataframe using the scale function
+H_clust$scale <- scale(H_clust$df_clust[, 4:50])
+
+# Create a new dataframe by combining the first three columns of df_clust with the scaled columns
+H_clust$scaled_df <- cbind(H_clust$df_clust[, 1:3], H_clust$scale)
+
+
+#### HIERARCHICAL CLUSTERING ####
+
+# Perform hierarchical clustering on the transposed scaled dataframe
+H_clust$cluster_cols <- hclust(dist(t(H_clust$scaled_df[, 4:50])))
+
+
+#### PLOT THE UNSORTED DENDROGRAM ####
+
+# Plot the unsorted dendrogram
+plot(H_clust$cluster_cols, main = "Unsorted Dendrogram", xlab = "", sub = "")
+
+```
+
+1. Create a new object called `H_clust`.
+2. Import the necessary columns from the `import$df_all_reordered` dataframe into the `H_clust` object.
+3. Filter the dataframe to include only rows where `Bin_Number_New` is less than or equal to 16.
+4. Remove the 42nd column from the dataframe.
+5. Scale the columns in the dataframe using the `scale` function to standardize the values.
+6. Create a new dataframe by combining the first three columns of `df_clust` with the scaled columns.
+7. Perform hierarchical clustering on the transposed scaled dataframe to create a hierarchical clustering object.
+8. Plot the unsorted dendrogram, representing the hierarchical clustering results.
+
+
