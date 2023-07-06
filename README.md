@@ -254,92 +254,10 @@ This code snippet performs the following actions:
 
 ***
 
-### Visualization of microglia cell distribution around the injury location 
-
-The code provided generates a count plot to visualize the number of cells in relation to the bin number for all conditions.
-
-```
-# create a new object for this part of the result
-count <- list()
-
-# import the datasheet from import to count object. then perform counting of cells using group_by function
-count$df_counts <- import$df_all %>% 
-  group_by(ImageNumber_cell, Condition_cell, Bin_Number_New) %>% 
-  summarize(num_cells = n())
-
-# create two separate columns for time_weeks and electrode thickness
-count$colmn_count <- paste('Electrode_Thickness',1:2)
-count$df_counts <- tidyr::separate(
-  data = count$df_counts,
-  col = Condition_cell,
-  sep = "_",
-  into = count$colmn_count,
-  remove = FALSE)
-
-names(count$df_counts)[names(count$df_counts) == 'Electrode_Thickness 2'] <- 'Time_weeks'
-names(count$df_counts)[names(count$df_counts) == 'Electrode_Thickness 1'] <- 'Electrode_Thickness'
-
-# Remove rows where Bin_Number_New is 17
-count$df_counts <- filter(count$df_counts, Bin_Number_New != 17)
-
-# Calculate radial distance and normalized area
-count$df_counts$radial_dist <- 139 * count$df_counts$Bin_Number_New
-count$df_counts$norm_area <- (pi * (count$df_counts$radial_dist)^2) - (pi * (count$df_counts$radial_dist-139)^2)
-
-# Create the boxplot
-count$plot <- ggplot(count$df_counts, aes(x = Bin_Number_New, y = count$df_counts$num_cells / 2*sqrt((pi / count$df_counts$norm_area)), group = Bin_Number_New, fill = Time_weeks)) +
-  geom_boxplot() +
-  facet_grid(~Time_weeks) +
-  ggtitle("Number of Cells per Bin") +
-  scale_fill_manual(values=company_colors) +
-  stat_summary(fun.y=median, geom="point", size=2, color="white") +
-  xlab("Bin Number") + ylab("Number of Cells normalized to the area") +
-  theme_bw() +
-  ggtitle("") +
-  labs(fill = "Time (Weeks)") +
-  theme(
-    plot.title = element_text(size=24, hjust = 0.5, face="bold"),
-    axis.title.x = element_text(size=22, face="bold"),
-    axis.title.y = element_text(size=22, face="bold"),
-    axis.text.x = element_text(size = 17, face="bold"),
-    axis.text.y  = element_text(size = 17, face="bold"),
-    legend.text = element_text(size = 16,  face="bold"),
-    legend.title = element_text(size = 18,  face="bold"),
-    legend.key.size = unit(1.5, "lines"),
-    legend.position = "bottom",
-    strip.text = element_text(size = 18, face = "bold"))
-
-# Print the plot
-print(count$plot)
-
-```
-
-1. Creates a new object called `count` to store the results.
-2. Imports the `df_all` dataframe from the `import` object to the `count` object.
-3. Counts the number of cells by grouping the dataframe based on `ImageNumber_cell`, `Condition_cell`, and `Bin_Number_New`.
-4. Creates separate columns for `Time_weeks` and `Electrode_Thickness`.
-5. Renames specific columns in the dataframe.
-6. Filters out rows where `Bin_Number_New` is equal to 17.
-7. Calculates the `radial_dist` and `norm_area` columns based on the bin number.
-8. Creates the count plot using `ggplot`.
-9. Adds a boxplot with facets based on `Time_weeks`.
-10. Sets the title, axis labels, and theme for the plot.
-11. Prints the plot.
-
-Note: Make sure to provide the required data and color information (`company_colors`) for the plot to work correctly.
-
-**Output:**
-
-![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/9eb4a29a-9e77-451a-970f-25f8ed7dd06e)
-
-
-***
-
-### 
 
 
 ```
-##### CALCULATE THE DISTANCE OF EACH CELL FROM THE MID POINT (IN THIS CASE IT IS 2764, 2196) AND CLASIFY THE CELLS ACCORDING TO THE DISTANCE FROM THE CENTER INTO 20 BINS #####
+##### CALCULATE THE DISTANCE OF EACH CELL FROM THE INJURY MID POINT AND CLASIFY THE CELLS ACCORDING TO THE DISTANCE FROM THE CENTER INTO 20 BINS #####
 
 # Calculate the distance from the midpoint using the Euclidean distance formula
 import$df_all$radial_dist <- sqrt((import$df_all$Center_X_soma - import$df_all$Injury_x)^2 + (import$df_all$Center_Y_soma - import$df_all$Injury_y)^2)
@@ -566,6 +484,90 @@ write.csv(import$df_all_reordered, "D:/Brain Injury project/4 Datasheet/df_all_r
 20. **Writing the Data to a CSV File:**
     - The code writes the reordered dataframe (`df_all_reordered`) to a CSV file named "df_all_reordered.csv" located at "D:/Brain Injury project/4 Datasheet/".
    
+***
+
+### Visualization of microglia cell distribution around the injury location 
+
+The code provided generates a count plot to visualize the number of cells in relation to the bin number for all conditions.
+
+```
+# create a new object for this part of the result
+count <- list()
+
+# import the datasheet from import to count object. then perform counting of cells using group_by function
+count$df_counts <- import$df_all %>% 
+  group_by(ImageNumber_cell, Condition_cell, Bin_Number_New) %>% 
+  summarize(num_cells = n())
+
+# create two separate columns for time_weeks and electrode thickness
+count$colmn_count <- paste('Electrode_Thickness',1:2)
+count$df_counts <- tidyr::separate(
+  data = count$df_counts,
+  col = Condition_cell,
+  sep = "_",
+  into = count$colmn_count,
+  remove = FALSE)
+
+names(count$df_counts)[names(count$df_counts) == 'Electrode_Thickness 2'] <- 'Time_weeks'
+names(count$df_counts)[names(count$df_counts) == 'Electrode_Thickness 1'] <- 'Electrode_Thickness'
+
+# Remove rows where Bin_Number_New is 17
+count$df_counts <- filter(count$df_counts, Bin_Number_New != 17)
+
+# Calculate radial distance and normalized area
+count$df_counts$radial_dist <- 139 * count$df_counts$Bin_Number_New
+count$df_counts$norm_area <- (pi * (count$df_counts$radial_dist)^2) - (pi * (count$df_counts$radial_dist-139)^2)
+
+# Create the boxplot
+count$plot <- ggplot(count$df_counts, aes(x = Bin_Number_New, y = count$df_counts$num_cells / 2*sqrt((pi / count$df_counts$norm_area)), group = Bin_Number_New, fill = Time_weeks)) +
+  geom_boxplot() +
+  facet_grid(~Time_weeks) +
+  ggtitle("Number of Cells per Bin") +
+  scale_fill_manual(values=company_colors) +
+  stat_summary(fun.y=median, geom="point", size=2, color="white") +
+  xlab("Bin Number") + ylab("Number of Cells normalized to the area") +
+  theme_bw() +
+  ggtitle("") +
+  labs(fill = "Time (Weeks)") +
+  theme(
+    plot.title = element_text(size=24, hjust = 0.5, face="bold"),
+    axis.title.x = element_text(size=22, face="bold"),
+    axis.title.y = element_text(size=22, face="bold"),
+    axis.text.x = element_text(size = 17, face="bold"),
+    axis.text.y  = element_text(size = 17, face="bold"),
+    legend.text = element_text(size = 16,  face="bold"),
+    legend.title = element_text(size = 18,  face="bold"),
+    legend.key.size = unit(1.5, "lines"),
+    legend.position = "bottom",
+    strip.text = element_text(size = 18, face = "bold"))
+
+# Print the plot
+print(count$plot)
+
+```
+
+1. Creates a new object called `count` to store the results.
+2. Imports the `df_all` dataframe from the `import` object to the `count` object.
+3. Counts the number of cells by grouping the dataframe based on `ImageNumber_cell`, `Condition_cell`, and `Bin_Number_New`.
+4. Creates separate columns for `Time_weeks` and `Electrode_Thickness`.
+5. Renames specific columns in the dataframe.
+6. Filters out rows where `Bin_Number_New` is equal to 17.
+7. Calculates the `radial_dist` and `norm_area` columns based on the bin number.
+8. Creates the count plot using `ggplot`.
+9. Adds a boxplot with facets based on `Time_weeks`.
+10. Sets the title, axis labels, and theme for the plot.
+11. Prints the plot.
+
+Note: Make sure to provide the required data and color information (`company_colors`) for the plot to work correctly.
+
+**Output:**
+
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/9eb4a29a-9e77-451a-970f-25f8ed7dd06e)
+
+
+***
+
+### 
 
 
 
