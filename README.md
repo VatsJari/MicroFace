@@ -254,7 +254,7 @@ This code snippet performs the following actions:
 
 ***
 
-
+### Defining new function and parameters from the existing parameters in the dataframe
 
 ```
 ##### CALCULATE THE DISTANCE OF EACH CELL FROM THE INJURY MID POINT AND CLASIFY THE CELLS ACCORDING TO THE DISTANCE FROM THE CENTER INTO 20 BINS #####
@@ -563,11 +563,6 @@ Note: Make sure to provide the required data and color information (`company_col
 **Output:**
 
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/9eb4a29a-9e77-451a-970f-25f8ed7dd06e)
-
-
-***
-
-### 
 
 
 
