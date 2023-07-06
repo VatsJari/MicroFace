@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" href="{{ '/styles.css' | relative_url }}">
+</head>
+<body>
+    <div class="sidebar">
+        <ul>
+            {{ content }}
+        </ul>
+    </div>
+
+    <div class="content">
+        {{ content }}
+    </div>
+</body>
+</html>
