@@ -1,39 +1,30 @@
-body {
-    display: flex;
-    flex-direction: row;
-}
-
+/* Define styles for the sidebar */
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200px;
-    height: 100vh;
-    background-color: #f1f1f1;
-    padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px; /* Adjust the width as needed */
+  height: 100%;
+  background-color: #f1f1f1;
+  padding: 20px;
 }
 
-.content {
-    margin-left: 220px;
-    padding: 20px;
-}
-
+/* Style the sidebar ul and li elements */
 .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 .sidebar ul li {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .sidebar ul li a {
-    color: #000;
-    text-decoration: none;
+  text-decoration: none;
+  color: #333;
 }
 
-.sidebar ul li a:hover {
-    color: #333;
-    font-weight: bold;
+.sidebar ul li ul {
+  margin-left: 20px;
 }
