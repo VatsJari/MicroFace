@@ -663,6 +663,7 @@ plot(H_clust$gobal_dendrogram)
 4. The `theme` function is used to customize the appearance of the dendrogram plot, setting various text sizes, font styles, legend position, and strip text.
 5. Plot the global dendrogram using the `plot` function, displaying the customized dendrogram visualization.
 
+**Output:**
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/57e53a17-1647-426d-b14a-e429f1ea18ee)
 
 
