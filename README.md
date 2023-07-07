@@ -771,3 +771,107 @@ The code calculates the importance of each parameter in each week, selects the t
 **Output:**
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/fe15ff0d-5f95-4983-978f-22da8d1d36fb)
 
+
+### Tanglegrams
+
+
+The provided code performs a comparison of dendrograms for different timepoints in order to analyze the clustering patterns of microglia morphology close to and far away from the injury site during the acute phase. The code focuses on the timepoint "02" and divides the dataset into two subsets: "Close to Injury site - Acute" and "Far away from Injury site - Acute." Each subset is further processed by removing irrelevant columns and scaling the data. Hierarchical clustering is then applied to both subsets to generate dendrograms representing the clustering structure. The dendrograms are visualized separately, and a tanglegram is created to compare the branching patterns between the two dendrograms. The tanglegram allows for the identification of common branches and differences in clustering between microglia close to and far away from the injury site. Finally, the code evaluates the equality of the tanglegram values. This analysis provides insights into the clustering relationships and differences in microglia morphology based on their proximity to the injury site during the acute phase.
+
+```R
+##### comparision dendrogram ####
+
+
+dend_comp <- list()
+
+
+##### DENDOGRAMS FOR DIFFERENT TIMEPOINTS #####
+
+#00 = 3,11
+#01 = 3, 13
+# 02 = 3, 9
+#08 = 4, 9
+#18 - 3,12
+
+# Create an empty list to store the results
+dend_comp$df_dend <- import$df_all_reordered_raw
+
+# Select the data for timepoint "02"
+dend_comp$df_0_dend <- dend_comp$df_dend[dend_comp$df_dend$Time_weeks == "02", ]
+
+# Select the data close to the injury site
+dend_comp$df_0_dend_close <- dend_comp$df_0_dend[which(dend_comp$df_0_dend$Bin_Number_New <= 3), ] 
+dend_comp$df_0_dend_close <-  dend_comp$df_0_dend_close[,-1:-4]
+dend_comp$df_0_dend_close <-  dend_comp$df_0_dend_close[,-38]
+
+# Scale the data for clustering
+dend_comp$df_0_dend_close_scale <- scale(dend_comp$df_0_dend_close) 
+
+# Select the data far away from the injury site
+dend_comp$df_0_dend_far <- dend_comp$df_0_dend[which(dend_comp$df_0_dend$Bin_Number_New >= 9), ]
+dend_comp$df_0_dend_far <- dend_comp$df_0_dend_far[,-1:-4]
+dend_comp$df_0_dend_far <- dend_comp$df_0_dend_far[,-38]
+
+# Scale the data for clustering
+dend_comp$df_0_dend_far_scale <- scale(dend_comp$df_0_dend_far)
+
+# Generate dendrogram for the data close to the injury site
+dend_comp$scale_cluster_cols <- hclust(dist(t(dend_comp$df_0_dend_close_scale)))
+
+# Define a function to sort the dendrogram
+dend_comp$sort_hclust <- function(...) as.hclust(dendsort(as.dendrogram(...)))
+
+# Sort the dendrogram
+dend_comp$scale_cluster_cols <- dend_comp$sort_hclust(dend_comp$scale_cluster_cols)
+
+# Plot the dendrogram for the data close to the injury site
+plot(dend_comp$scale_cluster_cols, main = "Close to Injury site - Acute", xlab = "", sub = "")
+
+# Generate dendrogram for the data far away from the injury site
+dend_comp$scale_cluster_cols_far <- hclust(dist(t(dend_comp$df_0_dend_far_scale)))
+
+# Sort the dendrogram
+dend_comp$scale_cluster_cols_far <- dend_comp$sort_hclust(dend_comp$scale_cluster_cols_far)
+
+# Plot the dendrogram for the data far away from the injury site
+plot(dend_comp$scale_cluster_cols_far, main = "Far away from Injury site - Acute", xlab = "", sub = "")
+
+# Generate a tanglegram to compare the two dendrograms
+tanglegram(dend_comp$scale_cluster_cols, dend_comp$scale_cluster_cols_far,
+           highlight_distinct_edges = FALSE, # Turn off dashed lines
+           common_subtrees_color_branches = TRUE # Color common branches
+) %>%
+  untangle(method = "step1side") %>%
+  entanglement()
+
+# Check the equality of the tanglegram values
+dend_comp$tanglegram_values <- all.equal(dend_comp$scale_cluster_cols, dend_comp$scale_cluster_cols_far)
+
+# View the tanglegram values
+view(dend_comp$tanglegram_values)
+```
+
+1. Create an empty list to store the results.
+2. Select the raw data for dendrogram analysis.
+3. Select the data for the timepoint "02".
+4. Select the data close to the injury site by filtering based on the "Bin_Number_New" column.
+5. Remove the unnecessary columns from the data close to the injury site.
+6. Scale the data close to the injury site for clustering.
+7. Select the data far away from the injury site by filtering based on the "Bin_Number_New" column.
+8. Remove the unnecessary columns from the data far away from the injury site.
+9. Scale the data far away from the injury site for clustering.
+10. Generate a dendrogram for the data close to the injury site using hierarchical clustering.
+11. Define a function to sort the dendrogram.
+12. Sort the dendrogram for the data close to the injury site.
+13. Plot the dendrogram for the data close to the injury site.
+14. Generate a dendrogram for the data far away from the injury site using hierarchical clustering.
+15. Sort the dendrogram for the data far away from the injury site.
+16. Plot the dendrogram for the data far away from the injury site.
+17. Generate a tanglegram to compare the two dendrograms, highlighting common branches.
+18. Perform untangling of the tanglegram using the "step1side" method.
+19. Measure the entanglement of the untangled tanglegram.
+20. Check the equality of the tanglegram values.
+21. View the tanglegram values for further analysis and comparison.
+
+**Output:**
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/42ef3926-603f-4a57-8297-f531d6b9dd67)
+
