@@ -885,3 +885,216 @@ view(dend_comp$tanglegram_values)
 **Output:**
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/42ef3926-603f-4a57-8297-f531d6b9dd67)
 
+
+***
+### Single-cell morphometry analysis
+
+This code performs a Principal Component Analysis (PCA) on the clustered cells. It extracts the relevant columns for the analysis and determines the optimal number of clusters using PCA and eigenvalues. The code then performs k-means clustering based on the optimal number of clusters and assigns cluster labels to the data. PCA is performed on the data, and the top contributing variables in PC1 and PC2 are visualized. The code also plots the top contributing variables for each component and generates a scatter plot of PC1 and PC2, highlighting the clusters using different colors. The resulting plot provides insights into the major morpho-families of microglia based on their PCA scores.
+
+Certainly! Here are the comments added to the code:
+
+```R
+PCA <- list()
+
+##### PCA PLOT FOR CLUSTERED CELLS ALL #####
+
+# Create a new list object to store the PCA results
+PCA$df_pca <- import$df_all_reordered[, colnames(import$df_all_reordered)[c(35:82, 5, 6, 25, 29:32)]]
+
+# Perform PCA on the selected columns for the optimal number of clusters determination
+PCA$check_number_of_cluster <- prcomp(PCA$df_pca[,1:48], scale = TRUE)
+df <- scale(PCA$df_pca[,1:48])
+
+# Visualize the eigenvalues to determine the optimal number of clusters
+fviz_eig(PCA$check_number_of_cluster, addlabels = TRUE, xlab = "Number of Cluster (K)", ylim = c(0, 50)) +
+  theme_bw() +
+  theme(...)
+
+# Perform k-means clustering based on the optimal number of clusters (4 in this case)
+PCA$kmeans_all <- kmeans(PCA$df_pca[,1:48], centers = 4, nstart = 25)
+PCA$kmeans_all
+
+# Assign the cluster labels to the data
+PCA$df_pca$Cluster <- PCA$kmeans_all$cluster
+
+## PCA starts here
+
+# Create a recipe for PCA analysis with specified roles for variables
+PCA$pca_rec <- recipe(~., data = PCA$df_pca) %>%
+  update_role( Time_weeks, Bin_Number_New,  Center_X_cell, Center_Y_cell, 
+               Cluster, Condition_cell, ImageNumber_cell, Electrode_Thickness, new_role = "id") %>%
+  step_normalize(all_predictors()) %>%
+  step_pca(all_predictors())
+
+# Prepare the data for PCA analysis
+PCA$pca_prep <- prep(PCA$pca_rec)
+PCA$pca_prep
+
+# Tidy the PCA results for visualization
+PCA$tidied_pca <- tidy(PCA$pca_prep, 2)
+
+# Plot the top contributing variables in PC1 and PC2
+PCA$tidied_pca %>%
+  filter(component %in% paste0("PC", 1:2)) %>%
+  mutate(component = fct_inorder(component)) %>%
+  ggplot(aes(value, terms, fill = terms)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~component, nrow = 1) +
+  labs(y = NULL)
+
+
+```
+Certainly! Here's a revised point-by-point explanation, highlighting code objects:
+
+1. Create an empty list object called `PCA` to store the PCA results.
+
+2. Select specific columns from the `import$df_all_reordered` dataset to be used for PCA. These columns correspond to variables related to the morphology of microglia cells and additional variables of interest.
+
+3. Perform PCA on the selected columns to determine the optimal number of clusters. This is done by applying the `prcomp` function to the data, with the `scale` parameter set to `TRUE` to standardize the variables.
+
+4. Scale the selected columns using the `scale` function and store the result in the variable `df`. Scaling standardizes the variables to have zero mean and unit variance.
+
+5. Visualize the eigenvalues of the principal components to assess the optimal number of clusters. The `fviz_eig` function is used to create a plot of the eigenvalues, with labels added and the x-axis labeled as "Number of Cluster (K)". The y-axis limit is set between 0 and 50. The appearance of the plot is customized using the `theme` function.
+
+6. Perform k-means clustering on the selected columns using the optimal number of clusters determined from the PCA analysis. In this case, k-means clustering is performed with 4 clusters, and the `nstart` parameter is set to 25 to increase the chances of finding the optimal clustering.
+
+7. Print the resulting k-means clustering object to the console. This provides information about the clusters, including cluster centers, sizes, and within-cluster sum of squares.
+
+8. Assign the cluster labels obtained from k-means clustering to the `Cluster` column of the `PCA$df_pca` dataset.
+
+9. Create a recipe for PCA analysis using the `recipe` function from the `recipes` package. The formula `~.` specifies that all variables in the dataset should be used for PCA.
+
+10. Update the roles of specific variables in the recipe. The variables `Time_weeks`, `Bin_Number_New`, `Center_X_cell`, `Center_Y_cell`, `Cluster`, `Condition_cell`, `ImageNumber_cell`, and `Electrode_Thickness` are assigned the role of "id", which means they will not be used in the PCA calculation.
+
+11. Normalize all predictor variables in the recipe using the `step_normalize` function. This standardizes the predictor variables to have zero mean and unit variance.
+
+12. Apply the PCA transformation to the normalized predictors using the `step_pca` function.
+
+13. Prepare the data for PCA analysis by applying the recipe using the `prep` function. This applies the specified transformations to the data.
+
+14. Store the preprocessed data in the variable `PCA$pca_prep`.
+
+15. Tidy the PCA results obtained from the preprocessed data using the `tidy` function. The `2` parameter indicates that only the first two components should be included in the tidy result.
+
+16. Filter the tidied PCA results to include only the components "PC1" and "PC2".
+
+17. Reorder the levels of the `component` variable to ensure proper ordering in the visualization.
+
+18. Create a bar plot to visualize the top contributing variables in PC1 and PC2. This is done using the `ggplot` function and the `geom_col` function to create the bar plot.
+
+
+**Output:**
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ed18e04d-b0dd-43a6-a46a-95ec61506d81)
+
+
+```
+
+# Select the top contributing variables for each component and plot them
+# Filter the tidied PCA data to include only components PC1 and PC2
+PCA$tidied_pca %>%
+  filter(component %in% paste0("PC", 1:2)) %>%
+  
+  # Group the filtered data by component
+  group_by(component) %>%
+  
+  # Select the top 15 variables with highest absolute values of value within each component
+  top_n(15, abs(value)) %>%
+  
+  # Ungroup the data
+  ungroup() %>%
+  
+  # Reorder terms within each component based on absolute values of value
+  mutate(terms = reorder_within(terms, abs(value), component)) %>%
+  
+  # Create a bar plot
+  ggplot(aes(abs(value), terms, fill = value > 0)) +
+  
+  # Add columns using geom_col
+  geom_col() +
+  
+  # Facet the plot by component
+  facet_wrap(~component, scales = "free_y") +
+  
+  # Reorder y-axis based on absolute values of value
+  scale_y_reordered() +
+  
+  # Set x-axis label and remove y-axis label
+  labs(x = "Absolute value of contribution", y = NULL, fill = "Positive?")
+
+
+
+# Visualize the PCA results with scatter plot of PC1 and PC2
+
+# Extract the PCA coordinates from pca_prep using the juice function
+juice(PCA$pca_prep) %>%
+  
+  # Create a scatter plot
+  ggplot(aes(PC1, PC2, label = NA)) +
+  
+  # Add points to the plot with color mapped to Cluster variable
+  geom_point(aes(color = as.factor(Cluster)), alpha = 0.7, size = 2) +
+  
+  # Add text labels to the plot with inward alignment and IBMPlexSans font
+  geom_text(check_overlap = TRUE, hjust = "inward", family = "IBMPlexSans") +
+  
+  # Remove the color legend
+  labs(color = NULL) +
+  
+  # Apply a viridis color scale to the points
+  scale_color_viridis_d() +
+  
+  # Set the theme to classic
+  theme_classic() +
+  
+  # Set the plot title and customize visual elements using the theme function
+  ggtitle("Major morpho-families of microglia") +
+  theme(
+    plot.title = element_text(size=24, hjust = 0.5, face="bold"),
+    axis.title.x = element_text(size=22, face="bold"),
+    axis.title.y = element_text(size=22, face="bold"),
+    axis.text.x = element_text(size = 17, face="bold"),
+    axis.text.y  = element_text(size = 17, face="bold"),
+    legend.text = element_text(size = 16,  face="bold"),
+    legend.title = element_text(size = 18,  face="bold"),
+    legend.key.size = unit(1.5, "lines"),
+    legend.position = "bottom",
+    strip.text = element_text(size = 18, face = "bold"))
+
+```
+
+1. Filter the `PCA$tidied_pca` data to include only the components "PC1" and "PC2".
+
+2. Group the filtered data by the `component` variable.
+
+3. Select the top 15 variables with the highest absolute values of `value` within each component.
+
+4. Ungroup the data to remove the grouping.
+
+5. Mutate the `terms` variable to reorder it within each component based on the absolute values of `value`. This ensures proper ordering in the visualization.
+
+6. Create a bar plot using the `ggplot` function. The absolute values of `value` are mapped to the x-axis (`abs(value)`), the `terms` are mapped to the y-axis, and the fill color is determined by whether the value is greater than 0 (`value > 0`).
+
+7. Facet the plot by the `component` variable, resulting in separate plots for "PC1" and "PC2". The `scales` parameter is set to "free_y" to allow independent y-axis scales for each facet.
+
+8. Reorder the y-axis based on the absolute values of `value` using the `scale_y_reordered` function.
+
+9. Set the x-axis label as "Absolute value of contribution", the y-axis label as NULL, and the fill legend label as "Positive?".
+
+10. Create a scatter plot using the `juice` function to extract the PCA coordinates from `PCA$pca_prep`. The `PC1` values are mapped to the x-axis (`PC1`), and the `PC2` values are mapped to the y-axis (`PC2`). The `label` parameter is set to NA to hide the point labels.
+
+11. Add points to the scatter plot using the `geom_point` function. The `color` aesthetic is mapped to the `Cluster` variable, which is converted to a factor. The `alpha` parameter sets the transparency of the points, and the `size` parameter controls their size.
+
+12. Add text labels to the scatter plot using the `geom_text` function. The `check_overlap` parameter is set to TRUE to avoid overlapping labels. The `hjust` parameter is set to "inward" to align the labels towards the center of the plot. The `family` parameter specifies the font family of the text.
+
+13. Remove the color legend from the plot by setting `color = NULL` in the `labs` function.
+
+14. Apply a viridis color palette to the points using the `scale_color_viridis_d` function.
+
+15. Set the theme of the plot to "classic" using the `theme_classic` function.
+
+16. Set the plot title as "Major morpho-families of microglia" and customize the appearance of the plot title, axis labels, axis text, legend text, and other visual elements using the `theme` function.
+
+
+**Output:**
+![major morpho](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/228b21b2-ac09-43da-9107-7a788a70d4d4)
+
