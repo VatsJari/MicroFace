@@ -25,7 +25,9 @@
          <li><a href="#Hierarchical-clustering-analysis-for-comparision-of-cell-populations">Hierarchical clustering analysis for comparision of cell populations</a></li>
          <li><a href="#Assess-the-dominant-parameters'-variability-over-time">Assess the dominant parameters' variability over time</a></li>
          <li><a href="#Introducing-Tanglegrams-Exploring-the-Relationships-between-Dendrograms-in-Microglia-Analysis">Introducing Tanglegrams: Exploring the Relationships between Dendrograms in Microglia Analysis</a></li>
-         <li><a href="#Visualization-of-microglia-cell-distribution-around-the-injury-location">Visualization of microglia cell distribution around the injury location</a></li>****
+         <li><a href="#Single-cell-morphometry-analysis">Single-cell morphometry analysis</a></li>
+        <li><a href="#Single-cell-morphometry-analysis">Single-cell morphometry analysis</a></li>
+        <li><a href="#Single-cell-morphometry-analysis">Single-cell morphometry analysis</a></li>
       </ul>
     </li>
   </ul>
