@@ -1098,3 +1098,14 @@ juice(PCA$pca_prep) %>%
 **Output:**
 ![major morpho](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/228b21b2-ac09-43da-9107-7a788a70d4d4)
 
+Using the same approach as described above, we further subdivided the four main morpho types into sub-types, resulting in a total of 14 distinct classes of morphology. PCA analysis was employed to perform the sub-clustering, following a similar code methodology. The sub-clusters are shown below. 
+
+**Output:**
+![Untitled (19)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/25004d2d-44aa-4e78-97c8-cad0a4c33137)
+
+
+
+***
+
+###
+
