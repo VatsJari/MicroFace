@@ -23,11 +23,11 @@
         <li><a href="#defining-new-function-and-parameters-from-the-existing-parameters-in-the-dataframe">Defining new function and parameters from the existing parameters in the dataframe</a></li>
          <li><a href="#Visualization-of-microglia-cell-distribution-around-the-injury-location">Visualization of microglia cell distribution around the injury location</a></li>
          <li><a href="#Hierarchical-clustering-analysis-for-comparision-of-cell-populations">Hierarchical clustering analysis for comparision of cell populations</a></li>
-         <li><a href="#Assess-the-dominant-parameters'-variability-over-time">Assess the dominant parameters' variability over time</a></li>
+         <li><a href="#Assess-the-dominant-parameters-variability-over-time">Assess the dominant parameters variability over time</a></li>
          <li><a href="#Introducing-Tanglegrams-Exploring-the-Relationships-between-Dendrograms-in-Microglia-Analysis">Introducing Tanglegrams: Exploring the Relationships between Dendrograms in Microglia Analysis</a></li>
          <li><a href="#Single-cell-morphometry-analysis">Single-cell morphometry analysis</a></li>
         <li><a href="#Definign-the-morphology-of-each-morpho-types">Definign the morphology of each morpho-types</a></li>
-        <li><a href="# Spatial-distribution-of-morpho-types"> Spatial distribution of morpho types</a></li>
+        <li><a href="#Spatial-distribution-of-morpho-types">Spatial distribution of morpho types</a></li>
       </ul>
     </li>
   </ul>
