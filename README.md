@@ -26,8 +26,8 @@
          <li><a href="#Assess-the-dominant-parameters'-variability-over-time">Assess the dominant parameters' variability over time</a></li>
          <li><a href="#Introducing-Tanglegrams-Exploring-the-Relationships-between-Dendrograms-in-Microglia-Analysis">Introducing Tanglegrams: Exploring the Relationships between Dendrograms in Microglia Analysis</a></li>
          <li><a href="#Single-cell-morphometry-analysis">Single-cell morphometry analysis</a></li>
-        <li><a href="#Single-cell-morphometry-analysis">Single-cell morphometry analysis</a></li>
-        <li><a href="#Single-cell-morphometry-analysis">Single-cell morphometry analysis</a></li>
+        <li><a href="#Definign-the-morphology-of-each-morpho-types">Definign the morphology of each morpho-types</a></li>
+        <li><a href="# Spatial-distribution-of-morpho-types "> Spatial distribution of morpho types </a></li>
       </ul>
     </li>
   </ul>
