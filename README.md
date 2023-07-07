@@ -622,14 +622,31 @@ plot(H_clust$cluster_cols, main = "Unsorted Dendrogram", xlab = "", sub = "")
 8. Plot the unsorted dendrogram, representing the hierarchical clustering results.
 
 **Output:**
-![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/be497339-f5c0-4db3-8d09-dbc4652317d7)
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/11876429-3119-4c3f-ad18-7cbd03a43362)
 
 
 
+By flipping the branches, we can sort the dendrogram in a way that the most similar columns will be clustered on the left side of the plot. Conversely, the columns that are more distant from each other will be clustered on the right side of the plot.
 
+```R
+H_clust$sort_hclust <- function(...) as.hclust(dendsort(as.dendrogram(...)))
 
+# Apply the `H_clust$sort_hclust` function to sort the `H_clust$cluster_cols` dendrogram object
+H_clust$cluster_cols <- H_clust$sort_hclust(H_clust$cluster_cols)
 
+# Plot the sorted dendrogram
+plot(H_clust$cluster_cols, main = "Sorted Dendrogram", xlab = "", sub = "")
+```
 
+1. Define a new function `sort_hclust` within the `H_clust` object. This function takes a dendrogram object (`...`) as input and applies the `as.dendrogram` function to convert the object to a dendrogram format. The `dendsort` function is then used to sort the dendrogram. Finally, the sorted dendrogram is converted back to the `hclust` format using `as.hclust`.
+
+2. Apply the `H_clust$sort_hclust` function to the `H_clust$cluster_cols` dendrogram object, sorting the dendrogram based on the specified criteria.
+
+3. Update the `H_clust$cluster_cols` object with the sorted dendrogram.
+
+4. Plot the sorted dendrogram using the `plot` function, with the title "Sorted Dendrogram", no x-axis label (empty string), and no subtitle. This visualizes the sorted hierarchical clustering results.
+
+The code adds a sorting step to the dendrogram using the `dendsort` function to rearrange the hierarchical clustering results, and then plots the sorted dendrogram for visualization.
 
 
 **Output:**
