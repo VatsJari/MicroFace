@@ -20,7 +20,7 @@
       <ul>
         <li><a href="#require-packages">Require Packages</a></li>
         <li><a href="#import-the-data-sheets-into-r-studio-environment">Import the data sheets into R-studio environment</a></li>
-        <li><a href="#import-the-data-sheets-into-r-studio-environment">Import the data sheets into R-studio environment</a></li>
+        <li><a href="defining-new-function-and-parameters-from-the-existing-parameters-in-the-dataframe">Defining new function and parameters from the existing parameters in the dataframe</a></li>
       </ul>
     </li>
   </ul>
