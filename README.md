@@ -621,4 +621,49 @@ plot(H_clust$cluster_cols, main = "Unsorted Dendrogram", xlab = "", sub = "")
 7. Perform hierarchical clustering on the transposed scaled dataframe to create a hierarchical clustering object.
 8. Plot the unsorted dendrogram, representing the hierarchical clustering results.
 
+```
+H_clust$gobal_dendrogram <- fviz_dend(
+  H_clust$cluster_cols,
+  cex = 0.8,
+  k = 4,
+  rect = TRUE,
+  k_colors = "jco",
+  rect_border = "jco",
+  rect_fill = TRUE,
+  horiz = TRUE
+) +
+  theme(
+    plot.title = element_text(size = 24, hjust = 0.5, face = "bold"),
+    axis.title.x = element_text(size = 22, face = "bold"),
+    axis.title.y = element_text(size = 22, face = "bold"),
+    axis.text.x = element_text(size = 17, face = "bold"),
+    axis.text.y = element_text(size = 17, face = "bold"),
+    legend.text = element_text(size = 16, face = "bold"),
+    legend.title = element_text(size = 18, face = "bold"),
+    legend.key.size = unit(1.5, "lines"),
+    legend.position = "bottom",
+    strip.text = element_text(size = 18, face = "bold")
+  )
+
+# Plot the global dendrogram
+plot(H_clust$gobal_dendrogram)
+
+```
+
+1. Create a new object `H_clust$gobal_dendrogram` that represents the visualization of the dendrogram using the `fviz_dend` function from the `factoextra` package.
+2. `H_clust$cluster_cols` is passed as the dendrogram object to be visualized.
+3. Additional arguments are provided to customize the appearance of the dendrogram, including:
+   - `cex = 0.8`: Controls the size of labels in the dendrogram.
+   - `k = 4`: Specifies the number of colors to be used for dendrogram branches.
+   - `rect = TRUE`: Displays rectangular boxes around the dendrogram branches.
+   - `k_colors = "jco"`: Uses the "jco" color palette for dendrogram branches.
+   - `rect_border = "jco"`: Sets the border color of the rectangular boxes.
+   - `rect_fill = TRUE`: Fills the rectangular boxes with colors.
+   - `horiz = TRUE`: Displays the dendrogram in a horizontal orientation.
+4. The `theme` function is used to customize the appearance of the dendrogram plot, setting various text sizes, font styles, legend position, and strip text.
+5. Plot the global dendrogram using the `plot` function, displaying the customized dendrogram visualization.
+
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/57e53a17-1647-426d-b14a-e429f1ea18ee)
+
+
 
