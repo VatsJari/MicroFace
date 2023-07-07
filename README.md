@@ -21,11 +21,13 @@
         <li><a href="#require-packages">Require Packages</a></li>
         <li><a href="#import-the-data-sheets-into-r-studio-environment">Import the data sheets into R-studio environment</a></li>
         <li><a href="#defining-new-function-and-parameters-from-the-existing-parameters-in-the-dataframe">Defining new function and parameters from the existing parameters in the dataframe</a></li>
+         <li><a href="#Visualization-of-microglia cell distribution around the injury location">Visualization of microglia cell distribution around the injury location</a></li>
       </ul>
     </li>
   </ul>
 </div>
 
+Visualization of microglia cell distribution around the injury location
 
 ![image](https://user-images.githubusercontent.com/85255019/226131956-84d1a69f-b6c7-4e44-b58d-b28e923d4456.png)
 
