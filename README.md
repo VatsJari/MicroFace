@@ -747,8 +747,6 @@ H_clust$top20_parameter <- ggplot(H_clust$f_top20, aes(x = Importance, y = Param
 plot(H_clust$top20_parameter)
 ```
 
-Explanation:
-
 1. Calculate the average importance of each column in each condition using the `aggregate` function. The importance values are aggregated by the "Time_weeks" column in the `H_clust$scaled_df` data frame.
 
 2. Melt the aggregated data frame `H_clust$importance` to convert it to long format using the `melt` function from the `reshape2` package. This creates a new data frame `H_clust$importance_melted` with "Weeks", "Parameter", and "Importance" columns.
@@ -770,4 +768,6 @@ Explanation:
 The code calculates the importance of each parameter in each week, selects the top 20 parameters, and plots them in a grouped bar chart to visualize their relative importance.
 
 
+**Output:**
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/fe15ff0d-5f95-4983-978f-22da8d1d36fb)
 
