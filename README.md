@@ -841,28 +841,46 @@ dend_comp$tanglegram_values <- all.equal(dend_comp$scale_cluster_cols, dend_comp
 # View the tanglegram values
 view(dend_comp$tanglegram_values)
 ```
+1. The code initializes an empty list called `dend_comp` to store the results of the dendrogram comparison.
 
-1. Create an empty list to store the results.
-2. Select the raw data for dendrogram analysis.
-3. Select the data for the timepoint "02".
-4. Select the data close to the injury site by filtering based on the "Bin_Number_New" column.
-5. Remove the unnecessary columns from the data close to the injury site.
-6. Scale the data close to the injury site for clustering.
-7. Select the data far away from the injury site by filtering based on the "Bin_Number_New" column.
-8. Remove the unnecessary columns from the data far away from the injury site.
-9. Scale the data far away from the injury site for clustering.
-10. Generate a dendrogram for the data close to the injury site using hierarchical clustering.
-11. Define a function to sort the dendrogram.
-12. Sort the dendrogram for the data close to the injury site.
-13. Plot the dendrogram for the data close to the injury site.
-14. Generate a dendrogram for the data far away from the injury site using hierarchical clustering.
-15. Sort the dendrogram for the data far away from the injury site.
-16. Plot the dendrogram for the data far away from the injury site.
-17. Generate a tanglegram to compare the two dendrograms, highlighting common branches.
-18. Perform untangling of the tanglegram using the "step1side" method.
-19. Measure the entanglement of the untangled tanglegram.
-20. Check the equality of the tanglegram values.
-21. View the tanglegram values for further analysis and comparison.
+2. The section titled "DENDOGRAMS FOR DIFFERENT TIMEPOINTS" indicates specific time points and their corresponding bin numbers for further analysis.
+
+3. The dendrogram data from `import$df_all_reordered_raw` is assigned to `dend_comp$df_dend`.
+
+4. The data for a specific time point (timepoint "02") is extracted and stored in `dend_comp$df_0_dend`.
+
+5. The data close to the injury site (bin numbers <= 3) is selected and assigned to `dend_comp$df_0_dend_close`. Irrelevant columns are removed from the dataframe.
+
+6. The selected data is scaled using the `scale()` function, resulting in `dend_comp$df_0_dend_close_scale`.
+
+7. Similarly, the data far away from the injury site (bin numbers >= 9) is selected and assigned to `dend_comp$df_0_dend_far`. Irrelevant columns are removed.
+
+8. The selected data is scaled using `scale()`, resulting in `dend_comp$df_0_dend_far_scale`.
+
+9. The dendrogram for the data close to the injury site is generated using `hclust()` and stored in `dend_comp$scale_cluster_cols`.
+
+10. The `sort_hclust()` function is defined to sort the dendrogram based on its structure.
+
+11. The dendrogram is sorted using `dend_comp$sort_hclust()` and reassigned to `dend_comp$scale_cluster_cols`.
+
+12. The sorted dendrogram for the data close to the injury site is plotted using `plot()`. The title is set as "Close to Injury site - Acute", and the x-axis label is left empty.
+
+13. Similarly, the dendrogram for the data far away from the injury site is generated using `hclust()` and stored in `dend_comp$scale_cluster_cols_far`.
+
+14. The dendrogram is sorted using `dend_comp$sort_hclust()` and reassigned to `dend_comp$scale_cluster_cols_far`.
+
+15. The sorted dendrogram for the data far away from the injury site is plotted using `plot()`. The title is set as "Far away from Injury site - Acute", and the x-axis label is left empty.
+
+16. A tanglegram is created using `tanglegram()` to compare the two dendrograms. The `highlight_distinct_edges` parameter is set to `FALSE` to turn off dashed lines, and `common_subtrees_color_branches` is set to `TRUE` to color common branches.
+
+17. The resulting tanglegram is untangled using `untangle()` with the "step1side" method.
+
+18. The untangled tanglegram is displayed using `entanglement()`.
+
+19. The equality of the tanglegram values is checked using `all.equal()`, and the result is stored in `dend_comp$tanglegram_values`.
+
+20. The tanglegram values are viewed using `view()` to analyze any differences between the two dendrograms.
+
 
 **Output:**
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/42ef3926-603f-4a57-8297-f531d6b9dd67)
