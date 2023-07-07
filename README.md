@@ -68,6 +68,13 @@ In our study, we utilized Fiji software for the preprocessing of images, followi
 
 ### Illumination Correction 
 
+The images we obtained had very high light intensity at the injury site, which could result in poor segmentation. To address this issue, we utilized the illumination correction module in CellProfiler. This module helped us remove the uneven background illumination from the microscope images, resulting in normalized and equalized cell intensities. This correction made it much easier to identify and accurately segment individual cells.
+
+Illumination correction is a process used to fix lighting issues in images. Imagine taking a photo where some parts are too bright and others are too dark. Illumination correction helps balance the lighting across the image, so it looks more natural and easier to see. It adjusts the brightness and contrast to make sure all the details are clear and visible. 
+
+![Untitled (9)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/e1ec9c99-e89d-4c95-bbc5-d9059826d522)
+
+
 *******
 ### The Skeleton Pipeline
 
