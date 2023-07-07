@@ -20,7 +20,7 @@
       <ul>
         <li><a href="#require-packages">Require Packages</a></li>
         <li><a href="#import-the-data-sheets-into-r-studio-environment">Import the data sheets into R-studio environment</a></li>
-        <li><a href="#export-the-datasheet-as">Export the datasheet as...</a></li>
+        <li><a href="#import-the-data-sheets-into-r-studio-environment">Import the data sheets into R-studio environment</a></li>
       </ul>
     </li>
   </ul>
@@ -419,7 +419,6 @@ write.csv(import$df_all_reordered, "D:/Brain Injury project/4 Datasheet/df_all_r
 
 
 1. **Calculating the Distance from the Midpoint:**
-   - The code calculates the distance of each cell from the midpoint `(2764, 2196)` using the Euclidean distance formula.
    - It uses the coordinates `Center_X_soma` and `Center_Y_soma` from the dataframe `import$df_all` to represent the cell's position.
    - The coordinates `Injury_x` and `Injury_y` represent the midpoint.
    - The result is stored in the `radial_dist` column of the dataframe.
