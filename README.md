@@ -26,7 +26,7 @@ The spatiotemporal distribution analysis revealed an increase in microglia cell 
 In summary, our automated tool for classifying microglial morphological phenotypes provides a time-efficient and objective method for characterizing microglial changes in the TBI rat model and potentially in human brain samples. Furthermore, this tool is not limited to microglia and can be applied to various cell types.
 
 
-
+*******
 
 ## Experimental Design 
 
@@ -34,9 +34,14 @@ In this project, a rat model of neuroinflammation was used to develop an automat
 
 ![Copy of Untitled (6)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ec2c58c0-ea53-408d-bb5e-21f7f61fd9cc)
 
+
+*******
 ## Imaging Analysis
 
 The acquisition of image data involved several steps, including pre-processing, illumination correction, and automated segmentation. Through these processes, we were able to successfully reconstruct over 400,000 microglia cells from a dataset comprising more than 200 images.
+
+
+*******
 
 ### Image Pre-processing
 
@@ -44,20 +49,25 @@ In our study, we utilized Fiji software for the preprocessing of images, followi
 
 ![Untitled (17)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ff531a23-6052-4ece-b216-12beff3a4824)
 
+
+*******
+
 ### Illumination Correction 
+
+*******
 ### The Skeleton Pipeline
 
 ![Untitled (18)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/25a8ebab-e8dc-40ce-80dd-fb363d7b3bb3)
 
 
-***
+*******
 
 ## Data Analysis
 
 After preprocessing and segmenting the images, we generated a datasheet that contained information on individual microglia and their corresponding parameters, such as shape and size, using CellProfiler software. This datasheet was then imported into R Studio, where we conducted statistical analysis. 
 
 
-***
+*******
 
 
 ###  Require Packages
@@ -125,7 +135,7 @@ By running this code, it ensures that all the necessary packages are installed a
 
 
 
-***
+*******
 
 
 ### Import the data sheets into R-studio environment
@@ -252,7 +262,7 @@ This code snippet performs the following actions:
 (Note: Please ensure that the folder paths and file paths provided in the code are accurate and accessible according to your file locations)
 
 
-***
+*******
 
 ### Defining new function and parameters from the existing parameters in the dataframe
 
@@ -484,7 +494,7 @@ write.csv(import$df_all_reordered, "D:/Brain Injury project/4 Datasheet/df_all_r
 20. **Writing the Data to a CSV File:**
     - The code writes the reordered dataframe (`df_all_reordered`) to a CSV file named "df_all_reordered.csv" located at "D:/Brain Injury project/4 Datasheet/".
    
-***
+*******
 
 ### Visualization of microglia cell distribution around the injury location 
 
@@ -566,7 +576,7 @@ Note: Make sure to provide the required data and color information (`company_col
 
 
 
-***
+*******
 
 ### Hierarchical clustering analysis for comparision of cell populations closer
 
@@ -700,7 +710,8 @@ plot(H_clust$gobal_dendrogram)
 
 
 
-***
+*******
+
 ### Assess the dominant parameters' variability over time
 
 The presented code performs an analysis of the importance of various parameters in different weeks using a dataset related to microglia morphology. The code begins by calculating the importance of each column in each condition and then visualizes the top 20 parameters with the highest importance. The dataset is initially aggregated to obtain the average importance values, which are then transformed into long format for further analysis. The top 20 parameters are selected based on their importance values for each week, and a grouped bar plot is generated to depict their relative importance across the weeks.
@@ -772,7 +783,8 @@ The code calculates the importance of each parameter in each week, selects the t
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/fe15ff0d-5f95-4983-978f-22da8d1d36fb)
 
 
-***
+*******
+
 ### Introducing Tanglegrams: Exploring the Relationships between Dendrograms in Microglia Analysis
 
 
@@ -886,7 +898,8 @@ view(dend_comp$tanglegram_values)
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/42ef3926-603f-4a57-8297-f531d6b9dd67)
 
 
-***
+*******
+
 ### Single-cell morphometry analysis
 
 This code performs a Principal Component Analysis (PCA) on the clustered cells. It extracts the relevant columns for the analysis and determines the optimal number of clusters using PCA and eigenvalues. The code then performs k-means clustering based on the optimal number of clusters and assigns cluster labels to the data. PCA is performed on the data, and the top contributing variables in PC1 and PC2 are visualized. The code also plots the top contributing variables for each component and generates a scatter plot of PC1 and PC2, highlighting the clusters using different colors. The resulting plot provides insights into the major morpho-families of microglia based on their PCA scores.
@@ -1105,7 +1118,7 @@ Using the same approach as described above, we further subdivided the four main 
 
 
 
-***
+*******
 
 
 
@@ -1129,7 +1142,7 @@ The morphology represented by each morpho type from the dataset was interpreted 
 Each of these morpho types represents a distinct phenotype of microglia, reflecting their specialized functions and roles in the central nervous system.
 
 
-***
+*******
 
 ### Spatial distribution of morpho types 
 
@@ -1186,7 +1199,7 @@ Morpho$df_clust_all$Morpho <- case_when(
 5. A new column called `Morpho` is added to `df_clust_all` based on specific conditions using the `case_when()` function. The values in the `Morpho` column are assigned based on the combinations of values in the `Cluster` and `Cluster_1` columns.
 
 
-***
+*******
 
 The code segment focuses on generating and visualizing a morpho-type frequency heatmap. It begins by extracting relevant columns from a data frame and filtering the data based on a specific condition. The filtered data is then transformed into a table and scaled. Next, the code defines a function to determine breaks for the heatmap colors based on quantiles. The heatmap is plotted using the scaled data, with customized color mapping and breaks. The code also performs hierarchical clustering on the columns and rows of the heatmap data, allowing for sorting and creating dendrograms. Finally, another heatmap is generated with sorted columns and rows, using a different color scheme and clustering. The resulting heatmaps provide insights into the frequency and patterns of morpho-types.
 
