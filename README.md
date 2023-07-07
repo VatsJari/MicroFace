@@ -700,3 +700,74 @@ plot(H_clust$gobal_dendrogram)
 
 
 
+***
+### Assess the dominant parameters' variability over time
+
+The presented code performs an analysis of the importance of various parameters in different weeks using a dataset related to microglia morphology. The code begins by calculating the importance of each column in each condition and then visualizes the top 20 parameters with the highest importance. The dataset is initially aggregated to obtain the average importance values, which are then transformed into long format for further analysis. The top 20 parameters are selected based on their importance values for each week, and a grouped bar plot is generated to depict their relative importance across the weeks.
+
+```R
+# Calculate the importance of each column in each condition
+H_clust$importance <- aggregate(H_clust$scaled_df[, 4:50], by = list(Weeks = H_clust$scaled_df$Time_weeks), FUN = mean)
+
+# Melt the data frame to long format
+H_clust$importance_melted <- melt(H_clust$importance, id.vars = c("Weeks"), variable.name = "Parameter", value.name = "Importance")
+
+# Group the melted data frame by weeks
+H_clust$df_grouped <- H_clust$importance_melted %>% group_by(Weeks)
+
+# Select the top 20 parameters with the highest importance for each week
+H_clust$f_top20 <- H_clust$df_grouped %>% 
+  slice_max(order_by = Importance, n = 20) %>%
+  ungroup()
+
+# Create a grouped bar plot for the top 20 parameters
+H_clust$top20_parameter <- ggplot(H_clust$f_top20, aes(x = Importance, y = Parameter, fill = factor(Weeks))) + 
+  geom_col() +
+  facet_grid(~Weeks) +
+  scale_fill_manual(values = company_colors) +
+  labs(title = "Top 20 Parameters") +
+  theme_bw() +
+  labs(fill = "Time (Weeks)") +
+  theme(
+    plot.title = element_text(size = 24, hjust = 0.5, face = "bold"),
+    axis.title.x = element_text(size = 22, face = "bold"),
+    axis.title.y = element_text(size = 22, face = "bold"),
+    axis.text.x = element_text(size = 17, face = "bold"),
+    axis.text.y = element_text(size = 17, face = "bold"),
+    legend.text = element_text(size = 16, face = "bold"),
+    legend.title = element_text(size = 18, face = "bold"),
+    legend.key.size = unit(1.5, "lines"),
+    legend.position = "bottom",
+    strip.text = element_text(size = 18, face = "bold")
+  ) +
+  xlab("Variation Value") +
+  ylab("Parameter")
+
+# Plot the top 20 parameters
+plot(H_clust$top20_parameter)
+```
+
+Explanation:
+
+1. Calculate the average importance of each column in each condition using the `aggregate` function. The importance values are aggregated by the "Time_weeks" column in the `H_clust$scaled_df` data frame.
+
+2. Melt the aggregated data frame `H_clust$importance` to convert it to long format using the `melt` function from the `reshape2` package. This creates a new data frame `H_clust$importance_melted` with "Weeks", "Parameter", and "Importance" columns.
+
+3. Group the melted data frame `H_clust$importance_melted` by weeks using the `group_by` function from the `dplyr` package.
+
+4. Select the top 20 parameters with the highest importance for each week using the `slice_max` function from the `dplyr` package. The parameters are ordered by importance, and the top 20 rows are retained. The resulting data frame is stored in `H_clust$f_top20`.
+
+5. Ungroup the grouped data frame `H_clust$f_top20` using the `ungroup` function from the `dplyr` package.
+
+6. Create a grouped bar plot `H_clust$top20_parameter` using `ggplot2` to visualize the top 20 parameters. The importance values are represented on the x-axis, the parameter names on the y-axis, and the bars are filled with colors based on the weeks. The plot is facetted by weeks using `facet_grid`.
+
+7. Customize the appearance of the plot using various theme settings, such as title size, axis titles, legend appearance, and strip text.
+
+8. Label the x-axis as "Variation Value" and the y-axis as "Parameter" using `xlab` and `ylab`.
+
+9. Plot the top 20 parameters using the `plot` function to display the grouped bar plot.
+
+The code calculates the importance of each parameter in each week, selects the top 20 parameters, and plots them in a grouped bar chart to visualize their relative importance.
+
+
+
