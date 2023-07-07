@@ -161,7 +161,6 @@ lapply(packages$my_packages, require, character.only = TRUE)
 6. Installs packages from GitHub repositories using `devtools::install_github()` and `remotes::install_github()`.
 7. Loads all the required packages using `lapply()` and `require()`.
 
-By running this code, it ensures that all the necessary packages are installed and loads them into the R environment, allowing subsequent code to make use of their functions.
 
 
 
