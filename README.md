@@ -22,13 +22,17 @@
         <li><a href="#import-the-data-sheets-into-r-studio-environment">Import the data sheets into R-studio environment</a></li>
         <li><a href="#defining-new-function-and-parameters-from-the-existing-parameters-in-the-dataframe">Defining new function and parameters from the existing parameters in the dataframe</a></li>
          <li><a href="#Visualization-of-microglia-cell-distribution-around-the-injury-location">Visualization of microglia cell distribution around the injury location</a></li>
+         <li><a href="#Hierarchical-clustering-analysis-for-comparision-of-cell-populations">Hierarchical clustering analysis for comparision of cell populations</a></li>
+         <li><a href="#Assess-the-dominant-parameters'-variability-over-time">Assess the dominant parameters' variability over time</a></li>
+         <li><a href="#Visualization-of-microglia-cell-distribution-around-the-injury-location">Visualization of microglia cell distribution around the injury location</a></li>
+         <li><a href="#Visualization-of-microglia-cell-distribution-around-the-injury-location">Visualization of microglia cell distribution around the injury location</a></li>****
       </ul>
     </li>
   </ul>
 </div>
 
-Visualization of microglia cell distribution around the injury location
 
+Hierarchical clustering analysis for comparision of cell populations closer
 ![image](https://user-images.githubusercontent.com/85255019/226131956-84d1a69f-b6c7-4e44-b58d-b28e923d4456.png)
 
 ## Abstract
@@ -600,7 +604,7 @@ Note: Make sure to provide the required data and color information (`company_col
 
 *******
 
-### Hierarchical clustering analysis for comparision of cell populations closer
+### Hierarchical clustering analysis for comparision of cell populations
 
 The code creates an object called H_clust, imports specific columns from the dataframe, filters and modifies the data, scales the columns, performs hierarchical clustering, and plots the resulting dendrogram.
 
