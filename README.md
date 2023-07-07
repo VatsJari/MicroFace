@@ -1129,3 +1129,155 @@ The morphology represented by each morpho type from the dataset was interpreted 
 Each of these morpho types represents a distinct phenotype of microglia, reflecting their specialized functions and roles in the central nervous system.
 
 
+***
+
+### Spatial distribution of morpho types 
+
+This code snippet is part of a larger analysis that involves clustering and categorizing data. The code focuses on creating a list called `Morpho` and populating it with different dataframes derived from a previous step involving principal component analysis (PCA). 
+
+
+```R
+Morpho <- list()
+
+# Assign the Clust1, Clust2, Clust3, Clust4 dataframes from PCA to Morpho list
+Morpho$df_clust1 <- PCA$Clust1
+Morpho$df_clust2 <- PCA$Clust2
+Morpho$df_clust3 <- PCA$Clust3
+Morpho$df_clust4 <- PCA$Clust4
+
+# Rename Cluster_2 in df_clust2 as Cluster_1
+names(Morpho$df_clust2)[names(Morpho$df_clust2) == 'Cluster_2'] <- 'Cluster_1'
+
+# Rename Cluster_3 in df_clust3 as Cluster_1
+names(Morpho$df_clust3)[names(Morpho$df_clust3) == 'Cluster_3'] <- 'Cluster_1'
+
+# Rename Cluster_4 in df_clust4 as Cluster_1
+names(Morpho$df_clust4)[names(Morpho$df_clust4) == 'Cluster_4'] <- 'Cluster_1'
+
+# Merge the four cluster dataframes into a single dataframe
+Morpho$df_clust_all <- bind_rows(Morpho$df_clust1, Morpho$df_clust2, Morpho$df_clust3, Morpho$df_clust4)
+
+# Create a new column 'Morpho' based on conditions using case_when
+Morpho$df_clust_all$Morpho <- case_when(
+  Morpho$df_clust_all$Cluster == 1 & Morpho$df_clust_all$Cluster_1 == 1 ~ "M01",
+  Morpho$df_clust_all$Cluster == 1 & Morpho$df_clust_all$Cluster_1 == 2 ~ "M02",
+  Morpho$df_clust_all$Cluster == 1 & Morpho$df_clust_all$Cluster_1 == 3 ~ "M03",
+  Morpho$df_clust_all$Cluster == 1 & Morpho$df_clust_all$Cluster_1 == 4 ~ "M04",
+  Morpho$df_clust_all$Cluster == 2 & Morpho$df_clust_all$Cluster_1 == 1 ~ "M05",
+  Morpho$df_clust_all$Cluster == 2 & Morpho$df_clust_all$Cluster_1 == 2 ~ "M06",
+  Morpho$df_clust_all$Cluster == 2 & Morpho$df_clust_all$Cluster_1 == 3 ~ "M07",
+  Morpho$df_clust_all$Cluster == 3 & Morpho$df_clust_all$Cluster_1 == 1 ~ "M08",
+  Morpho$df_clust_all$Cluster == 3 & Morpho$df_clust_all$Cluster_1 == 2 ~ "M09",
+  Morpho$df_clust_all$Cluster == 3 & Morpho$df_clust_all$Cluster_1 == 3 ~ "M10",
+  Morpho$df_clust_all$Cluster == 3 & Morpho$df_clust_all$Cluster_1 == 4 ~ "M11",
+  Morpho$df_clust_all$Cluster == 4 & Morpho$df_clust_all$Cluster_1 == 1 ~ "M12",
+  Morpho$df_clust_all$Cluster == 4 & Morpho$df_clust_all$Cluster_1 == 2 ~ "M13",
+  Morpho$df_clust_all$Cluster == 4 & Morpho$df_clust_all$Cluster_1 == 3 ~ "M14"
+)
+```
+1. The `Morpho` list is initialized using `Morpho <- list()`.
+
+2. Four dataframes named `df_clust1`, `df_clust2`, `df_clust3`, and `df_clust4` are assigned from the `PCA` object to the corresponding elements of the `Morpho` list.
+
+3. Some column names in `df_clust2`, `df_clust3`, and `df_clust4` are renamed to match the column names in `df_clust1`. This is done to ensure consistency in the column names across the dataframes.
+
+4. The four dataframes (`df_clust1`, `df_clust2`, `df_clust3`, and `df_clust4`) are merged together into a single dataframe called `df_clust_all` using the `bind_rows()` function.
+
+5. A new column called `Morpho` is added to `df_clust_all` based on specific conditions using the `case_when()` function. The values in the `Morpho` column are assigned based on the combinations of values in the `Cluster` and `Cluster_1` columns.
+
+
+***
+
+The code segment focuses on generating and visualizing a morpho-type frequency heatmap. It begins by extracting relevant columns from a data frame and filtering the data based on a specific condition. The filtered data is then transformed into a table and scaled. Next, the code defines a function to determine breaks for the heatmap colors based on quantiles. The heatmap is plotted using the scaled data, with customized color mapping and breaks. The code also performs hierarchical clustering on the columns and rows of the heatmap data, allowing for sorting and creating dendrograms. Finally, another heatmap is generated with sorted columns and rows, using a different color scheme and clustering. The resulting heatmaps provide insights into the frequency and patterns of morpho-types.
+
+```R
+Morpho <- list()
+
+# Assign the desired columns from df_clust_all to df_Morpho_count dataframe
+Morpho$df_Morpho_count <- Morpho$df_clust_all[, c(51, 58)]
+
+# Filter df_Morpho_count to include only rows where Bin_Number_New is less than or equal to 16
+Morpho$df_Morpho_count <- Morpho$df_Morpho_count[which(Morpho$df_Morpho_count$Bin_Number_New <= 16), ]
+
+# Create a table from df_Morpho_count
+Morpho$df_Morpho_count.t <- table(Morpho$df_Morpho_count)
+
+# Scale the table data using the scale function
+Morpho$df_Morpho_count_scale.t <- scale(Morpho$df_Morpho_count.t)
+
+# Define a function quantile_breaks to calculate breaks based on quantiles
+Morpho$quantile_breaks <- function(xs, n = 16) {
+  breaks <- quantile(xs, probs = seq(0, 1, length.out = n))
+  breaks[!duplicated(breaks)]
+}
+
+# Apply the quantile_breaks function to df_Morpho_count_scale.t and store the breaks in mat_breaks
+Morpho$mat_breaks <- Morpho$quantile_breaks(Morpho$df_Morpho_count_scale.t, n = 16)
+
+
+## SORTING
+
+# Perform hierarchical clustering on the transpose of df_Morpho_count_scale.t and store the result in morpho_hm_col
+Morpho$morpho_hm_col <- hclust(dist(t(Morpho$df_Morpho_count_scale.t)))
+
+# Plot the unsorted dendrogram
+plot(Morpho$morpho_hm_col, main = "Unsorted Dendrogram", xlab = "", sub = "")
+
+# Define a sorting function, sort_hclust, that applies dendrogram sorting
+Morpho$sort_hclust <- function(...) as.hclust(dendsort(as.dendrogram(...)))
+
+# Sort morpho_hm_col using the sort_hclust function
+Morpho$morpho_hm_col <- Morpho$sort_hclust(Morpho$morpho_hm_col)
+
+# Plot the sorted dendrogram
+plot(morpho_hm_col, main = "Sorted Dendrogram", xlab = "", sub = "")
+
+# Perform hierarchical clustering on df_Morpho_count_scale.t and store the result in morpho_hm_row
+Morpho$morpho_hm_row <- Morpho$sort_hclust(hclust(dist(Morpho$df_Morpho_count_scale.t)))
+
+# Create a heatmap with sorted rows and columns
+pheatmap(Morpho$df_Morpho_count_scale.t,
+         color = viridis(length(Morpho$mat_breaks) - 2),
+         breaks = Morpho$mat_breaks,
+         cutree_cols = 1,
+         cutree_rows = 4,
+         cluster_cols = Morpho$morpho_hm_col,
+         cluster_rows = FALSE,
+         fontsize = 14,
+         Rowv = FALSE,
+         main = "Morpho-type Frequency Heatmap Overview")
+```
+
+1. `Morpho$df_Morpho_count` is created as a subset of `Morpho$df_clust_all`, containing only columns 51 and 58.
+
+2. Rows in `Morpho$df_Morpho_count` where the value in the column `Bin_Number_New` is less than or equal to 16 are retained using the `which()` function.
+
+3. The table of counts `Morpho$df_Morpho_count.t` is created based on `Morpho$df_Morpho_count`.
+
+4. The count matrix `Morpho$df_Morpho_count.t` is scaled using the `scale()` function and assigned to `Morpho$df_Morpho_count_scale.t`.
+
+5. The `Morpho$quantile_breaks()` function is defined to calculate breaks for the heatmap based on quantiles.
+
+6. `Morpho$mat_breaks` is created by applying `Morpho$quantile_breaks()` to `Morpho$df_Morpho_count_scale.t`, specifying the number of breaks as 16.
+
+7. The heatmap is generated using `pheatmap()` with the scaled count matrix `Morpho$df_Morpho_count_scale.t`. It uses the color palette "inferno" in reverse order (`rev(inferno(length(Morpho$mat_breaks) - 1))`), applies the breaks defined in `Morpho$mat_breaks`, and sets the number of clusters for both columns and rows (`cutree_cols = 4, cutree_rows = 5`).
+
+8. The unsorted dendrogram for column clustering (`morpho_hm_col`) is plotted using `plot()`.
+
+9. The `Morpho$sort_hclust()` function is defined, which performs hierarchical clustering and sorting of a dendrogram.
+
+10. The `Morpho$morpho_hm_col` dendrogram is sorted using `Morpho$sort_hclust()`.
+
+11. The sorted dendrogram for column clustering (`morpho_hm_col`) is plotted.
+
+12. The dendrogram for row clustering (`morpho_hm_row`) is generated by sorting the dendrogram of the distance matrix of `Morpho$df_Morpho_count_scale.t`.
+
+13. Another heatmap is created using `pheatmap()`, similar to the previous one, but with additional options. The column clustering is specified as `Morpho$morpho_hm_col`, row clustering is disabled (`cluster_rows = FALSE`), and the color palette is set to "viridis" with a length equal to the number of breaks minus 2 (`viridis(length(Morpho$mat_breaks)-2)`).
+
+The code performs clustering, sorting, and visualization steps to generate a frequency heatmap of morpho-types. It helps in identifying patterns and relationships among different morpho-types based on their frequencies.
+
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/b6e247f4-0c61-4cf9-8c53-081023c0f16f)
+
+
+
+
