@@ -1107,5 +1107,25 @@ Using the same approach as described above, we further subdivided the four main 
 
 ***
 
-###
+
+
+### Definign the morphology of each morpho-types 
+
+A thorough analysis was conducted by determining the X and Y coordinates of multiple cells from each of the 14 morpho types. Subsequently, these coordinates were utilized to trace back to the original images in order to assess the actual morphology of the selected cells. A meticulous examination of 15-20 cells from each morpho type was performed, and it was observed that the classification of morphology effectively portrayed the unique characteristics associated with each respective morpho type, as illustrated in the diagram below. Through this validation process, the reliability and accuracy of our morphological classification were substantiated.
+
+
+![Untitled (20)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ed06552e-f123-42db-bc1b-51037b56493a)
+
+The morphology represented by each morpho type from the dataset was interpreted as follows:
+
+1. Ameboid: This morpho type exhibited a rounded and amoeba-like shape, typically associated with phagocytic activity and inflammation in damaged or diseased brain tissue.
+
+2. Highly Ramified: The highly ramified morpho type displayed an intricate and extensively branched structure, indicative of its involvement in synaptic pruning and neuroprotection in healthy brain tissue.
+
+3. Transition: The transition morpho type had an intermediate morphology, suggesting its ability to switch between ameboid and highly ramified states depending on the microenvironment. These cells may play a role in adaptive responses and transitioning between different functional states.
+
+4. Rod-like: The rod-like morpho type was characterized by an elongated shape, commonly found in white matter tracts. These cells are believed to be involved in myelin maintenance and provide structural support in the brain.
+
+Each of these morpho types represents a distinct phenotype of microglia, reflecting their specialized functions and roles in the central nervous system.
+
 
