@@ -621,6 +621,20 @@ plot(H_clust$cluster_cols, main = "Unsorted Dendrogram", xlab = "", sub = "")
 7. Perform hierarchical clustering on the transposed scaled dataframe to create a hierarchical clustering object.
 8. Plot the unsorted dendrogram, representing the hierarchical clustering results.
 
+**Output:**
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/be497339-f5c0-4db3-8d09-dbc4652317d7)
+
+
+
+
+
+
+
+
+
+**Output:**
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/8fe49a72-cabc-4742-9366-376568aeeb7f)
+
 ```
 H_clust$gobal_dendrogram <- fviz_dend(
   H_clust$cluster_cols,
