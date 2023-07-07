@@ -772,25 +772,17 @@ The code calculates the importance of each parameter in each week, selects the t
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/fe15ff0d-5f95-4983-978f-22da8d1d36fb)
 
 
-### Tanglegrams
+***
+### Introducing Tanglegrams: Exploring the Relationships between Dendrograms in Microglia Analysis
 
 
 The provided code performs a comparison of dendrograms for different timepoints in order to analyze the clustering patterns of microglia morphology close to and far away from the injury site during the acute phase. The code focuses on the timepoint "02" and divides the dataset into two subsets: "Close to Injury site - Acute" and "Far away from Injury site - Acute." Each subset is further processed by removing irrelevant columns and scaling the data. Hierarchical clustering is then applied to both subsets to generate dendrograms representing the clustering structure. The dendrograms are visualized separately, and a tanglegram is created to compare the branching patterns between the two dendrograms. The tanglegram allows for the identification of common branches and differences in clustering between microglia close to and far away from the injury site. Finally, the code evaluates the equality of the tanglegram values. This analysis provides insights into the clustering relationships and differences in microglia morphology based on their proximity to the injury site during the acute phase.
 
 ```R
-##### comparision dendrogram ####
 
 
+# Create a list called dend_comp
 dend_comp <- list()
-
-
-##### DENDOGRAMS FOR DIFFERENT TIMEPOINTS #####
-
-#00 = 3,11
-#01 = 3, 13
-# 02 = 3, 9
-#08 = 4, 9
-#18 - 3,12
 
 # Create an empty list to store the results
 dend_comp$df_dend <- import$df_all_reordered_raw
