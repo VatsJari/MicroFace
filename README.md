@@ -633,7 +633,8 @@ plot(H_clust$cluster_cols, main = "Unsorted Dendrogram", xlab = "", sub = "")
 
 
 **Output:**
-![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/8fe49a72-cabc-4742-9366-376568aeeb7f)
+![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/65e4fb71-73f5-4a83-97f9-d0d2aad6bc95)
+
 
 ```
 H_clust$gobal_dendrogram <- fviz_dend(
