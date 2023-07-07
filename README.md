@@ -64,7 +64,7 @@ After preprocessing and segmenting the images, we generated a datasheet that con
 
 By running this code, it ensures that all the necessary packages are installed and loads them into the R environment, allowing subsequent code to make use of their functions.
 
-```
+```R
 ##### CHECK FOR THE PACKAGES AND INSTALL IF NOT AVAILABLE #####
 
 # Create a list to store package information
@@ -130,7 +130,7 @@ By running this code, it ensures that all the necessary packages are installed a
 
 ### Import the data sheets into R-studio environment
 
-```
+```R
 import <- list()
 
 ##### COPY THE PATH OF FOLDER THAT CONTAINS ALL THE TEXT FILES #####
@@ -256,7 +256,7 @@ This code snippet performs the following actions:
 
 ### Defining new function and parameters from the existing parameters in the dataframe
 
-```
+```R
 ##### CALCULATE THE DISTANCE OF EACH CELL FROM THE INJURY MID POINT AND CLASIFY THE CELLS ACCORDING TO THE DISTANCE FROM THE CENTER INTO 20 BINS #####
 
 # Calculate the distance from the midpoint using the Euclidean distance formula
@@ -490,7 +490,7 @@ write.csv(import$df_all_reordered, "D:/Brain Injury project/4 Datasheet/df_all_r
 
 The code provided generates a count plot to visualize the number of cells in relation to the bin number for all conditions.
 
-```
+```R
 # create a new object for this part of the result
 count <- list()
 
@@ -572,7 +572,7 @@ Note: Make sure to provide the required data and color information (`company_col
 
 The code creates an object called H_clust, imports specific columns from the dataframe, filters and modifies the data, scales the columns, performs hierarchical clustering, and plots the resulting dendrogram.
 
-```
+```R
 #### CREATE A NEW OBJECT CALLED H_clust ####
 
 # Create a new object called H_clust
@@ -653,7 +653,7 @@ The code adds a sorting step to the dendrogram using the `dendsort` function to 
 ![image](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/65e4fb71-73f5-4a83-97f9-d0d2aad6bc95)
 
 
-```
+```R
 H_clust$gobal_dendrogram <- fviz_dend(
   H_clust$cluster_cols,
   cex = 0.8,
