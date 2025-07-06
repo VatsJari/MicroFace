@@ -1,6 +1,4 @@
 
-
-*******
 ## Imaging Analysis
 
 The acquisition of image data involved several steps, including pre-processing, illumination correction, and automated segmentation. Through these processes, we were able to successfully reconstruct over 400,000 microglia cells from a dataset comprising more than 200 images.
