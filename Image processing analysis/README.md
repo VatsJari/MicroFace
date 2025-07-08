@@ -57,7 +57,7 @@ Microscopy images often suffered from **overexposure at the injury site**, which
 
 > **Explanation:** Illumination correction works like applying a filter that evens out the brightness in a photo—making it easier to see and identify individual cells.
 
-A reference image for this process is noted as `Untitled (9)`.
+![Untitled (9)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/e1ec9c99-e89d-4c95-bbc5-d9059826d522)
 
 ---
 
@@ -70,6 +70,7 @@ Following illumination correction, we applied **automated segmentation** and **s
   - Produce skeletonized representations of cells for morphological analysis.
 
 Details of this pipeline are included in the `Skeleton_Pipeline.cppipe` and associated scripts within this folder.
+
 ![Untitled (18)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/25a8ebab-e8dc-40ce-80dd-fb363d7b3bb3)
 
 ---
@@ -103,6 +104,6 @@ Image Processing Analysis/
 
 
 
-![Untitled (9)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/e1ec9c99-e89d-4c95-bbc5-d9059826d522)
+
 
 
