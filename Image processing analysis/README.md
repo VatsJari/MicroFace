@@ -1,33 +1,108 @@
+# 📁 Image Processing Analysis
 
-## Imaging Analysis
+This folder contains the image processing pipelines used in the **MicroFace** project, aimed at analyzing and reconstructing microglia cells from high-resolution microscopy images. Our analysis leverages open-source image processing tools like **Fiji** and **CellProfiler** to perform essential pre-processing, illumination correction, and segmentation tasks.
 
-The acquisition of image data involved several steps, including pre-processing, illumination correction, and automated segmentation. Through these processes, we were able to successfully reconstruct over 400,000 microglia cells from a dataset comprising more than 200 images.
+---
 
+## 📌 Overview
 
-*******
+The image acquisition and processing workflow involved several critical steps:
 
-### Image Pre-processing
+- **Pre-processing** of raw microscopy images.
+- **Illumination correction** to normalize image brightness.
+- **Automated segmentation** to extract cellular structures.
 
-In our study, we utilized Fiji software for the preprocessing of images, following the workflow depicted in Figure below, The initial step involved adjusting the brightness and contrast of the images using the "AUTO" mode in Fiji. This automated feature calculates the minimum and maximum intensity values in the image and scales the pixel values accordingly, resulting in a balanced distribution of pixel intensities across the image. Next, we applied the rolling ball method with a radius of 50 pixels to subtract the image background. This technique effectively removes the background, enhancing the clarity of the image for further analysis. To enhance image contrast, we employed the saturation pixel method, which sets a small percentage (1%) of the brightest and darkest pixels in the image to pure white and black, respectively.
+Using this pipeline, we successfully reconstructed **over 400,000 microglia cells** from a dataset of **more than 200 images**, providing a robust basis for downstream biological analysis.
+
+---
+
+## 🧪 Tools Used
+
+- [**Fiji**](https://fiji.sc/) (ImageJ distribution)
+- [**CellProfiler**](https://cellprofiler.org/)
+
+---
+
+## 🖼️ 1. Image Pre-processing (Fiji)
+
+Pre-processing of microscopy images was performed in **Fiji**, following the steps below:
+
+### 🔧 Brightness and Contrast Adjustment
+
+- Used **"Auto" mode** to adjust brightness and contrast.
+- This mode automatically scales the pixel intensity range to ensure a balanced distribution.
+
+### 🧼 Background Subtraction
+
+- Applied the **Rolling Ball algorithm** with a **radius of 50 pixels**.
+- This method removes uneven background illumination and enhances image clarity.
+
+### 🎨 Contrast Enhancement
+
+- Employed the **saturation pixel method**:
+  - Adjusts the image contrast by clipping the top and bottom **1%** of pixel intensity values.
+  - This converts the darkest pixels to black and brightest to white, improving visual contrast.
 
 ![Untitled (17)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ff531a23-6052-4ece-b216-12beff3a4824)
 
 
-*******
+---
 
-### Illumination Correction 
+## 💡 2. Illumination Correction (CellProfiler)
 
-The images we obtained had very high light intensity at the injury site, which could result in poor segmentation. To address this issue, we utilized the illumination correction module in CellProfiler. This module helped us remove the uneven background illumination from the microscope images, resulting in normalized and equalized cell intensities. This correction made it much easier to identify and accurately segment individual cells.
+Microscopy images often suffered from **overexposure at the injury site**, which compromised segmentation accuracy. To correct this, we used the **Illumination Correction** module in **CellProfiler**:
 
-Illumination correction is a process used to fix lighting issues in images. Imagine taking a photo where some parts are too bright and others are too dark. Illumination correction helps balance the lighting across the image, so it looks more natural and easier to see. It adjusts the brightness and contrast to make sure all the details are clear and visible. 
+- Balances uneven lighting across the image.
+- Normalizes cell intensities, making downstream segmentation more accurate.
+
+> **Explanation:** Illumination correction works like applying a filter that evens out the brightness in a photo—making it easier to see and identify individual cells.
+
+A reference image for this process is noted as `Untitled (9)`.
+
+---
+
+## 🧬 3. Segmentation and Skeleton Pipeline
+
+Following illumination correction, we applied **automated segmentation** and **skeletonization** techniques to reconstruct cellular morphology:
+
+- The **Skeleton Pipeline** is designed to:
+  - Identify and trace individual microglia structures.
+  - Produce skeletonized representations of cells for morphological analysis.
+
+Details of this pipeline are included in the `Skeleton_Pipeline.cppipe` and associated scripts within this folder.
+![Untitled (18)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/25a8ebab-e8dc-40ce-80dd-fb363d7b3bb3)
+
+---
+
+## 📁 Folder Structure
+
+Image Processing Analysis/
+├── Fiji_Preprocessing_Steps.md
+├── CellProfiler_Illumination_Correction.cppipe
+├── Skeleton_Pipeline.cppipe
+├── Example_Images/
+│ ├── Before_Preprocessing/
+│ └── After_Preprocessing/
+├── Figures/
+│ ├── pre_processing_workflow.png
+│ └── illumination_correction_example.png
+└── README.md
+
+
+---
+
+## 📌 How to Use
+
+1. Open images in **Fiji** and follow the steps in `Fiji_Preprocessing_Steps.md`.
+2. Run `CellProfiler_Illumination_Correction.cppipe` on the pre-processed images.
+3. Use the `Skeleton_Pipeline.cppipe` to segment and extract skeletal features of microglia.
+4. Output files will include:
+   - Processed and corrected images.
+   - Cell masks and skeleton data.
+
+
+
 
 ![Untitled (9)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/e1ec9c99-e89d-4c95-bbc5-d9059826d522)
 
 
-*******
-### The Skeleton Pipeline
-
-![Untitled (18)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/25a8ebab-e8dc-40ce-80dd-fb363d7b3bb3)
-
-
-*******
