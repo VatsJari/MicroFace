@@ -73,22 +73,6 @@ Details of this pipeline are included in the `Skeleton_Pipeline.cppipe` and asso
 
 ![Untitled (18)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/25a8ebab-e8dc-40ce-80dd-fb363d7b3bb3)
 
----
-
-## 📁 Folder Structure
-
-Image Processing Analysis/
-├── Fiji_Preprocessing_Steps.md
-├── CellProfiler_Illumination_Correction.cppipe
-├── Skeleton_Pipeline.cppipe
-├── Example_Images/
-│ ├── Before_Preprocessing/
-│ └── After_Preprocessing/
-├── Figures/
-│ ├── pre_processing_workflow.png
-│ └── illumination_correction_example.png
-└── README.md
-
 
 ---
 
