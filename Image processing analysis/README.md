@@ -12,7 +12,7 @@ The image acquisition and processing workflow involved several critical steps:
 - **Illumination correction** to normalize image brightness.
 - **Automated segmentation** to extract cellular structures.
 
-Using this pipeline, we successfully reconstructed **over 400,000 microglia cells** from a dataset of **more than 200 images**, providing a robust basis for downstream biological analysis.
+Using this pipeline, we successfully reconstructed **over 400,000 microglia cells** from a dataset of **more than 200 images**, providing a robust basis for downstream biological analysis
 
 ---
 
@@ -40,7 +40,7 @@ Pre-processing of microscopy images was performed in **Fiji**, following the ste
 ### 🎨 Contrast Enhancement
 
 - Employed the **saturation pixel method**:
-  - Adjusts the image contrast by clipping the top and bottom **1%** of pixel intensity values.
+  - Adjusts the image contrast by clipping the top and bottom **0.3%** of pixel intensity values.
   - This converts the darkest pixels to black and brightest to white, improving visual contrast.
 
 ![Untitled (17)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ff531a23-6052-4ece-b216-12beff3a4824)
