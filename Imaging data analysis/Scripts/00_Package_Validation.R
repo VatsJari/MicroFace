@@ -40,8 +40,7 @@ packages <- list(
     "nsgrantham/ggdark",
     "davidsjoberg/ggstream",
     "hrbrmstr/streamgraph",
-    "cardiomoon/moonBook",
-    "cardiomoon/webr"
+    "cardiomoon/moonBook"
   )
 )
 
