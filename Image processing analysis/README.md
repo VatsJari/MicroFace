@@ -1,6 +1,6 @@
 # 📁 Image Processing Analysis
 
-This folder contains the image processing pipelines used in the **MicroFace** project, aimed at analyzing and reconstructing microglia cells from high-resolution microscopy images. Our analysis leverages open-source image processing tools like **Fiji** and **CellProfiler** to perform essential pre-processing, illumination correction, and segmentation tasks.
+This folder contains the image pre-processing pipelines used in the **MicroFace** project, aimed at analyzing and reconstructing microglia cells from high-resolution microscopy images. Our analysis leverages open-source image processing tools like **Fiji** and **CellProfiler** to perform essential pre-processing, illumination correction, and segmentation tasks.
 
 ---
 
