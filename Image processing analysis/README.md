@@ -35,7 +35,7 @@ Pre-processing of microscopy images was performed in **Fiji**, following the ste
 ### 🧼 Background Subtraction
 
 - Applied the **Rolling Ball algorithm** with a **radius of 50 pixels**.
-- This method removes uneven background illumination and enhances image clarity.
+- This method removes uneven background and enhances image clarity.
 
 ### 🎨 Contrast Enhancement
 
