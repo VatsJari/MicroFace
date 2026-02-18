@@ -36,7 +36,7 @@ The morphology represented by each morpho type from the dataset was interpreted 
 
 4. Rod-like: The rod-like morpho type was characterized by an elongated shape, commonly found in white matter tracts. These cells are believed to be involved in myelin maintenance and provide structural support in the brain.
 
-Each of these morpho types represents a distinct phenotype of microglia, reflecting their specialized functions and roles in the central nervous system.
+
 
 
 
