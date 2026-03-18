@@ -12,7 +12,7 @@ The image acquisition and processing workflow involved several critical steps:
 - **Illumination correction** to normalize image brightness.
 - **Automated segmentation** to extract cellular structures.
 
-Using this pipeline, we successfully reconstructed **over 400,000 microglia cells** from a dataset of **more than 200 images**, providing a robust basis for downstream biological analysis
+Using this pipeline, we successfully reconstructed **over 250,000 microglia cells** from a dataset of **more than 200 images**, providing a robust basis for downstream biological analysis
 
 ---
 
