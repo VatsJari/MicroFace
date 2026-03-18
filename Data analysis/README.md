@@ -215,7 +215,4 @@ If you use this pipeline in your research, please cite:
 
 ---
 
-## 7. Contact
-
-For questions or issues, please contact vatsjari@gmail.com or open an issue on the GitHub repository.
 
