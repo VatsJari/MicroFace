@@ -21,22 +21,6 @@ In this project, a rat model of neuroinflammation was used to develop an automat
 
 ![Copy of Untitled (6)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ec2c58c0-ea53-408d-bb5e-21f7f61fd9cc)
 
-*******
-
-
-![Untitled (20)](https://github.com/vatsal-jari/MicroFace.github.io/assets/85255019/ed06552e-f123-42db-bc1b-51037b56493a)
-
-The morphology represented by each morpho type from the dataset was interpreted as follows:
-
-1. Ameboid: This morpho type exhibited a rounded and amoeba-like shape, typically associated with phagocytic activity and inflammation in damaged or diseased brain tissue.
-
-2. Highly Ramified: The highly ramified morpho type displayed an intricate and extensively branched structure, indicative of its involvement in synaptic pruning and neuroprotection in healthy brain tissue.
-
-3. Transition: The transition morpho type had an intermediate morphology, suggesting its ability to switch between ameboid and highly ramified states depending on the microenvironment. These cells may play a role in adaptive responses and transitioning between different functional states.
-
-4. Rod-like: The rod-like morpho type was characterized by an elongated shape, commonly found in white matter tracts. These cells are believed to be involved in myelin maintenance and provide structural support in the brain.
-
-
 
 
 
