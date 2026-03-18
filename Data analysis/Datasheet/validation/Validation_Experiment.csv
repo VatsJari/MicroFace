@@ -1,0 +1,363 @@
+Key,Value
+CellProfiler_Version,4.2.8
+ChannelType_DNA,Grayscale
+ChannelType_Mask,Mask
+ImageSet_Zip_Dictionary,b'PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48T01FIHhtbG5zPSJodHRwOi8vd3d3Lm9wZW5taWNyb3Njb3B5Lm9yZy9TY2hlbWFzL09NRS8yMDE2LTA2Ij48SW1hZ2UgSUQ9Ik1hc2siPjxQaXhlbHMgRGltZW5zaW9uT3JkZXI9IlhZQ1pUIiBJRD0iUGl4ZWxzOk1hc2siIFNpemVUPSIxIiBTaXplWD0iMSIgU2l6ZVk9IjEiPjxUaWZmRGF0YSBGaXJzdEM9IjAiIEZpcnN0VD0iMCIgRmlyc3RaPSIwIiBJRkQ9IjAiIFBsYW5lQ291bnQ9IjEiPjxVVUlEIEZpbGVOYW1lPSJmaWxlOi9Vc2Vycy92YXRzYWxqYXJpd2FsYS9Eb2N1bWVudHMvQnJhaW4lMjBJbmp1cnklMjBwcm9qZWN0L1JldmlzZWRfU3VibWlzc2lvbi9WYWxpZGF0aW9uX2ltYWdlcy9tYXNrcy9SMTBfNGhwaV8xMV9JYmExXzNfRmlsdGVyZWRTdWJ0cmFjdGVkLnRpZiIvPjwvVGlmZkRhdGE+PFBsYW5lIFRoZUM9IjAiIFRoZVQ9IjAiIFRoZVo9IjAiLz48L1BpeGVscz48L0ltYWdlPjxJbWFnZSBJRD0iRE5BIj48UGl4ZWxzIERpbWVuc2lvbk9yZGVyPSJYWUNaVCIgSUQ9IlBpeGVsczpETkEiIFNpemVUPSIxIiBTaXplWD0iMSIgU2l6ZVk9IjEiPjxUaWZmRGF0YSBGaXJzdEM9IjAiIEZpcnN0VD0iMCIgRmlyc3RaPSIwIiBJRkQ9IjAiIFBsYW5lQ291bnQ9IjEiPjxVVUlEIEZpbGVOYW1lPSJmaWxlOi9Vc2Vycy92YXRzYWxqYXJpd2FsYS9Eb2N1bWVudHMvQnJhaW4lMjBJbmp1cnklMjBwcm9qZWN0L1JldmlzZWRfU3VibWlzc2lvbi9WYWxpZGF0aW9uX2ltYWdlcy9pbWFnZXMvUjEwXzRocGlfMTFfSWJhMV8zX0ZpbHRlcmVkU3VidHJhY3RlZC50aWYiLz48L1RpZmZEYXRhPjxQbGFuZSBUaGVDPSIwIiBUaGVUPSIwIiBUaGVaPSIwIi8+PC9QaXhlbHM+PC9JbWFnZT48Tzw/eG1sIHZlcnNpb249IjEuMCIgZW5jb2Rpbmc9IlVURi04Ij8+PE9NRSB4bWxucz0iaHR0cDovL3d3dy5vcGVubWljcm9zY29weS5vcmcvU2NoZW1hcy9PTUUvMjAxNi0wNiI+PEltYWdlIElEPSJNYXNrIj48UGl4ZWxzIERpbWVuc2lvbk9yZGVyPSJYWUNaVCIgSUQ9IlBpeGVsczpNYXNrIiBTaXplVD0iMSIgU2l6ZVg9IjEiIFNpemVZPSIxIj48VGlmZkRhdGEgRmlyc3RDPSIwIiBGaXJzdFQ9IjAiIEZpcnN0Wj0iMCIgSUZEPSIwIiBQbGFuZUNvdW50PSIxIj48VVVJRCBGaWxlTmFtZT0iZmlsZTovVXNlcnMvdmF0c2FsamFyaXdhbGEvRG9jdW1lbnRzL0JyYWluJTIwSW5qdXJ5JTIwcHJvamVjdC9SZXZpc2VkX1N1Ym1pc3Npb24vVmFsaWRhdGlvbl9pbWFnZXMvbWFza3MvUjFpNl9JYmExX19GaWx0ZXJlZFN1YnRyYWN0ZWQudGlmIi8+PC9UaWZmRGF0YT48UGxhbmUgVGhlQz0iMCIgVGhlVD0iMCIgVGhlWj0iMCIvPjwvUGl4ZWxzPjwvSW1hZ2U+PEltYWdlIElEPSJETkEiPjxQaXhlbHMgRGltZW5zaW9uT3JkZXI9IlhZQ1pUIiBJRD0iUGl4ZWxzOkROQSIgU2l6ZVQ9IjEiIFNpemVYPSIxIiBTaXplWT0iMSI+PFRpZmZEYXRhIEZpcnN0Qz0iMCIgRmlyc3RUPSIwIiBGaXJzdFo9IjAiIElGRD0iMCIgUGxhbmVDb3VudD0iMSI+PFVVSUQgRmlsZU5hbWU9ImZpbGU6L1VzZXJzL3ZhdHNhbGphcml3YWxhL0RvY3VtZW50cy9CcmFpbiUyMEluanVyeSUyMHByb2plY3QvUmV2aXNlZF9TdWJtaXNzaW9uL1ZhbGlkYXRpb25faW1hZ2VzL2ltYWdlcy9SMTBfNGhwaV82X0liYTFfMV9GaWx0ZXJlZFN1YnRyYWN0ZWQudGlmIi8+PC9UaWZmRGF0YT48UGxhbmUgVGhlQz0iMCIgVGhlVD0iMCIgVGhlWj0iMCIvPjwvUGl4ZWxzPjwvSW1hZ2U+PDExXzRocGlfMTFfSWJhMV8zX0ZpbHRlcmVkU3VidHJhY3RlZC50aWYiLz48L1RpZmZEYXRhPjxQbGFuZSBUaGVDPSIwIiBUaGVUPSIwIiBUaGVaPSIwIi8+PC9QaXhlbHM+PC9JbWFnZT48SW1hZ2UgSUQ9IkROQSI+PFBpeGVscyBEaW1lbnNpb25PcmRlcj0iWFlDWlQiIElEPSJQaXhlbHM6RE5BIiBTaXplVD0iMSIgU2l6ZVg9IjEiIFNpemVZPSIxIj48VGlmZkRhdGEgRmlyc3RDPSIwIiBGaXJzdFQ9IjAiIEZpcnN0Wj0iMCIgSUZEPSIwIiBQbGFuZUNvdW50PSIxIj48VVVJRCBGaWxlTmFtZT0iZmlsZTovVXNlcnMvdmF0c2FsamFyaXdhbGEvRG9jdW1lbnRzL0JyYWluJTIwSW5qdXJ5JTIwcHJvamVjdC9SZXZpc2VkX1N1Ym1pc3Npb24vVmFsaWRhdGlvbl9pbWFnZXMvaW1hZ2VzL1IxMV80aHBpXzExX0liYTFfM19GaWx0ZXJlZFN1YnRyYWN0ZWQudGlmIi8+PC9UaWZmRGF0YT48UGxhbmUgVGhlQz0iMCIgVGhlVD0iMCIgVGhlWj0iMCIvPjwvUGl4ZWxzPjwvSW1hZ2U+PDw/eG1sIHZlcnNpb249IjEuMCIgZW5jb2Rpbmc9IlVURi04Ij8+PE9NRSB4bWxucz0iaHR0cDovL3d3dy5vcGVubWljcm9zY29weS5vcmcvU2NoZW1hcy9PTUUvMjAxNi0wNiI+PEltYWdlIElEPSJNYXNrIj48UGl4ZWxzIERpbWVuc2lvbk9yZGVyPSJYWUNaVCIgSUQ9IlBpeGVsczpNYXNrIiBTaXplVD0iMSIgU2l6ZVg9IjEiIFNpemVZPSIxIj48VGlmZkRhdGEgRmlyc3RDPSIwIiBGaXJzdFQ9IjAiIEZpcnN0Wj0iMCIgSUZEPSIwIiBQbGFuZUNvdW50PSIxIj48VVVJRCBGaWxlTmFtZT0iZmlsZTovVXNlcnMvdmF0c2FsamFyaXdhbGEvRG9jdW1lbnRzL0JyYWluJTIwSW5qdXJ5JTIwcHJvamVjdC9SZXZpc2VkX1N1Ym1pc3Npb24vVmFsaWRhdGlvbl9pbWFnZXMvbWFza3MvUnBpX18yX0ZpbHRlcmVkU3VidHJhY3RlZC50aWYiLz48L1RpZmZEYXRhPjxQbGFuZSBUaGVDPSIwIiBUaGVUPSIwIiBUaGVaPSIwIi8+PC9QaXhlbHM+PC9JbWFnZT48SW1hZ2UgSUQ9IkROQSI+PFBpeGVscyBEaW1lbnNpb25PcmRlcj0iWFlDWlQiIElEPSJQaXhlbHM6RE5BIiBTaXplVD0iMSIgU2l6ZVg9IjEiIFNpemVZPSIxIj48VGlmZkRhdGEgRmlyc3RDPSIwIiBGaXJzdFQ9IjAiIEZpcnN0Wj0iMCIgSUZEPSIwIiBQbGFuZUNvdW50PSIxIj48VVVJRCBGaWxlTmFtZT0iZmlsZTovVXNlcnMvdmF0c2FsamFyaXdhbGEvRG9jdW1lbnRzL0JyYWluJTIwSW5qdXJ5JTIwcHJvamVjdC9SZXZpc2VkX1N1Ym1pc3Npb24vVmFsaWRhdGlvbl9pbWFnZXMvaW1hZ2VzL1IxOV81ZHBpXzE2X0liYTFfMl9GaWx0ZXJlZFN1YnRyYWN0ZWQudGlmIi8+PC9UaWZmRGF0YT48UGxhbmUgVGhlQz0iMCIgVGhlVD0iMCIgVGhlWj0iMCIvPjwvUGl4ZWxzPjwvSW1hZ2U+PHhtbC4wImVuY29GP09NRW5zcDovd3cub3BtaWdTY2htYXMvT01FMjAxNi02Ij48SW1hZ2UgYXNrPjxQaXhlbHMgbWVuZXJUIiBJTWFzayIgU2l6ZT0iMSIgU2l6ZVg9IjEiWT0iMSI+PFRpZmZEYXRhIEZpcnN0Qz0iMCIgRmlyc3RUPSIwIiBaPSIwIkQ9Im50PSIxVUlEIEZpbG1laWxlOmVyc3ZqYWxhb3RzL2luJTIweTJyb2N0aXNlU3Vic2lvbmltYW0yX3BpXzFiRml1cmF0ZWR0aWY+PGF0UGxhbmUgVGhlQz0iMCIgVGhlVD0iMCJaPSIwIi8+PC9QeD48Lz48SW1hZ2UgSUQ9Ik4iPjxQaXhlbHMgRGltZW5zaW9uT3JkZXI9IlhZQ1pUIiBJRD0iUGl4ZWxzOkROQSIgU2l6ZVQ9IjEiIFNpemVYPSIxIiBTaXplWT0iMSI+PFRpZmZEYXRhIEZpcnN0Qz0iMCIgRmlyc3RUPSIwIiBGaXJzdFo9IjAiIElGRD0iMCIgUGxhbmVDb3VudD0iMSI+PFVVSUQgRmlsZU5hbWU9ImZpbGU6L1VzZXJzL3ZhdHNhbGphcml3YWxhL0RvY3VtZW50cy9CcmFpbiUyMEluanVyeSUyMHByb2plY3QvUmV2aXNlZF9TdWJtaXNzaW9uL1ZhbGlkYXRpb25faW1hZ2VzL2ltYWdlcy9SMjJfMndwaV8xMV9JYmExXzNfRmlsdGVyZWRTdWJ0cmFjdGVkLnRpZiIvPjwvVGlmZkRhdGE+PFBsYW5lIFRoZUM9IjAiIFRoZVQ9IjAiIFRoZVo9IjAiLz48L1BpeGVscz48L0ltYWdlPjw='
+Metadata_Tags,"[""ImageNumber""]"
+Pipeline_Pipeline,"CellProfiler Pipeline: http://www.cellprofiler.org
+Version:5
+DateRevision:428
+GitHash:
+ModuleCount:24
+HasImagePlaneDetails:False
+
+Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    :
+    Filter images?:Images only
+    Select the rule criteria:and (extension does isimage) (directory doesnot containregexp ""[\\\\/]\\."")
+
+Metadata:[module_num:2|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:['The Metadata module optionally allows you to extract information describing your images (i.e, metadata) which will be stored along with your measurements. This information can be contained in the file name and/or location, or in an external file.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Extract metadata?:No
+    Metadata data type:Text
+    Metadata types:{}
+    Extraction method count:1
+    Metadata extraction method:Extract from file/folder names
+    Metadata source:File name
+    Regular expression to extract from file name:^(?P<Plate>.*)_(?P<Well>[A-P][0-9]{2})_s(?P<Site>[0-9])_w(?P<ChannelNumber>[0-9])
+    Regular expression to extract from folder name:(?P<Date>[0-9]{4}_[0-9]{2}_[0-9]{2})$
+    Extract metadata from:All images
+    Select the filtering criteria:and (file does contain """")
+    Metadata file location:Elsewhere...|
+    Match file and image metadata:[]
+    Use case insensitive matching?:No
+    Metadata file name:None
+    Does cached metadata exist?:No
+
+NamesAndTypes:[module_num:3|svn_version:'Unknown'|variable_revision_number:8|show_window:False|notes:['The NamesAndTypes module allows you to assign a meaningful name to each image by which other modules will refer to it.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Assign a name to:Images matching rules
+    Select the image type:Grayscale image
+    Name to assign these images:DNA
+    Match metadata:[]
+    Image set matching method:Order
+    Set intensity range from:Image metadata
+    Assignments count:2
+    Single images count:0
+    Maximum intensity:255.0
+    Process as 3D?:No
+    Relative pixel spacing in X:1.0
+    Relative pixel spacing in Y:1.0
+    Relative pixel spacing in Z:1.0
+    Select the rule criteria:and (directory does contain ""masks"")
+    Name to assign these images:Mask
+    Name to assign these objects:Cell
+    Select the image type:Binary mask
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+    Select the rule criteria:and (directory doesnot contain ""masks"")
+    Name to assign these images:DNA
+    Name to assign these objects:Nucleus
+    Select the image type:Grayscale image
+    Set intensity range from:Image metadata
+    Maximum intensity:255.0
+
+Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:['The Groups module optionally allows you to split your list of images into image subsets (groups) which will be processed independently of each other. Examples of groupings include screening batches, microtiter plates, time-lapse movies, etc.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Do you want to group your images?:No
+    grouping metadata count:1
+    Metadata category:None
+
+IdentifyPrimaryObjects:[module_num:5|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Mask
+    Name the primary objects to be identified:IdentifyPrimaryObjects
+    Typical diameter of objects, in pixel units (Min,Max):10,200
+    Discard objects outside the diameter range?:No
+    Discard objects touching the border of the image?:No
+    Method to distinguish clumped objects:None
+    Method to draw dividing lines between clumped objects:Intensity
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:After both thresholding and declumping
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Otsu
+    Threshold smoothing scale:0.8
+    Threshold correction factor:1.2
+    Lower and upper bounds on threshold:0,1.0
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:200
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+ExpandOrShrinkObjects:[module_num:6|svn_version:'Unknown'|variable_revision_number:2|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:IdentifyPrimaryObjects
+    Name the output objects:ShrunkenNuclei
+    Select the operation:Expand objects by a specified number of pixels
+    Number of pixels by which to expand or shrink:2
+    Fill holes in objects so that all objects shrink to a single point?:No
+    Expand or shrink measurement:None
+
+RescaleIntensity:[module_num:7|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:DNA
+    Name the output image:RescaleIntensity
+    Rescaling method:Divide each image by the same value
+    Method to calculate the minimum intensity:Custom
+    Method to calculate the maximum intensity:Custom
+    Lower intensity limit for the input image:0.0
+    Upper intensity limit for the input image:1.0
+    Intensity range for the input image:0.0,1.0
+    Intensity range for the output image:0.0,1.0
+    Select image to match in maximum intensity:None
+    Divisor value:0.5
+    Divisor measurement:None
+
+MedianFilter:[module_num:8|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:RescaleIntensity
+    Name the output image:MedianFilter
+    Window:8
+
+IdentifyPrimaryObjects:[module_num:9|svn_version:'Unknown'|variable_revision_number:15|show_window:False|notes:['To detect Soma of the cell (Use original image)']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:MedianFilter
+    Name the primary objects to be identified:Soma_first
+    Typical diameter of objects, in pixel units (Min,Max):16,45
+    Discard objects outside the diameter range?:Yes
+    Discard objects touching the border of the image?:Yes
+    Method to distinguish clumped objects:Shape
+    Method to draw dividing lines between clumped objects:Shape
+    Size of smoothing filter:10
+    Suppress local maxima that are closer than this minimum allowed distance:7.0
+    Speed up by using lower-resolution image to find local maxima?:Yes
+    Fill holes in identified objects?:Never
+    Automatically calculate size of smoothing filter for declumping?:Yes
+    Automatically calculate minimum allowed distance between local maxima?:Yes
+    Handling of objects if excessive number of objects identified:Continue
+    Maximum number of objects:500
+    Use advanced settings?:Yes
+    Threshold setting version:12
+    Threshold strategy:Adaptive
+    Thresholding method:Otsu
+    Threshold smoothing scale:1.3488
+    Threshold correction factor:1
+    Lower and upper bounds on threshold:0.13,1
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Two classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Otsu
+
+SplitOrMergeObjects:[module_num:10|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Soma_first
+    Name the new objects:Soma_Merged
+    Operation:Merge
+    Maximum distance within which to merge objects:0
+    Merge using a grayscale image?:No
+    Select the grayscale image to guide merging:None
+    Minimum intensity fraction:0.9
+    Method to find object intensity:Closest point
+    Merging method:Distance
+    Select the parent object:None
+    Output object type:Disconnected
+
+EnhanceOrSuppressFeatures:[module_num:11|svn_version:'Unknown'|variable_revision_number:7|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:RescaleIntensity
+    Name the output image:EnhanceOrSuppressFeatures
+    Select the operation:Enhance
+    Feature size:10
+    Feature type:Neurites
+    Range of hole sizes:1,10
+    Smoothing scale:1.2
+    Shear angle:0.0
+    Decay:0.95
+    Enhancement method:Tubeness
+    Speed and accuracy:Fast
+    Rescale result image:Yes
+
+IdentifySecondaryObjects:[module_num:12|svn_version:'Unknown'|variable_revision_number:10|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Soma_Merged
+    Name the objects to be identified:Cell
+    Select the method to identify the secondary objects:Propagation
+    Select the input image:EnhanceOrSuppressFeatures
+    Number of pixels by which to expand the primary objects:10
+    Regularization factor:0.05
+    Discard secondary objects touching the border of the image?:Yes
+    Discard the associated primary objects?:Yes
+    Name the new primary objects:Soma_Filtered
+    Fill holes in identified objects?:No
+    Threshold setting version:12
+    Threshold strategy:Global
+    Thresholding method:Minimum Cross-Entropy
+    Threshold smoothing scale:2
+    Threshold correction factor:0.5
+    Lower and upper bounds on threshold:0.01,1
+    Manual threshold:0.0
+    Select the measurement to threshold with:None
+    Two-class or three-class thresholding?:Three classes
+    Log transform before thresholding?:No
+    Assign pixels in the middle intensity class to the foreground or the background?:Foreground
+    Size of adaptive window:50
+    Lower outlier fraction:0.05
+    Upper outlier fraction:0.05
+    Averaging method:Mean
+    Variance method:Standard deviation
+    # of deviations:2.0
+    Thresholding method:Sauvola
+
+RelateObjects:[module_num:13|svn_version:'Unknown'|variable_revision_number:5|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Parent objects:ShrunkenNuclei
+    Child objects:Cell
+    Calculate child-parent distances?:None
+    Calculate per-parent means for all child measurements?:No
+    Calculate distances to other parents?:No
+    Do you want to save the children with parents as a new object set?:No
+    Name the output object:RelateObjects
+    Parent name:None
+
+ConvertObjectsToImage:[module_num:14|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input objects:Cell
+    Name the output image:CellImage
+    Select the color format:Binary (black & white)
+    Select the colormap:Default
+
+MorphologicalSkeleton:[module_num:15|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:CellImage
+    Name the output image:MorphologicalSkeleton_OG
+
+MeasureObjectSkeleton:[module_num:16|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the seed objects:Soma_Filtered
+    Select the skeletonized image:MorphologicalSkeleton_OG
+    Retain the branchpoint image?:No
+    Name the branchpoint image:BranchpointImage
+    Fill small holes?:Yes
+    Maximum hole size:10
+    Export the skeleton graph relationships?:No
+    Intensity image:MorphologicalSkeleton
+    File output directory:Default Input Folder sub-folder|Documents/Brain Injury project/Revised_Submission/Datasheet
+    Vertex file name:50_vertices.csv
+    Edge file name:50_edges.csv
+
+MeasureObjectSizeShape:[module_num:17|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select object sets to measure:Cell, IdentifyPrimaryObjects
+    Calculate the Zernike features?:No
+    Calculate the advanced features?:No
+
+MorphologicalSkeleton:[module_num:18|svn_version:'Unknown'|variable_revision_number:1|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the input image:Mask
+    Name the output image:MorphologicalSkeleton_manual
+
+MeasureObjectSkeleton:[module_num:19|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the seed objects:Soma_Filtered
+    Select the skeletonized image:MorphologicalSkeleton_manual
+    Retain the branchpoint image?:No
+    Name the branchpoint image:BranchpointImage
+    Fill small holes?:Yes
+    Maximum hole size:10
+    Export the skeleton graph relationships?:No
+    Intensity image:None
+    File output directory:Default Output Folder|
+    Vertex file name:vertices.csv
+    Edge file name:edges.csv
+
+OverlayOutlines:[module_num:20|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:DNA
+    Name the output image:OrigOverlay_manual
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Inner
+    Select outline color:Red
+    Select objects to display:ShrunkenNuclei
+
+OverlayOutlines:[module_num:21|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:No
+    Select image on which to display outlines:DNA
+    Name the output image:OrigOverlay_OG
+    Outline display mode:Color
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Inner
+    Select outline color:#21FF06
+    Select objects to display:Cell
+
+ExportToSpreadsheet:[module_num:22|svn_version:'Unknown'|variable_revision_number:13|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the column delimiter:Comma ("","")
+    Add image metadata columns to your object data file?:No
+    Add image file and folder names to your object data file?:No
+    Select the measurements to export:No
+    Calculate the per-image mean values for object measurements?:No
+    Calculate the per-image median values for object measurements?:No
+    Calculate the per-image standard deviation values for object measurements?:No
+    Output file location:Default Input Folder sub-folder|Documents/Brain Injury project/Revised_Submission/Datasheet/validation
+    Create a GenePattern GCT file?:No
+    Select source of sample row name:Metadata
+    Select the image to use as the identifier:None
+    Select the metadata to use as the identifier:None
+    Export all measurement types?:Yes
+    Press button to select measurements:
+    Representation of Nan/Inf:NaN
+    Add a prefix to file names?:Yes
+    Filename prefix:Validation_
+    Overwrite existing files without warning?:Yes
+    Data to export:Do not use
+    Combine these object measurements with those of the previous object?:No
+    File name:DATA.csv
+    Use the object name for the file name?:Yes
+
+SaveImages:[module_num:23|svn_version:'Unknown'|variable_revision_number:16|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_manual
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DNA
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:_Manual
+    Saved file format:png
+    Output file location:Same folder as image|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+SaveImages:[module_num:24|svn_version:'Unknown'|variable_revision_number:16|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:OrigOverlay_OG
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DNA
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:Yes
+    Text to append to the image name:_OG
+    Saved file format:png
+    Output file location:Same folder as image|
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:No
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+"
+Run_Timestamp,2026-03-04T11:47:03.272889
