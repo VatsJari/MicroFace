@@ -1,218 +1,297 @@
-# Microglial Morphology Analysis Pipeline
+# Data analysis
 
-This repository contains a complete workflow for analyzing microglial morphology from imaging data following brain injury. The pipeline processes raw CellProfiler output files, performs quality control filtering, clustering, dimensionality reduction (PCA, UMAP, PHATE), and generates publication‑ready figures.
+R workflow that turns the CellProfiler feature tables from
+`../Image processing analysis/` into filtered, dimensionality-reduced,
+clustered single-cell morphology data, and then into the published figures.
 
-## 1. Overview
-
-The analysis is divided into sequential R scripts, each building on the outputs of the previous one. The main steps are:
-
-1. **Package installation and loading** – ensures all required R packages are available.
-2. **Data import and preprocessing** – reads soma and cell morphology text files, merges them, adds metadata (injury coordinates, experimental conditions), and computes derived metrics (radial distance, binning, health score, etc.).
-3. **Filtering and PCA** – applies outlier removal (winsorization, Mahalanobis distance), performs PCA on cleaned data, and creates diagnostic plots.
-4. **Clustering and UMAP** – samples the data (stratified/random), determines optimal cluster number (k=13 by default), performs k‑means on PCA scores, assigns clusters to all cells, and runs UMAP for visualization.
-5. **Figure 1** – radial bin visualizations of cell positions, faceted by time and electrode thickness.
-6. **Figure 2** – validation of automated measurements against manual counts (scatter plots) and cell density analysis.
-7. **Figure 3** – feature correlation heatmap, NMF rank selection, and NMF feature/cell programs.
-8. **Figure 4** – PHATE analysis, UMAP with cluster centroids, cluster parameter heatmap, frequency heatmap across bins, and phenotype assignment.
-9. **Figure 5** – detailed phenotype analysis, including splitting Transition clusters (T1/T2), hierarchical clustering of Transition clusters, enrichment dot plots, and frequency heatmaps across bins and time.
-10. **Re‑run clustering after filtering** – removes false positive clusters (1,12) and re‑computes PCA, clustering, and UMAP on the filtered data.
-
-All results are stored in structured lists (`import`, `Filter`, `PCA`, `ClusterAnalysis`, `ClusterAnalysis_Filter`, `Fig1`…`Fig5`) to keep the workspace organized.
+Run `../Image processing analysis/` first.
 
 ---
 
-## 2. Prerequisites
+## 1. How this works
+
+The scripts are **sequential and share one R session**. Each builds on objects
+left in the environment by the previous one, so they cannot be run in
+isolation or out of order. Results accumulate in named lists (`import`,
+`Filter`, `PCA`, `ClusterAnalysis`, `Fig1` ... `Fig5`, `Fig_S6` ...) to keep the
+workspace navigable.
+
+Open `Scripts/TBI_Manuscript.Rproj` in RStudio, then run in this order:
+
+| Order | Script | Produces |
+|-------|--------|----------|
+| 1 | `01_Load_packages.R` | dependencies installed and loaded |
+| 2 | `02_Import_Data.R` | `import$df_all`, `import$df_all_PCA` |
+| 3 | `03_Wins_Filtering_PCA.R` | `Filter$...`, `PCA$...` |
+| 4 | `04_Clustering_UMAP.R` | `ClusterAnalysis$final_df_full`, `$final_df_sampled` |
+| 5 | `Figure_1.R` ... `Figure_S8.R` | published figures |
+
+The figure scripts depend on steps 1 to 4 but are independent of each other,
+with two exceptions: `Figure_5.R` consumes `Fig4$df_phate_phenotype`, and
+`Figure_S6.R` / `Figure_S8.R` reference upstream `Fig4` objects. So run
+`Figure_4.R` before 5, S6 and S8.
+
+---
+
+## 2. Before you run anything
+
+### Edit the file paths
+
+**Every path in these scripts is absolute and points at the original author's
+machine.** Nothing will run until you change them. The lines to edit:
+
+| Script | Variable or call | Points at |
+|--------|------------------|-----------|
+| `02_Import_Data.R` | `import$folder_path_soma` | folder of per-image soma tables |
+| `02_Import_Data.R` | `import$folder_path_cell` | folder of per-image cell tables |
+| `02_Import_Data.R` | `read_csv(...)` for `import$Injury_center` | `Datasheet/Injury_Center/coordinates.csv` |
+| `Figure_2.R` | three `read_csv(...)` calls | `Datasheet/validation/*.csv` |
+
+If you place your data inside the project folder, relative paths work and are
+preferable, since they survive being moved between machines.
+
+### Get the input data
+
+Scripts from step 2 onward expect **two folders of per-image CellProfiler
+output**, one table per image:
+
+```
+Datasheet/
+├── df_soma/     one soma table per image
+├── df_cell/     one cell table per image
+├── Injury_Center/coordinates.csv      (provided)
+├── Meta_data_file/                    (provided, see note below)
+└── validation/                        (provided)
+```
+
+`df_soma/` and `df_cell/` are **not in this repository** because of size. Either
+generate them yourself by running `The_Skeleton_Pipeline.cpproj` on your images,
+or obtain the deposited tables from the data archive accompanying the paper.
+
+The two files in `Meta_data_file/` are **outputs, not inputs**. They are
+animal-level and image-level summaries written by `Figure_S6.R` (the write calls
+are commented out) and are shipped here as a reference for what that script
+should reproduce. Nothing reads them.
+
+### Filenames must follow the naming contract
+
+`02_Import_Data.R` recovers all experimental metadata by splitting the image
+filename on underscores into exactly **six** fields:
+
+```
+R10_4hpi_16_Iba1_1_FilteredSubtracted.tif
+ |    |    |    |   |        |
+ |    |    |    |   |        └─ Bagsub
+ |    |    |    |   └────────── SubImage
+ |    |    |    └────────────── Staining
+ |    |    └─────────────────── Electrode_Thickness
+ |    └──────────────────────── Time_weeks
+ └───────────────────────────── Animal_No
+```
+
+A filename with a different number of underscore-separated fields will
+misassign every metadata column, silently. There is no validation step, so
+check `table(import$df_all$Time_weeks)` straight after step 2.
+
+Timepoint labels are then standardised: `4hpi` becomes `00WPI`, `5dpi` becomes
+`01WPI`, `14dpi` and `2wpi` become `02WPI`, `8wpi` becomes `08WPI`, `18wpi`
+becomes `18WPI`. **Any label not in that list becomes `NA`**, so if you have
+other timepoints you must extend the `case_when` in section 11.
 
 ### Software
-- **R** (version ≥ 4.0) and **RStudio** (recommended)
-- **Python** (≥ 3.6) – required for `phateR` and `Rmagic` packages.  
-  *If you do not have Python, the scripts will attempt to install it via `reticulate`, but a manual installation is safer.*
 
-### R Packages
-All required CRAN packages are listed in the first script and will be installed automatically. Additionally, the following Bioconductor and GitHub packages are used:
+- **R** 4.0 or later, and RStudio
+- **Python** 3.6 or later, needed by `phateR` and `Rmagic` for Figures 4 and 5
 
-- `BiocManager`, `ConsensusClusterPlus`, `BiocParallel`, `ggrast`
-- `ggdark`, `ggstream`, `moonBook`, `webr` (from GitHub)
-
-**Important:** The `phateR` and `Rmagic` packages require a Python environment with the `phate` module. After running the package installation script, execute:
+`01_Load_packages.R` installs missing CRAN packages and pins Bioconductor to
+release 3.17. If you are on a newer R, that pin will fail and should be edited.
+PHATE additionally needs its Python module:
 
 ```r
 library(reticulate)
 py_install("phate", pip = TRUE)
 ```
 
-Make sure your Python environment is correctly configured (see `reticulate` documentation).
-
-### Folder Structure
-Place the following folders and files as described (adjust paths in the scripts if necessary):
-
-```
-project_root/
-├── scripts/                 (all R scripts)
-├── Datasheet/
-│   ├── df_soma/             (soma text files, one per image)
-│   ├── df_cell/             (cell text files, one per image)
-│   ├── Injury_Center/
-│   │   └── coordinates.csv   (injury x,y per image)
-│   └── validation/           (validation CSV files)
-└── outputs/                  (figures and tables will be saved here)
-```
-
-The exact file paths are hard‑coded in the import script. **You must edit these paths** to match your local setup before running.
+Figures 1, 2, 3 and the supplementary figures do not need PHATE. If you only
+want those, you can skip the Python setup.
 
 ---
 
-## 3. Step‑by‑Step Workflow
+## 3. Step by step
 
-Run the scripts **in order**. Each script assumes the previous ones have been executed and the required R objects exist in the environment.
+### `01_Load_packages.R`
 
-### Script 1: `00_packages.R`
-- **Purpose**: Install and load all required R packages.
-- **Input**: None.
-- **Output**: All packages loaded into the session.
-- **Note**: Run this first. If you encounter issues with `phateR`, follow the Python installation instructions above.
+Installs any missing CRAN packages, sets up Bioconductor, loads everything.
+Run once per session, first.
 
-### Script 2: `01_data_import.R`
-- **Purpose**: Read all text files, merge soma and cell data, add metadata (injury coordinates, experimental conditions), compute derived metrics (radial distance, bins, RI, area ratio, health score), and define color palettes.
-- **Input**: 
-  - Folder paths for soma and cell text files.
-  - `coordinates.csv` (injury centers).
-- **Output**: List `import` containing:
-  - `df_soma`, `df_cell`, `df_all` (merged data)
-  - `Injury_center`
-  - `df_all_PCA` (cleaned for PCA)
-  - Color palettes (`company_colors`, `morpho_colours`)
-- **Check**: After running, verify `colnames(import$df_all)` to ensure all expected columns are present.
+### `02_Import_Data.R`
 
-### Script 3: `02_filtering_pca.R`
-- **Purpose**: Winsorize features, remove outliers via Mahalanobis distance, scale data, perform PCA, and generate QC plots.
-- **Input**: `import$df_all_PCA` from previous script.
-- **Output**: Lists `Filter` and `PCA`.
-  - `Filter$df_clean_final` – filtered data (original scale)
-  - `Filter$feat_scaled` – scaled features
-  - `PCA$pca` – PCA object
-  - `PCA$pca_df` – PCA scores with metadata
-  - QC plots stored in `Filter` (cell count, Mahalanobis, feature distributions, etc.)
-- **Note**: The script creates several diagnostic plots. Check that the outlier removal looks reasonable.
+Reads every table in the two input folders, binds them, derives `Condition`
+from the source filename, strips the `AreaShape_` prefix, suffixes columns
+`_soma` or `_cell`, and merges the two sides into `import$df_all`.
 
-### Script 4: `03_clustering_umap.R`
-- **Purpose**: Sample cells (stratified/random), run k‑means clustering (k=13 by default), assign clusters to full dataset, run UMAP, and create final data frames.
-- **Input**: `Filter$meta_clean`, `Filter$feat_clean`, `PCA$pca$x`.
-- **Output**: List `ClusterAnalysis` containing:
-  - `final_df_sampled` – sampled cells with UMAP coordinates and clusters
-  - `final_df_full` – all cells with clusters (no UMAP)
-  - `summary` – sampling statistics
-  - UMAP plot (base R)
-- **Note**: The script automatically tries stratified, then systematic, then random sampling. You can adjust `sample_size` (default 30000).
+It then joins the implant coordinates, splits metadata out of the filename as
+described above, and computes:
 
-### Script 5: `figure1.R`
-- **Purpose**: Generate plots showing cell positions with radial bins, faceted by time and electrode thickness.
-- **Input**: `ClusterAnalysis$final_df_full` – filtered data
-- **Output**: List `Fig1` containing the main plotting function `plot_by_time_thickness()` and an example call that produces the figure used in the paper.
-- **How to use**: After loading the script, run the example at the bottom (or call the function with your desired parameters). The plot will be displayed.
-- **Note**: The script includes helper functions to list available images. Use `Fig1$show_images_by_time()` to see what images exist.
+**Spatial position**
 
-### Script 6: `figure2.R`
-- **Purpose**: Create correlation scatter plots (manual vs. automated measurements) and cell density plots across bins and time.
-- **Input**: Validation CSV files (must be present in `Datasheet/validation/`) and `ClusterAnalysis$final_df_full`.
-- **Output**: List `Fig2` containing:
-  - Correlation plots: `cor_area`, `cor_perimeter`, `cor_maxferet`, `cor_solidity`
-  - Density plots: `plot_density_all`, `plot_density_facet`
-- **Note**: The validation files are specific to this dataset. If you are using your own validation data, adjust column names accordingly.
+| Variable | Definition |
+|----------|------------|
+| `radial_dist` | Euclidean distance from soma centre to implant centre |
+| `bin_number` | `radial_dist` split into 25 equal-count bins (`ntile`) |
+| `Bin_Number_New` | as above, with bins above 16 collapsed into bin 17 |
+| `bin_range_new` | `Bin_Number_New * 139`, bin midpoint in distance units |
+| `Impact_Region` | `Close` (bins 1-6), `Middle` (7-10), `Far` (above 10) |
 
-### Script 7: `figure3.R`
-- **Purpose**: Compute feature correlation matrix with modules, determine optimal NMF rank, run NMF, and generate heatmaps of feature programs and cell activity.
-- **Input**: `ClusterAnalysis$final_df_full`.
-- **Output**: List `Fig3` containing:
-  - `heatmap_cor` – correlation heatmap with modules
-  - `rank_est` and `best_rank` – NMF rank selection
-  - `heatmap_W` – NMF feature programs
-  - `heatmap_Ht` – program activity across cells
-  - `heatmap_actual` / `heatmap_scaled` – region comparison (Close/Middle/Far)
-- **Note**: The script downsamples cells for NMF (10,000 by default). Adjust `n_cells_use` if needed.
+Note that the bins are **equal-count, not equal-width**: `ntile` puts the same
+number of cells in each bin, so bin width varies with local cell density. This
+is appropriate for comparing proportions across bins but means bin index is not
+linear in distance. Use `bin_range_new` when distance itself matters.
 
-### Script 8: `figure4.R`
-- **Purpose**: Run PHATE on sampled data, create UMAP with centroid labels, generate cluster parameter heatmap, frequency heatmap across bins, PHATE1 boxplot, and phenotype annotation plots.
-- **Input**: `ClusterAnalysis$final_df_sampled` and `ClusterAnalysis_Filter$final_df_full`.
-- **Output**: List `Fig4` containing:
-  - `phate_cluster`, `phate1_boxplot` – PHATE visualizations
-  - `umap_cluster` – UMAP with centroids
-  - `cluster_heatmap` – z‑scored feature means per cluster
-  - `pheatmap` / `pheatmap_viridis` – frequency heatmaps
-  - `phenotype_heatmap` – Z‑score by phenotype
-  - `phenotype_deviation` – phenotype trends across bins
-- **Note**: The phenotype mapping (cluster → phenotype) is user‑defined. Adjust the `case_when` statement in the script to match your biological interpretation.
+**Morphological features**
 
-### Script 9: `figure5.R`
-- **Purpose**: Refine Transition clusters into T1 and T2, perform hierarchical clustering of Transition clusters, create enrichment dot plots, and generate frequency heatmaps for T1 vs. T2 across bins and time.
-- **Input**: `Fig4$df_phate_phenotype`  and `ClusterAnalysis_Filter$final_df_full` (from Script 8).
-- **Output**: List `Fig5` containing:
-  - `phate_2d_phenotype`, `phate_3d_interactive`
-  - `dendrogram_transition_clusters` – cluster dendrogram
-  - `dotplot_t1t2` – enrichment dot plot
-  - `heatmap_bins` / `heatmap_time` – scaled frequency heatmaps
-  - `density_phate_facet` – density maps by phenotype group
-- **Note**: The definition of T1/T2 clusters is based on the cluster numbers in your data. Modify the vectors `transition_1_clusters` and `transition_2_clusters` accordingly.
+| Feature | Definition | Interpretation |
+|---------|------------|----------------|
+| `RI` | ramification index, perimeter-to-area normalised against a circle of equal area | arbor complexity independent of cell size; falls as cells de-ramify |
+| `area_ratio` | `Area_cell / Area_soma` | territory per unit cell body, a soma-versus-arbor rebalancing readout |
+| `Cyto_Area` | `Area_cell - Area_soma` | absolute arbor footprint |
+| `Length_Width_Ratio` | `MaxFeret / MinFeret`, soma and cell | elongation, captures rod-like morphology |
+| `Aspect_Ratio` | `MajorAxis / MinorAxis`, soma and cell | polarisation, sensitive to orientation toward the lesion |
+| `Total_Branch` | `Non_Trunk_Branch + Trunk_Branch` | total branch count |
+| `Health_score` | 1 when `Total_Branch >= 20`, declining linearly below | convenience scalar only |
+
+`Health_score` is a monotone transform of `Total_Branch`, not an independent
+measurement. Do not enter both into the same model.
+
+**Check after running:** `colnames(import$df_all)` and
+`table(import$df_all$Impact_Region)`.
+
+### `03_Wins_Filtering_PCA.R`
+
+Two-stage, deliberately conservative treatment of extreme values:
+
+1. **Winsorisation** at 1% per tail, which compresses tails without removing
+   any cell, so no cell is lost on the basis of one aberrant feature.
+2. **Mahalanobis distance filtering** on the winsorised matrix to remove
+   genuine multivariate outliers.
+
+Features are then scaled and reduced by `prcomp`. The script emits QC plots:
+cell counts before and after, the Mahalanobis distribution with the cutoff
+marked, PCA before versus after, and distributions of the most variable
+features.
+
+**Check after running:** that the proportion of cells removed is small and that
+the before/after PCA plots do not differ structurally. Losing a visible
+subpopulation here means the cutoff is too aggressive.
+
+Outputs: `Filter$df_clean_final`, `Filter$feat_scaled`, `Filter$meta_clean`,
+`PCA$pca`, `PCA$pca_df`.
+
+### `04_Clustering_UMAP.R`
+
+Samples cells, clusters, then projects assignments back onto the full dataset.
+
+- **Sampling.** Tries stratified sampling at `sample_size = 30000`, falling
+  back to systematic and then random sampling. Clustering is computed on the
+  sample for tractability and assignments are extended to all cells.
+- **Clustering.** k-means with **k fixed at 13** (`ClusterAnalysis$optimal_k`,
+  line 283). The elbow and silhouette selection code is present but commented
+  out. k=13 is the published value and is a declared granularity rather than an
+  automatically selected optimum, because the morphological continuum does not
+  present a sharp elbow.
+- **UMAP** for visualisation only. Cluster identity comes from k-means on PCA
+  scores, not from the UMAP embedding.
+- **False-positive removal.** Clusters **1 and 12** are dropped
+  (`remove_cluster <- c(1, 12)`, line 441) as segmentation artefacts rather
+  than morphological states. Both `final_df_sampled` and `final_df_full` are
+  overwritten in place with the filtered versions.
+
+If you change `k`, the cluster numbers change, so `remove_cluster` here and
+every hard-coded cluster-to-phenotype mapping in `Figure_4.R` and `Figure_5.R`
+must be revisited. These mappings are dataset-specific by construction.
+
+Outputs: `ClusterAnalysis$final_df_full`, `ClusterAnalysis$final_df_sampled`,
+`ClusterAnalysis$summary`.
+
+> **Known issue before you run `Figure_4.R`.** `Figure_4.R` expects an object
+> called `ClusterAnalysis_Filter`, which `04_Clustering_UMAP.R` does not create;
+> script 04 overwrites `ClusterAnalysis` in place instead. Running `Figure_4.R`
+> directly therefore stops with
+> `"ClusterAnalysis_Filter not found. Please run the filtering script first."`,
+> which also blocks Figures 5, S6 and S8. Until this is reconciled in the code,
+> alias the object after running script 04:
+> ```r
+> ClusterAnalysis_Filter <- ClusterAnalysis
+> ```
+> This is correct because script 04 has already removed clusters 1 and 12 by
+> that point, so `ClusterAnalysis` holds exactly the filtered data that
+> `Figure_4.R` is asking for.
+
+### Figure scripts
+
+| Script | Figures | Content | Extra input |
+|--------|---------|---------|-------------|
+| `Figure_1.R` | 1, S4 | Cell positions with radial bins, faceted by time and electrode thickness | |
+| `Figure_2.R` | 2, S2, S4 | Manual-versus-automated validation scatter plots, cell density across bins and time | three CSVs from `Datasheet/validation/` |
+| `Figure_3.R` | 3 | Feature correlation heatmap with module detection, NMF rank selection, NMF feature and cell programs | |
+| `Figure_4.R` | 4 | PHATE, UMAP with centroids, cluster parameter heatmap, frequency across bins, phenotype assignment | PHATE via Python |
+| `Figure_5.R` | 5 | Transition cluster sub-clustering (T1/T2), dendrogram, enrichment dot plots, frequency heatmaps | `Fig4$df_phate_phenotype` |
+| `Figure_S6.R` | S6 | Animal-level metadata, cells per image and per animal, cluster and phenotype proportions | |
+| `Figure_S7.R` | S7 | Cluster proportions over time, clusters with largest change | |
+| `Figure_S8.R` | S8 | Cluster proportions by electrode thickness (6, 11, 16, 50) | |
+
+`Figure_1.R` builds its panel through `Fig1$plot_by_time_thickness()`, which
+takes `bins_to_show` (default `1:5`), `n_images_per_time`, `time_weeks`,
+`electrode_thickness`, `random`, `point_size`, `alpha` and `show_circles`. Call
+it with your own arguments rather than editing the body, and use
+`Fig1$short_filename()` to shorten labels. The example call at the foot of the
+script reproduces the published panel.
+
+Phenotype assignment in `Figure_4.R` and `Figure_5.R` maps specific cluster
+numbers to named morphological states through `case_when`. Those numbers are
+specific to this dataset and this value of k. Adjust them to your own data;
+they are a biological interpretation, not a computation.
 
 ---
 
-## 4. Outputs and File Generation
+## 4. Saving outputs
 
-All scripts store results in R lists. To save figures or tables to disk, uncomment the relevant `ggsave`, `write.csv`, or `pdf` lines. The following files are generated if you uncomment them:
-
-- **Figure 1**: `Radial_Bins_Time_Thickness.png`
-- **Figure 2**: Correlation plots (`Fig2_cor_area.png`, etc.) and density plots (`Fig2_density_all.png`, `Fig2_density_facet.png`)
-- **Figure 3**: 
-  - `Figure3A_Feature_Correlation_Modules.pdf`
-  - `Figure3B_NMF_Feature_Programs.pdf`
-  - `Figure3C_NMF_Program_Activity_per_Cell.pdf`
-  - `Figure3_NMF_Rank_Selection_Highlighted.pdf`
-  - `Figure3_Feature_Module_Assignments.csv`
-- **Figure 4**: `Fig4_UMAP_Clusters.png`, `Fig4_PHATE_2D.png`, `Fig4_Cluster_Heatmap.png`, etc.
-- **Figure 5**: `Fig5_PHATE_2D_Phenotype.png`, `Fig5_Dotplot_T1T2.png`, `Fig5_Heatmap_Bins.png`, `Fig5_Heatmap_Time.png`
-
-All filenames can be adjusted in the scripts.
+All results stay in memory as R objects. The `ggsave`, `write.csv` and `pdf`
+calls are commented out throughout, so **nothing is written to disk by
+default**. Uncomment the ones you want, at the end of each script.
 
 ---
 
-## 5. Customization and Troubleshooting
+## 5. Troubleshooting
 
-### Adjusting paths
-All file paths are currently absolute (e.g., `/Users/...`). You must change them to match your system. Look for lines like `import$folder_path_soma <- ...` and `read_csv(...)`. Use relative paths if you place everything inside the project folder.
+**`phate` Python module not found.** Run
+`reticulate::py_install("phate", pip = TRUE)`. If you use a virtualenv, point
+`use_virtualenv()` at it, as in `Figure_4.R`. Only Figures 4 and 5 need PHATE.
 
-### Changing parameters
-- **Sample size** for clustering: modify `sample_size` in Script 4.
-- **Number of clusters**: change `ClusterAnalysis$optimal_k` (default 13) in Script 4 and also in the phenotype mapping.
-- **Top parameters** for heatmaps: adjust `n_top` in Script 4 (cluster heatmap) and Script 5 (phenotype heatmap).
-- **PHATE parameters**: `knn`, `decay`, `gamma`, etc. can be tuned in Script 8.
+**`ClusterAnalysis_Filter not found`.** See the known issue above.
 
-### Common issues
+**Memory errors during NMF.** `Figure_3.R` downsamples to 10,000 cells by
+default. Reduce `n_cells_use` further if needed.
 
-1. **`phate` Python module not found**  
-   Run:  
-   ```r
-   library(reticulate)
-   py_install("phate", pip = TRUE)
-   ```
-   If you use a virtual environment, ensure `use_virtualenv()` points to the correct one (as in Script 8).
+**All metadata columns look wrong.** Your filenames do not have six
+underscore-separated fields. See the naming contract above.
 
-2. **Memory errors during NMF**  
-   The NMF step downsamples to 10,000 cells. If you have a very large dataset, you may need to reduce this further. Adjust `n_cells_use` in Script 7.
+**`Time_weeks` is full of `NA`.** Your timepoint labels are not in the
+`case_when` mapping in section 11 of `02_Import_Data.R`.
 
-3. **Missing columns**  
-   Some scripts assume specific column names (e.g., `Cluster`, `UMAP1`, `PHATE1_2D`). If you modified earlier steps, ensure these columns exist.
+**Missing column errors in a figure script.** The figure scripts assume
+columns created upstream (`Cluster`, `UMAP1`, `PHATE1_2D`, `Bin_Number_New`,
+`Impact_Region`). Confirm steps 2 to 4 completed without error.
 
-4. **Package conflicts**  
-   If you see errors like “function X is masked”, restart your R session and run the scripts in order without loading other packages manually.
+**Masked function warnings.** Restart the R session and run the scripts in
+order without loading other packages in between. The dependency list is large
+and several packages mask `dplyr` verbs.
 
 ---
 
 ## 6. Citation
 
-If you use this pipeline in your research, please cite:
-
-(MicroFace (2026))
-
----
-
-
+> Jariwala, V.D., Ponnamma, S., Ravi, V.M., Beck, J., Hofmann, U.G., and
+> Joseph, K. (2026). MicroFace maps microglial morphology remodeling, revealing
+> spatial zones and bifurcated trajectories during brain microinjury recovery.
+> *iScience* **29**, 116485. https://doi.org/10.1016/j.isci.2026.116485
