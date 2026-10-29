@@ -1,0 +1,26 @@
+# Tutorial data is downloaded from Zenodo, never committed.
+# The folders and their READMEs are tracked; everything a user drops in is not.
+2_Tutorial/01_Raw_Images/*
+2_Tutorial/03_Pre_processed_Images/*
+2_Tutorial/05_Quality_Check_Mask_Outputs/*
+2_Tutorial/06_Datasheet/*
+!2_Tutorial/01_Raw_Images/README.md
+!2_Tutorial/03_Pre_processed_Images/README.md
+!2_Tutorial/05_Quality_Check_Mask_Outputs/README.md
+!2_Tutorial/06_Datasheet/README.md
+
+# Analysis outputs
+2_Tutorial/07_RStudio_Analysis_Scripts/*.png
+2_Tutorial/07_RStudio_Analysis_Scripts/*.pdf
+2_Tutorial/07_RStudio_Analysis_Scripts/*.csv
+2_Tutorial/07_RStudio_Analysis_Scripts/*.rds
+
+# R / RStudio
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# OS
+.DS_Store
+Thumbs.db

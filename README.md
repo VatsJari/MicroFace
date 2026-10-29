@@ -2,156 +2,81 @@
 
 <img width="7916" height="4702" alt="cover_page_2" src="https://github.com/user-attachments/assets/48b1388d-c3ac-4b75-bba3-5bd5405f47e2" />
 
-MicroFace is an end-to-end workflow for quantifying microglial morphology at
-single-cell scale from Iba1 immunofluorescence images. It segments soma and
-arbor as separate objects, skeletonises the arbor, extracts a multidimensional
-morphometric feature set per cell, and resolves the resulting feature space
-into morphological states and their spatial organisation around a brain
-microinjury.
+MicroFace quantifies microglial morphology at single-cell scale from Iba1
+immunofluorescence images. It segments soma and arbor as **two separate
+objects**, skeletonises the arbor, extracts a multidimensional morphometric
+feature set per cell, and resolves that feature space into morphological states
+and their spatial organisation around a brain microinjury.
 
-The workflow reconstructed **over 250,000 microglia from more than 200 images**
+The approach reconstructed **over 250,000 microglia from more than 200 images**
 in the associated publication.
 
 ---
 
-## Which repository do I want?
+## Start here: which folder do you want?
 
-This project is split across two repositories with different purposes. Pick the
-one that matches what you are trying to do.
+| Folder | For | What it is |
+|--------|-----|------------|
+| **[1_Toolbox](1_Toolbox/)** | "I want to run MicroFace on my own images" | The two pipeline files, nothing else. A Fiji pre-processing macro and the CellProfiler segmentation and skeletonisation pipeline. |
+| **[2_Tutorial](2_Tutorial/)** | "Teach me how to use it, end to end" | A guided walkthrough on a small worked example, from raw image to clustered single-cell data. Start here if you are new. |
+| **[3_Manuscript_iScience_2026](3_Manuscript_iScience_2026/)** | "I am reviewing or reproducing the paper" | The exact scripts and pipelines behind the iScience 2026 figures, frozen as the record of the publication. |
 
-| | **MicroFace** (this repository) | **MicroFace_V2** |
-|---|---|---|
-| **Purpose** | Reproduce the published analysis | Apply the method to your own data |
-| **Form** | Ordered analysis scripts plus the exact Fiji and CellProfiler pipelines used | Installable R package with a documented function API |
-| **Use it when** | You are checking, reviewing, or rerunning the iScience paper | You have your own CellProfiler output and want the toolbox |
-| **Clustering** | k-means, k fixed at 13, as published | Gaussian mixture model by default, with k selection helpers |
-| **Stability** | Frozen as the record of the paper | Actively developed |
-| **Link** | you are here | https://github.com/VatsJari/MicroFace_V2 |
+If you are not sure, go to **[2_Tutorial](2_Tutorial/)**.
 
-The two are not interchangeable and will not give identical numbers. The
-parameters in this repository are the ones behind the published figures; V2 is
-a generalised reimplementation. If you are reviewing the paper, stay here.
+The toolbox and the manuscript folder are not interchangeable. The manuscript
+folder holds the parameters used for the published figures; the toolbox holds
+the current, generalised pipeline. They will not give identical numbers.
 
 ---
 
-## Experimental design
+## What MicroFace measures
 
-A rat model of neuroinflammation was used to develop an automated workflow for
-quantifying microglia morphology over an extended implantation period. The
-effect of flexible neural probe implantation on microglial morphology was
-investigated in order to identify features sensitive to different activation
-states. Animals were sacrificed across a time course from 4 hours to 18 weeks
-post-implantation, and cortical sections were processed by immunohistochemistry
-for Iba1.
+Each cell yields soma-level shape, whole-cell shape, and skeleton topology,
+which are then combined into derived features. The ones that carry most of the
+biological signal:
 
-Images were pre-processed in Fiji, then segmented and skeletonised with a
-CellProfiler pipeline that resolves soma and arbor independently. The resulting
-per-cell feature tables were filtered, reduced and clustered in R, and each
-cell was additionally assigned a radial distance from the implant centre so
-that morphological state could be related to spatial position.
+| Feature | Definition | Interpretation |
+|---------|------------|----------------|
+| Ramification index | perimeter-to-area, normalised against a circle of equal area | arbor complexity independent of cell size; falls as cells de-ramify |
+| Branch endpoints, trunks, non-trunk branches | counted outward along the skeleton from the soma | arbor topology, the most direct readout of surveillance capacity |
+| Skeleton length | total skeleton length per cell | absolute process extent |
+| Area ratio | whole-cell area divided by soma area | territory per unit cell body, a soma-versus-arbor rebalancing readout |
+| Solidity, circularity, form factor | shape compactness descriptors | sensitive to the shift toward amoeboid morphology |
+| Length-to-width and aspect ratio | Feret and axis ratios, soma and cell | elongation and polarisation, captures rod-like morphology |
 
----
-
-## Repository layout
-
-```
-MicroFace/
-├── Image processing analysis/        STEP 1 and 2: image to feature table
-│   ├── Fiji/
-│   │   ├── Auto_Brightness.ijm       batch pre-processing of raw TIFFs
-│   │   ├── Injury_Center.ijm         manual implant-centre picking -> coordinates.csv
-│   │   ├── Cluster_Crop.ijm          per-cluster cell crops (figure panels)
-│   │   └── Cluster_Crop_montage.ijm  crops plus per-cluster stacks and montages
-│   ├── Cellprofiler/
-│   │   ├── The_Skeleton_Pipeline.cpproj   main segmentation and skeletonisation
-│   │   └── Valdidation_Pipeline.cpproj    manual-versus-automated validation
-│   └── README.md                     image-processing instructions
-│
-└── Data analysis/                    STEP 3: feature table to morphological states
-    ├── Scripts/
-    │   ├── 01_Load_packages.R        install and load dependencies
-    │   ├── 02_Import_Data.R          import, merge, metadata, derived features
-    │   ├── 03_Wins_Filtering_PCA.R   winsorise, outlier removal, PCA
-    │   ├── 04_Clustering_UMAP.R      k-means (k=13) and UMAP
-    │   ├── Figure_1.R                radial bins (also Figure S4)
-    │   ├── Figure_2.R                validation and density (also Figures S2, S4)
-    │   ├── Figure_3.R                feature correlation modules and NMF
-    │   ├── Figure_4.R                PHATE, cluster scoring, phenotypes
-    │   ├── Figure_5.R                transition sub-clustering and enrichment
-    │   ├── Figure_S6.R               animal-level metadata and proportions
-    │   ├── Figure_S7.R               temporal dynamics
-    │   ├── Figure_S8.R               electrode thickness
-    │   └── TBI_Manuscript.Rproj      RStudio project
-    ├── Datasheet/
-    │   ├── Injury_Center/coordinates.csv       implant centres per image
-    │   ├── Meta_data_file/                    animal and image summaries
-    │   └── validation/                        manual-versus-automated tables
-    └── README.md                     analysis instructions, step by step
-```
+Because soma and arbor are segmented independently, soma enlargement and arbor
+retraction are measured separately rather than confounded in a single
+whole-cell mask. That separation is what lets the method resolve intermediate
+states instead of forcing cells into a ramified-versus-amoeboid dichotomy.
 
 ---
 
-## Workflow at a glance
+## Imaging data
 
-```
-raw Iba1 TIFFs
-     |
-     |  Fiji: Auto_Brightness.ijm            16-bit, rolling-ball 50, contrast 0.35%
-     v
-pre-processed TIFFs
-     |
-     |  CellProfiler: The_Skeleton_Pipeline.cpproj
-     v
-per-image soma and cell tables  +  QC overlays
-     |
-     |  Fiji: Injury_Center.ijm              -> coordinates.csv
-     v
-R: 01 -> 02 -> 03 -> 04                      merge, filter, PCA, cluster
-     |
-     v
-R: Figure_1 ... Figure_S8                    published figures
-```
+This repository is **code only**. The images and feature tables are far too
+large to host here (the pre-processed images and QC overlays alone exceed 6 GB).
+
+All data for the tutorial is deposited on Zenodo. See
+**[2_Tutorial/README.md](2_Tutorial/README.md)** for the link and for which
+folders to download.
+
+Public transcriptomic datasets referenced in the paper are available through
+GEO. Anything else required for reanalysis can be requested from the
+corresponding author.
 
 ---
 
-## Getting started
+## Also available: MicroFaceV2
 
-Full step-by-step instructions, including what each script consumes and
-produces, live in the two folder READMEs:
-
-- **[Image processing analysis/README.md](Image%20processing%20analysis/README.md)** for the Fiji and CellProfiler stages
-- **[Data analysis/README.md](Data%20analysis/README.md)** for the R stages
-
-Read those before running anything. Two things will otherwise catch you out:
-
-1. **All file paths in the R scripts are absolute** and point at the original
-   author's machine (`/Users/vatsaljariwala/...`). You must edit them.
-2. **The per-image feature tables are not in this repository.** Scripts
-   `02_Import_Data.R` onward expect folders of CellProfiler output
-   (`Datasheet/df_soma/` and `Datasheet/df_cell/`) that are too large to host
-   here. See the data availability note below.
-
----
-
-## Data availability
-
-This repository holds code, pipelines, and the small reference tables
-(implant-centre coordinates, validation tables, metadata summaries). It does
-**not** hold the imaging data or the per-image feature tables.
-
-- Representative raw images, pre-processed images, QC overlays, and the
-  per-object feature tables are deposited separately as an executable archive
-  with its own step-by-step README.
-- Public transcriptomic datasets referenced in the paper are available through
-  GEO.
-- Anything else required for reanalysis can be requested from the
-  corresponding author.
+[**MicroFace_V2**](https://github.com/VatsJari/MicroFace_V2) is an installable
+R package that wraps the analysis half of this workflow in a documented
+function API, with Gaussian mixture clustering and k-selection helpers. Use it
+when you want to script the analysis rather than follow it step by step. It is
+a generalised reimplementation and does not reproduce the published numbers.
 
 ---
 
 ## Citation
-
-If you use MicroFace, please cite:
 
 > Jariwala, V.D., Ponnamma, S., Ravi, V.M., Beck, J., Hofmann, U.G., and
 > Joseph, K. (2026). MicroFace maps microglial morphology remodeling, revealing
@@ -165,5 +90,5 @@ If you use MicroFace, please cite:
 
 Corresponding author: kevin.joseph@uniklinik-freiburg.de
 
-For problems with the code specifically, please open an issue on this
-repository rather than emailing, so that the answer is visible to other users.
+For problems with the code, please open an issue on this repository rather than
+emailing, so the answer is visible to other users.
