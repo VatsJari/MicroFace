@@ -47,7 +47,7 @@ in step 7, but the scripts run top to bottom as supplied.
 
 This repository is code only. The images and feature tables live on Zenodo:
 
-**ZENODO_LINK_PENDING**
+**[Zenodo archive &middot; 10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
 
 The Zenodo archive uses the same seven numbered folders as this tutorial, so
 you can download a folder and drop it straight into the matching folder here.

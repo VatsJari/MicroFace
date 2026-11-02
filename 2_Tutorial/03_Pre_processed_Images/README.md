@@ -6,7 +6,7 @@ The 12 pre-processed TIFFs from step 2, written under their original filenames.
 The deposited copy is 3.5 GB, so if you can run step 2 yourself, do that
 instead of downloading.
 
-**Zenodo: ZENODO_LINK_PENDING**
+**Zenodo: [10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
 
 These are the input to CellProfiler in step 4. Do not feed the raw images from
 `01_Raw_Images` to step 4; the pipeline's thresholds assume pre-processed input.

@@ -3,7 +3,7 @@
 **Contents: empty. Produced by step 4, or download from Zenodo to compare
 against ours (3.3 GB).**
 
-**Zenodo: ZENODO_LINK_PENDING**
+**Zenodo: [10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
 
 Three overlays per image, 36 files for 12 images. **Look at all of them before
 quantifying anything.**

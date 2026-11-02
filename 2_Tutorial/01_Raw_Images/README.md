@@ -6,7 +6,7 @@ Twelve raw single-channel Iba1 immunofluorescence TIFFs, about 23 MB each,
 264 MB in total. Download `01_Raw_Images` from the Zenodo archive and place the
 TIFFs in this folder.
 
-**Zenodo: ZENODO_LINK_PENDING**
+**Zenodo: [10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
 
 ```
 R<animal>_<timepoint>_<section>_Iba1_<image>.tif

@@ -2,7 +2,7 @@
 
 **Contents: empty. Produced by step 4, or download from Zenodo (23 MB).**
 
-**Zenodo: ZENODO_LINK_PENDING**
+**Zenodo: [10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
 
 This is the smallest download that still lets you do real work. If you only
 want the morphometric analysis, take this folder and go straight to step 7.
