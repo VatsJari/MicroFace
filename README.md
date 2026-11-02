@@ -101,7 +101,7 @@ If you use the deposited dataset, please cite it as well:
 
 ## Contact
 
-Corresponding author: kevin.joseph@uniklinik-freiburg.de
+vatsjari@gmail.com 
 
 For problems with the code, please open an issue on this repository rather than
 emailing, so the answer is visible to other users.
