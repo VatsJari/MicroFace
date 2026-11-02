@@ -1,6 +1,6 @@
 # MicroFace: automated toolbox for microglia morphology analysis
 
-<img width="7916" height="4702" alt="cover_page_2" src="https://github.com/user-attachments/assets/48b1388d-c3ac-4b75-bba3-5bd5405f47e2" />
+<img width="790" height="470" alt="cover_page_2" src="https://github.com/user-attachments/assets/48b1388d-c3ac-4b75-bba3-5bd5405f47e2" />
 
 MicroFace quantifies microglial morphology at single-cell scale from Iba1
 immunofluorescence images. It segments soma and arbor as **two separate
