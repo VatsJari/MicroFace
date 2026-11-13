@@ -354,7 +354,7 @@ if (!all(needed %in% colnames(ClusterAnalysis$final_df_full))) {
            aes(x = Center_X_soma, y = Center_Y_soma, color = Cluster)) +
     geom_point(size = 0.4, alpha = 0.7) +
     scale_color_manual(values = palette_for_plot) +
-    facet_wrap(~ ImageNumber_cell, scales = "free", ncol = 4) +
+    facet_wrap(~ ImageNumber_cell, scales = "free", ncol = 3) +
     labs(title = paste0("Cluster distribution by image (k = ",
                         ClusterAnalysis$optimal_k, ")"),
          x = "Center X (soma)", y = "Center Y (soma)") +

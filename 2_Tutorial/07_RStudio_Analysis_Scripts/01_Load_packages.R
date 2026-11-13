@@ -10,11 +10,11 @@
 # List of required CRAN packages (original list + additional packages from user code)
 packages <- list()
 packages$my_packages <-  c(
-  "dplyr", "MASS", "gridExtra", "ggplot2", "patchwork", "ClusterR", "factoextra",
-  "umap", "RColorBrewer", "cluster", "ggrepel", "uwot", "readxl", "ggpubr",
-  "cowplot", "corrplot", "readr", "pheatmap", "NMF", "viridis", "reshape2",
-  "reticulate", "phateR", "Rmagic", "dendsort", "plotly", "vroom", "tidyr",
-  "stringr", "scales", "Seurat")
+  "dplyr", "ggplot2", "patchwork", "ClusterR", "factoextra",
+  "umap",  "cluster", "ggrepel", "uwot", "readxl", "ggpubr",
+  "cowplot", "corrplot", "readr", "pheatmap", "NMF", "viridis",
+  "plotly", "vroom", "tidyr",
+  "stringr")
 # Identify packages that are not yet installed
 packages$not_installed <- packages$my_packages[!(packages$my_packages %in% installed.packages()[ , "Package"])]
 
@@ -27,7 +27,7 @@ if(length(packages$not_installed)) install.packages(packages$not_installed)
 # Ensure BiocManager is installed and set to version 3.17
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
-BiocManager::install(version = "3.17")
+BiocManager::install()
 
 
 ##### 4. LOAD ALL PACKAGES AT ONCE #####
