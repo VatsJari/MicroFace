@@ -1,8 +1,8 @@
 # 06_Datasheet
 
-**Contents: empty. Produced by step 4, or download from Zenodo (25 MB).**
+**Contents: empty. Produced by step 4, or extracted from the Zenodo archive (25 MB once extracted).**
 
-**Zenodo: [10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
+**Zenodo: [10.5281/zenodo.24278540](https://doi.org/10.5281/zenodo.24278540)**
 
 This is the smallest download that still lets you do real work. If you only
 want the morphometric analysis, take this folder and go straight to step 7.
