@@ -1,9 +1,9 @@
 # 05_Quality_Check_Mask_Outputs
 
-**Contents: empty. Produced by step 4, or download from Zenodo to compare
+**Contents: empty. Produced by step 4, or extracted from the Zenodo archive to compare
 against ours (3.3 GB).**
 
-**Zenodo: [10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
+**Zenodo: [10.5281/zenodo.24278540](https://doi.org/10.5281/zenodo.24278540)**
 
 Four files per image, 48 for 12 images: three overlays to look at, and the
 binary mask they were built from. **Look at all three overlays before
