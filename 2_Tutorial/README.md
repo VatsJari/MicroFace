@@ -303,8 +303,9 @@ by the previous one, so they cannot be run out of order or in isolation.
 
 ### `01_Load_packages.R`
 
-Installs missing CRAN packages and loads them. Note it pins Bioconductor to
-release 3.17; on a newer R, edit or comment that line.
+Installs missing CRAN packages and loads them. Everything the analysis calls is
+on CRAN; no step uses a Bioconductor package. Mahalanobis distance, PCA and
+k-means come from `stats` in base R, and the embedding from `uwot`.
 
 ### `02_Import_Data.R`
 
