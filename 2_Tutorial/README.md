@@ -98,7 +98,8 @@ before you quantify anything from it.
 **Folder:** [`01_Raw_Images/`](01_Raw_Images/)
 
 Twelve single-channel Iba1 TIFFs spanning four post-implantation intervals
-(4 hpi, 14 dpi, 8 wpi, 18 wpi), about 23 MB each.
+(4 hpi, 14 dpi, 8 wpi, 18 wpi), 8-bit, about 5,350 x 4,300 pixels each at
+0.44 um per pixel, roughly 23 MB each.
 
 ```
 R<animal>_<timepoint>_<section>_Iba1_<image>.tif
