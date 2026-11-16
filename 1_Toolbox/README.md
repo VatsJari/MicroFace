@@ -160,11 +160,15 @@ left by the previous one, so they cannot be run out of order or in isolation.
 
 | Script | Does | Key parameter |
 |--------|------|---------------|
-| `01_Load_packages.R` | installs and loads dependencies | Bioconductor pinned to 3.17; edit on a newer R |
+| `01_Load_packages.R` | installs missing CRAN packages and loads them | none; every dependency is on CRAN |
 | `02_Import_Data.R` | merges the soma and cell tables, derives composite features | **two file paths at the top, edit these first** |
 | `03_Wins_Filtering_PCA.R` | winsorisation, Mahalanobis filtering, median/IQR scaling, PCA | `max_remove_pct = 0.005` |
 | `04_Clustering_UMAP.R` | k selection, k-means, UMAP for display | `default_k = 6`, override after seeing the elbow plot |
 | `05_Morpho_Enrichment.R` | per-cluster feature enrichment, as row z-scores with adjusted p values | none; reads what `04` produced |
+
+Everything the analysis calls is on CRAN. No step uses a Bioconductor package:
+Mahalanobis distance, PCA and k-means come from `stats` in base R, and the
+embedding from `uwot`.
 
 `02_Import_Data.R` opens with two paths that must point at the
 `*Soma_Filtered.txt` and `*Cell.txt` tables **from the same CellProfiler run**.
