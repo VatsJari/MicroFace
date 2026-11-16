@@ -2,8 +2,9 @@
 
 **Contents: empty. Download from Zenodo.**
 
-Twelve raw single-channel Iba1 immunofluorescence TIFFs, about 23 MB each,
-264 MB in total. Download `01_Raw_Images` from the Zenodo archive and place the
+Twelve raw single-channel Iba1 immunofluorescence TIFFs, 8-bit, about
+5,350 x 4,300 pixels each at 0.44 um per pixel, roughly 23 MB each and 264 MB
+in total. Download `01_Raw_Images` from the Zenodo archive and place the
 TIFFs in this folder.
 
 **Zenodo: [10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
