@@ -1,6 +1,6 @@
 # 03_Pre_processed_Images
 
-**Contents: empty. Either produce them in step 2, or download from Zenodo.**
+**Contents: empty. Either produce them in step 2, or extract them from the Zenodo archive.**
 
 The 12 pre-processed TIFFs from step 2, 8-bit, written under their original
 filenames with **`_Processed`** appended:
@@ -12,7 +12,7 @@ R33_8wpi_11_Iba1_3.tif   ->   R33_8wpi_11_Iba1_3_Processed.tif
 The deposited copy is 264 MB. If you can run step 2 yourself, do that instead of
 downloading.
 
-**Zenodo: [10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
+**Zenodo: [10.5281/zenodo.24278540](https://doi.org/10.5281/zenodo.24278540)**
 
 These are the input to CellProfiler in step 4. Do not feed the raw images from
 `01_Raw_Images` to step 4; the pipeline's thresholds assume pre-processed input.
