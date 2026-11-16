@@ -9,9 +9,13 @@ In Fiji: `Plugins > Macros > Run...`, select the macro, then give it
 `01_Raw_Images` as input and `03_Pre_processed_Images` as output. It runs in
 batch mode over every file.
 
-Three operations per image: contrast normalisation
+Per image: convert to 8-bit if it is not already, then contrast normalisation
 (`saturated=1.0 normalize`), rolling-ball background subtraction
-(`rolling=50`), and subtraction of a radius-20 median-filtered copy.
+(`rolling=50`), and subtraction of a radius-20 median-filtered copy. The result
+is confirmed 8-bit and written as TIFF with **`_Processed`** appended to the
+original file name, so raw and processed images stay distinguishable and a file
+that has already been through the macro is visibly not a candidate for a second
+pass. Files with an unrecognised extension are skipped and reported in the log.
 
 The median subtraction is the step that decides whether step 4 works. A
 radius-20 median is a local background estimate well above the width of a
