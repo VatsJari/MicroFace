@@ -35,9 +35,9 @@ CellProfiler runs.
 | [CellProfiler](https://cellprofiler.org/) | 4.2.x | step 4 |
 | [R](https://www.r-project.org/) + [RStudio](https://posit.co/download/rstudio-desktop/) | R 4.0 or later | step 7 |
 
-The deposit totals about **3.9 GB**, of which the quality-control folder is
-3.3 GB. Allow roughly 8 GB of free disk space for the download and its
-extraction, and about 8 GB of RAM for the R step.
+The download is 546 MB and expands to about **3.8 GB**, of which the
+quality-control folder is 3.3 GB. Allow roughly 5 GB of free disk space for
+the archive and its extraction, and about 8 GB of RAM for the R step.
 
 No prior CellProfiler experience is assumed. Some familiarity with R will help
 in step 7, but the scripts run top to bottom as supplied.
@@ -48,15 +48,17 @@ in step 7, but the scripts run top to bottom as supplied.
 
 This repository is code only. The images and feature tables live on Zenodo:
 
-**[Zenodo archive &middot; 10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
+**[Zenodo archive &middot; 10.5281/zenodo.24278540](https://doi.org/10.5281/zenodo.24278540)**
 
-The Zenodo archive uses the same seven numbered folders as this tutorial, so
-you can download a folder and drop it straight into the matching folder here.
+The record holds one file, `Archive_Version_2.zip` (546 MB). It extracts to
+the same seven numbered folders as this tutorial, so each one drops straight
+into the matching folder here.
 
-You do not need all of it. Pick by how far you want to go:
+You will not need all of it. Pick your entry point and delete the rest after
+extracting:
 
-| If you want to | Download | Size |
-|----------------|----------|------|
+| If you want to | Use | Size once extracted |
+|----------------|-----|---------------------|
 | Follow every step from raw images | `01_Raw_Images` | 264 MB |
 | Skip Fiji, start at CellProfiler | `03_Pre_processed_Images` | 264 MB |
 | Skip imaging, go straight to the R analysis | `06_Datasheet` | 25 MB |
@@ -98,8 +100,7 @@ before you quantify anything from it.
 **Folder:** [`01_Raw_Images/`](01_Raw_Images/)
 
 Twelve single-channel Iba1 TIFFs spanning four post-implantation intervals
-(4 hpi, 14 dpi, 8 wpi, 18 wpi), 8-bit, about 5,350 x 4,300 pixels each at
-0.44 um per pixel, roughly 23 MB each.
+(4 hpi, 14 dpi, 8 wpi, 18 wpi), about 23 MB each.
 
 ```
 R<animal>_<timepoint>_<section>_Iba1_<image>.tif
