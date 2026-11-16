@@ -11,7 +11,7 @@ left by the previous one, so they cannot be run out of order or in isolation.
 
 | Script | Does | Key parameter |
 |--------|------|---------------|
-| `01_Load_packages.R` | installs and loads dependencies | Bioconductor pinned to 3.17 |
+| `01_Load_packages.R` | installs missing CRAN packages and loads them | none; every dependency is on CRAN |
 | `02_Import_Data.R` | merges soma and cell tables, derives features | **two file paths at the top, edit these first** |
 | `03_Wins_Filtering_PCA.R` | winsorises, removes outliers, PCA | `max_remove_pct = 0.005` |
 | `04_Clustering_UMAP.R` | k-means and UMAP | `default_k = 6`, override after seeing the elbow plot |
