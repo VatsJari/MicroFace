@@ -17,7 +17,7 @@ in the associated publication.
 
 | Folder | For | What it is |
 |--------|-----|------------|
-| **[1_Toolbox](1_Toolbox/)** | "I want to run MicroFace on my own images" | The two pipeline files, nothing else. A Fiji pre-processing macro and the CellProfiler segmentation and skeletonisation pipeline. |
+| **[1_Toolbox](1_Toolbox/)** | "I want to run MicroFace on my own images" | The pipeline itself, with no example data and no figure code. A Fiji pre-processing macro, the CellProfiler segmentation and skeletonisation pipeline, and the five R analysis scripts. |
 | **[2_Tutorial](2_Tutorial/)** | "Teach me how to use it, end to end" | A guided walkthrough on a small worked example, from raw image to clustered single-cell data. Start here if you are new. |
 | **[3_Manuscript_iScience_2026](3_Manuscript_iScience_2026/)** | "I am reviewing or reproducing the paper" | The exact scripts and pipelines behind the iScience 2026 figures, frozen as the record of the publication. |
 
@@ -54,7 +54,8 @@ states instead of forcing cells into a ramified-versus-amoeboid dichotomy.
 ## Imaging data
 
 This repository is **code only**. The images and feature tables are far too
-large to host here (the pre-processed images and QC overlays alone exceed 6 GB).
+large to host here: the quality-control overlays and masks alone are 3.3 GB,
+and the deposit totals about 3.9 GB.
 
 All data for the tutorial is deposited on Zenodo:
 
