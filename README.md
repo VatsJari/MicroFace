@@ -55,15 +55,16 @@ states instead of forcing cells into a ramified-versus-amoeboid dichotomy.
 
 This repository is **code only**. The images and feature tables are far too
 large to host here: the quality-control overlays and masks alone are 3.3 GB,
-and the deposit totals about 3.9 GB.
+and the deposit is a 546 MB download that expands to about 3.8 GB.
 
 All data for the tutorial is deposited on Zenodo:
 
-**[10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
+**[10.5281/zenodo.24278540](https://doi.org/10.5281/zenodo.24278540)**
 
-The archive uses the same seven numbered folders as
-[2_Tutorial](2_Tutorial/), so a downloaded folder drops straight into the
-matching one. See [2_Tutorial/README.md](2_Tutorial/README.md) for which
+It is a single file, `Archive_Version_2.zip` (546 MB), which extracts to the
+same seven numbered folders as [2_Tutorial](2_Tutorial/), so each one drops
+straight into the matching folder here. See
+[2_Tutorial/README.md](2_Tutorial/README.md) for which
 folders you actually need, which depends on how far through the workflow you
 want to go.
 
@@ -94,9 +95,10 @@ a generalised reimplementation and does not reproduce the published numbers.
 If you use the deposited dataset, please cite it as well:
 
 > Jariwala, V.D., Ponnamma, S., Ravi, V.M., Beck, J., Hofmann, U.G., and
-> Joseph, K. (2026). MicroFace: single-cell microglial morphology pipeline,
-> example dataset and analysis scripts [Data set]. *Zenodo*.
-> https://doi.org/10.5281/zenodo.20325902
+> Joseph, K. (2026). MicroFace maps microglial morphology remodeling,
+> revealing spatial zones and bifurcated trajectories during brain injury
+> recovery (v2) [Data set]. *Zenodo*.
+> https://doi.org/10.5281/zenodo.24278540
 
 ---
 
