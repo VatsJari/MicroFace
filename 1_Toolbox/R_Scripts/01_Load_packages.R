@@ -2,40 +2,38 @@
 # Package Management Script for RStudio Project
 # ============================================================================
 # This script checks for required packages, installs missing ones from CRAN,
-# Bioconductor, and GitHub, and then loads all packages for use.
+# and then loads all packages for use.
+#
+# Every package the MicroFace analysis scripts call is on CRAN. No step of
+# this workflow uses a Bioconductor package, so no Bioconductor setup is
+# needed. Mahalanobis distance, PCA and k-means are computed with stats::
+# functions from base R.
 # ============================================================================
 
 ##### 1. CHECK FOR CRAN PACKAGES AND INSTALL IF NOT AVAILABLE #####
 
-# List of required CRAN packages (original list + additional packages from user code)
+# List of required CRAN packages.
+# The first block is called directly by scripts 02 to 05; the second block is
+# loaded for convenience and for user extensions of the analysis.
 packages <- list()
-packages$my_packages <-  c(
-  "dplyr", "ggplot2", "patchwork", "ClusterR", "factoextra",
-  "umap",  "cluster", "ggrepel", "uwot", "readxl", "ggpubr",
+packages$my_packages <- c(
+  # called directly by 02_Import_Data.R to 05_Morpho_Enrichment.R
+  "vroom", "dplyr", "tidyr", "tibble",
+  "ggplot2", "patchwork", "scales", "ggrepel",
+  "gridExtra", "RColorBrewer", "uwot",
+  # available for extending the analysis
+  "ClusterR", "factoextra", "umap", "cluster", "readxl", "ggpubr",
   "cowplot", "corrplot", "readr", "pheatmap", "NMF", "viridis",
-  "plotly", "vroom", "tidyr",
-  "stringr")
+  "plotly", "stringr")
+
 # Identify packages that are not yet installed
 packages$not_installed <- packages$my_packages[!(packages$my_packages %in% installed.packages()[ , "Package"])]
 
 # Install missing CRAN packages (if any)
-if(length(packages$not_installed)) install.packages(packages$not_installed)
+if (length(packages$not_installed)) install.packages(packages$not_installed)
 
 
-##### 2. BIOCONDUCTOR SETUP AND PACKAGE INSTALLATION #####
+##### 2. LOAD ALL PACKAGES AT ONCE #####
 
-# Ensure BiocManager is installed and set to version 3.17
-if (!require("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-BiocManager::install()
-
-
-##### 4. LOAD ALL PACKAGES AT ONCE #####
-
-# Load every package listed in my_packages (including duplicates)
-lapply(packages$my_packages, require, character.only = TRUE)
-
-# Note: Some packages installed from Bioconductor or GitHub (e.g., ggrast, ggdark, ggstream, moonBook, webr)
-# are not included in the loading loop because they were added after the initial list.
-# Load them manually if needed in subsequent scripts.
-
+# Load every package listed in my_packages
+invisible(lapply(packages$my_packages, require, character.only = TRUE))
