@@ -9,8 +9,8 @@ import <- list()
 
 ##### 1. SET FILE PATHS FOR SOMA AND CELL DATA (TWO FILES) #####
 
-import$file_path_soma <- "/Users/vatsjari/Desktop/Archive/06_Datasheet/_TestSoma_Filtered.txt"
-import$file_path_cell <- "/Users/vatsjari/Desktop/Archive/06_Datasheet/_TestCell.txt"
+import$file_path_soma <- "/FOLDER_PATH_TO_/Test_Soma_Filtered.txt"
+import$file_path_cell <- "/FOLDER_PATH_TO_/Test_Cell.txt"
 
 # ============================================================================
 # Data Import and Preprocessing Script for Microglial Morphology Analysis
