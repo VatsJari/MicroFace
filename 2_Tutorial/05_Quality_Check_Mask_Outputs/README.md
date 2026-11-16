@@ -5,7 +5,8 @@ against ours (3.3 GB).**
 
 **Zenodo: [10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
 
-Three overlays per image, 36 files for 12 images. **Look at all of them before
+Four files per image, 48 for 12 images: three overlays to look at, and the
+binary mask they were built from. **Look at all three overlays before
 quantifying anything.**
 
 | Suffix | Shows | Failure looks like |
@@ -13,6 +14,17 @@ quantifying anything.**
 | `*OIC.tiff` | whole-cell objects over the image | arbors fused between neighbours, or truncated |
 | `*SWS.png` | skeleton with soma overlaid | broken skeleton, spurious loops, skeleton off-centre |
 | `*QC.png` | cell and soma outlines on the original | soma mask inflated into proximal processes |
+| `*MASK.png` | the binary whole-cell mask itself | not an overlay, and not an analysis input |
+
+File names carry the `_Processed` suffix of the image they came from, for
+example `R33_8wpi_11_Iba1_3_Processed_QC.png`.
+
+`*MASK.png` is kept so that the exact segmented foreground underlying the
+feature tables travels with them. It is what lets a segmentation be re-measured
+later, compared against another method on the same fields, or taken into other
+software without rerunning the pipeline, and it is the image to open when an
+overlay looks wrong and it is unclear whether the fault is in the mask or in the
+object assignment built on top of it.
 
 This folder exists because segmentation failure is far easier to see than to
 detect statistically, and because it distorts the derived ratios more than the
