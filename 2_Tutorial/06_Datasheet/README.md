@@ -1,6 +1,6 @@
 # 06_Datasheet
 
-**Contents: empty. Produced by step 4, or download from Zenodo (23 MB).**
+**Contents: empty. Produced by step 4, or download from Zenodo (25 MB).**
 
 **Zenodo: [10.5281/zenodo.20325902](https://doi.org/10.5281/zenodo.20325902)**
 
@@ -9,14 +9,17 @@ want the morphometric analysis, take this folder and go straight to step 7.
 
 Tab-delimited, one row per object.
 
+File names begin with the prefix you set in `ExportToSpreadsheet` at step 4.
+The deposited copy was exported with `Test_`.
+
 | File | Rows | Role |
 |------|------|------|
-| `_TestSoma_Filtered.txt` | 18,680 | **analysis input**: soma shape + skeleton topology |
-| `_TestCell.txt` | 18,680 | **analysis input**: whole-cell shape |
-| `_TestSoma_Merged.txt` | 19,373 | intermediate, provenance only |
-| `_TestSoma_first.txt` | 20,446 | intermediate, provenance only |
-| `_TestImage.txt` | 12 | per-image counts, thresholds, module timings |
-| `_TestExperiment.txt` | 318 | run provenance, full pipeline text |
+| `Test_Soma_Filtered.txt` | 18,680 | **analysis input**: soma shape + skeleton topology |
+| `Test_Cell.txt` | 18,680 | **analysis input**: whole-cell shape |
+| `Test_Soma_Merged.txt` | 19,373 | intermediate, provenance only |
+| `Test_Soma_first.txt` | 20,446 | intermediate, provenance only |
+| `Test_Image.txt` | 12 | per-image counts, thresholds, module timings |
+| `Test_Experiment.txt` | 338 | run provenance, full pipeline text |
 | `Injury_Center.csv` | 291 | implant centre coordinates |
 
 Only the first two are read by the R scripts. Soma pairs to cell on
