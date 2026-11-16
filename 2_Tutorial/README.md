@@ -35,8 +35,9 @@ CellProfiler runs.
 | [CellProfiler](https://cellprofiler.org/) | 4.2.x | step 4 |
 | [R](https://www.r-project.org/) + [RStudio](https://posit.co/download/rstudio-desktop/) | R 4.0 or later | step 7 |
 
-About **8 GB of free disk space** for the full download, and roughly 8 GB of
-RAM for the R step.
+The deposit totals about **3.9 GB**, of which the quality-control folder is
+3.3 GB. Allow roughly 8 GB of free disk space for the download and its
+extraction, and about 8 GB of RAM for the R step.
 
 No prior CellProfiler experience is assumed. Some familiarity with R will help
 in step 7, but the scripts run top to bottom as supplied.
@@ -57,8 +58,8 @@ You do not need all of it. Pick by how far you want to go:
 | If you want to | Download | Size |
 |----------------|----------|------|
 | Follow every step from raw images | `01_Raw_Images` | 264 MB |
-| Skip Fiji, start at CellProfiler | `03_Pre_processed_Images` | 3.5 GB |
-| Skip imaging, go straight to the R analysis | `06_Datasheet` | 23 MB |
+| Skip Fiji, start at CellProfiler | `03_Pre_processed_Images` | 264 MB |
+| Skip imaging, go straight to the R analysis | `06_Datasheet` | 25 MB |
 | Compare your segmentation against ours | `05_Quality_Check_Mask_Outputs` | 3.3 GB |
 
 **If you are short on time or disk, download `06_Datasheet` only** and start at
@@ -72,16 +73,16 @@ for. You can return to the imaging steps later.
 ```
 01_Raw_Images                  12 raw Iba1 TIFFs
       |
-      |  02  Fiji macro                    contrast, background, median subtraction
+      |  02  Fiji macro                    8-bit, contrast, background, median subtraction
       v
-03_Pre_processed_Images
+03_Pre_processed_Images        12 *_Processed.tif
       |
       |  04  CellProfiler pipeline         soma + arbor segmentation, skeletonisation
       v
-05_Quality_Check_Mask_Outputs  overlays: look at these
+05_Quality_Check_Mask_Outputs  3 overlays + 1 binary mask per image: look at these
 06_Datasheet                   per-object feature tables
       |
-      |  07  R scripts                     filter, PCA, cluster, UMAP
+      |  07  R scripts                     filter, PCA, cluster, UMAP, enrichment
       v
 clustered single-cell morphology
 ```
@@ -121,17 +122,20 @@ In Fiji: `Plugins > Macros > Run...`, select the macro. It asks for an input
 folder (`01_Raw_Images`) and an output folder (`03_Pre_processed_Images`), then
 runs in batch mode.
 
-Three operations per image:
+Per image:
 
-1. **Enhance Contrast** (`saturated=1.0 normalize`). Equalises dynamic range
+1. **Convert to 8-bit** if the image is not already, so every image enters the
+   pipeline on the same intensity scale regardless of acquisition bit depth.
+2. **Enhance Contrast** (`saturated=1.0 normalize`). Equalises dynamic range
    across sections stained and imaged in different sessions, so one adaptive
    threshold works for all of them.
-2. **Subtract Background** (`rolling=50`). Removes the low-frequency
+3. **Subtract Background** (`rolling=50`). Removes the low-frequency
    autofluorescence pedestal.
-3. **Median subtraction.** Duplicate the image, median filter the duplicate at
+4. **Median subtraction.** Duplicate the image, median filter the duplicate at
    **radius 20**, subtract it from the original.
+5. **Write out** as 8-bit TIFF with **`_Processed`** appended to the file name.
 
-Step 3 is the one worth understanding. A radius-20 median image is a local
+Step 4 is the one worth understanding. A radius-20 median image is a local
 background estimate at a spatial scale well above the width of a microglial
 process, so subtracting it removes diffuse haze and non-specific staining while
 leaving thin ramifications intact.
@@ -147,14 +151,19 @@ should still be visible and continuous, background should be flatter. If
 processes have thinned or broken, the median radius is too small for your pixel
 size.
 
+Keep the input and output folders separate. A file that already carries
+`_Processed` is processed a second time if it is sitting in the input folder,
+which is what happens when both point at the same place.
+
 ---
 
 ## Step 3: the pre-processed images
 
 **Folder:** [`03_Pre_processed_Images/`](03_Pre_processed_Images/)
 
-Either your own output from step 2, or the deposited copy. These are the input
-to CellProfiler. Do not feed the raw images to step 4.
+Either your own output from step 2, or the deposited copy: twelve 8-bit TIFFs
+named `..._Processed.tif`. These are the input to CellProfiler. Do not feed the
+raw images to step 4; the pipeline's thresholds assume pre-processed input.
 
 ---
 
@@ -169,9 +178,17 @@ run.
 
 1. Open the pipeline in CellProfiler.
 2. Drag the contents of `03_Pre_processed_Images` into the `Images` module.
-3. Set the default output folder to `05_Quality_Check_Mask_Outputs`.
-4. In `ExportToSpreadsheet`, change the filename prefix from `_ADD_PREFIX` to
-   something of your own.
+   The pipeline has 24 modules; confirm they all load.
+3. Set the default output folder to `05_Quality_Check_Mask_Outputs` under
+   `File > Preferences`, then set `Output file location` to
+   `Default Output Folder` in all four `SaveImages` modules and in
+   `ExportToSpreadsheet`. They ship pointing at paths from the machine the
+   pipeline was developed on. Left unchanged, the overlays are written back
+   into the folder holding the input images, where the next run will load them
+   as input, and the export fails after the analysis has already finished.
+4. In `ExportToSpreadsheet`, change the filename prefix from `ADD_PREFIX_` to
+   something of your own. It is prepended verbatim, so keep a trailing
+   separator; the deposited example used `Test_`.
 5. **Before running everything, press `Start Test Mode` and step through one
    image.** Watch each module's window. This takes two minutes and saves hours.
 6. `Analyze Images`. Expect roughly an hour for 12 images.
@@ -201,19 +218,33 @@ non-trunk branches and endpoints are counted outward from the cell body. This
 is why skeleton measures appear in the soma table rather than the cell table, a
 point that confuses almost everyone the first time.
 
+The run writes four images per field to `05_` and six tables to wherever
+`ExportToSpreadsheet` points: 48 image files and 6 tables for these 12
+images.
+
 ---
 
 ## Step 5: quality control, which is not optional
 
 **Folder:** [`05_Quality_Check_Mask_Outputs/`](05_Quality_Check_Mask_Outputs/)
 
-Three overlays per image. **Look at all 36 before you quantify anything.**
+Four files per image, 48 in all. Three are overlays to look at; the fourth is
+the binary mask they were built from. **Look at all 36 overlays before you
+quantify anything.**
 
 | Suffix | Shows | Failure looks like |
 |--------|-------|--------------------|
 | `*OIC.tiff` | whole-cell objects over the image | arbors fused between neighbours, or truncated |
 | `*SWS.png` | skeleton with soma overlaid | broken skeleton, spurious loops, skeleton off-centre |
 | `*QC.png` | cell and soma outlines on the original | soma mask inflated into proximal processes |
+| `*MASK.png` | the binary whole-cell mask itself | not an overlay, and not an analysis input |
+
+`*MASK.png` keeps the exact segmented foreground beside the numbers derived
+from it, so a segmentation can be re-measured, compared against another method
+on the same fields, or taken into other software without rerunning the
+pipeline. It is also the image to open when an overlay looks wrong and it is
+unclear whether the fault lies in the mask or in the object assignment built on
+top of it.
 
 Why this step gets its own folder: segmentation failure is far easier to see
 than to detect statistically. It also distorts the **derived ratios** more than
@@ -234,20 +265,23 @@ segmentation you have not looked at.
 
 Tab-delimited, one row per object.
 
+File names begin with the prefix set in `ExportToSpreadsheet` at step 4. The
+deposited copy was exported with `Test_`.
+
 | File | Rows | Role |
 |------|------|------|
-| `_TestSoma_Filtered.txt` | 18,680 | **analysis input**: soma shape + skeleton topology |
-| `_TestCell.txt` | 18,680 | **analysis input**: whole-cell shape |
-| `_TestSoma_Merged.txt` | 19,373 | intermediate, provenance only |
-| `_TestSoma_first.txt` | 20,446 | intermediate, provenance only |
-| `_TestImage.txt` | 12 | per-image counts, thresholds, timings |
-| `_TestExperiment.txt` | 318 | run provenance, full pipeline text |
+| `Test_Soma_Filtered.txt` | 18,680 | **analysis input**: soma shape + skeleton topology |
+| `Test_Cell.txt` | 18,680 | **analysis input**: whole-cell shape |
+| `Test_Soma_Merged.txt` | 19,373 | intermediate, provenance only |
+| `Test_Soma_first.txt` | 20,446 | intermediate, provenance only |
+| `Test_Image.txt` | 12 | per-image counts, thresholds, timings |
+| `Test_Experiment.txt` | 338 | run provenance, full pipeline text |
 | `Injury_Center.csv` | 291 | implant centre coordinates |
 
 **Only the first two are read by the R scripts.** Soma pairs to cell on
 `Parent_Soma_Merged`.
 
-Worth opening `_TestImage.txt` once: it holds the per-image object counts and
+Worth opening `Test_Image.txt` once: it holds the per-image object counts and
 the actual thresholds chosen. If one image produced far fewer cells than the
 others, that is where you find out.
 
@@ -262,8 +296,9 @@ section fields if you adapt it.
 ## Step 7: analysis in R
 
 **Folder:** [`07_RStudio_Analysis_Scripts/`](07_RStudio_Analysis_Scripts/)
+**Scripts:** [`../1_Toolbox/R_Scripts/`](../1_Toolbox/R_Scripts/)
 
-Four scripts, run **in order, in one R session**. Each builds on objects left
+Five scripts, run **in order, in one R session**. Each builds on objects left
 by the previous one, so they cannot be run out of order or in isolation.
 
 ### `01_Load_packages.R`
@@ -273,8 +308,10 @@ release 3.17; on a newer R, edit or comment that line.
 
 ### `02_Import_Data.R`
 
-**Edit the two paths at the top first.** They must point at your
-`06_Datasheet/_TestSoma_Filtered.txt` and `_TestCell.txt`.
+**Edit the two paths at the top first.** They ship as placeholders
+(`/FOLDER_PATH_TO_/Test_Soma_Filtered.txt` and
+`/FOLDER_PATH_TO_/Test_Cell.txt`) and must point at your own
+`06_Datasheet/Test_Soma_Filtered.txt` and `Test_Cell.txt`.
 
 Strips the `AreaShape_` prefix, suffixes columns `_soma` and `_cell`, and
 merges on `FileName_Original_Iba1` + `ImageNumber` + `Parent_Soma_Merged`. The
@@ -340,6 +377,23 @@ The morphological continuum has no sharp elbow, because microglial morphology
 is genuinely continuous rather than composed of discrete types. An automated
 knee would impose a cluster count the data do not support. `k` is a declared
 granularity, and should be reported as such.
+
+### `05_Morpho_Enrichment.R`
+
+`04` gives you clusters. This script tells you what they are made of: for every
+feature, the row z-score of the cluster mean against the other clusters, with an
+adjusted p value and the fraction of cells in the cluster lying above the global
+median for that feature. Output is a heat map, a dot plot in which point size is
+that fraction, and a per-cluster feature ranking.
+
+Read it before naming anything. k-means returns groups, not phenotypes, and the
+clusters it returns separate along two largely independent axes: arbor
+complexity, carried by `RI`, branch endpoints and skeleton length, and
+soma-versus-arbor balance, carried by `Area_soma` and `area_ratio`. Which
+combination of those deserves to be called a reactive or a ramified state is an
+interpretive judgement, not an output of the script. For the assignments used in
+the published analysis, see the iScience paper cited in
+[`../README.md`](../README.md).
 
 ### Two checks that decide whether your clusters are real
 
